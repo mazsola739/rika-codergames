@@ -1,1 +1,13 @@
-{ "number": 3, "title": "The fairies' alphabet", "original": "Úloha č. 3", "topics": ["cryptography", "frequency analysis", "hill climbing"], "check": "custom" }
+{
+  "number": 3,
+  "title": "The fairies' alphabet",
+  "original": "Úloha č. 3",
+  "summary": "An English fairy tale hidden under a letter-substitution cipher. Break it without the key.",
+  "result": "Cinderella",
+  "topics": [
+    "cryptography",
+    "frequency analysis",
+    "hill climbing"
+  ],
+  "check": "custom"
+}

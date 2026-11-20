@@ -1,1 +1,13 @@
-{ "number": 3, "title": "From rookie to Formula 1", "original": "From Rookie to Formula 1", "topics": ["graphs", "topological order", "path counting"], "country": "Hungary" }
+{
+  "number": 3,
+  "title": "From rookie to Formula 1",
+  "original": "From Rookie to Formula 1",
+  "summary": "Count the ways from rookie to Formula 1 driver in a directed acyclic graph.",
+  "result": "4,768,729,922,192 paths",
+  "topics": [
+    "graphs",
+    "topological order",
+    "path counting"
+  ],
+  "country": "Hungary"
+}

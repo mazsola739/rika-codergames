@@ -1,1 +1,11 @@
-{ "number": 1, "title": "Buggy's master password", "original": "Buggy – Master Password Manager", "topics": ["strings", "parsing"] }
+{
+  "number": 1,
+  "title": "Buggy's master password",
+  "original": "Buggy – Master Password Manager",
+  "summary": "Spell words from matrix coordinates, then merge them where they overlap.",
+  "result": "92 characters removed, longest pAssWorD",
+  "topics": [
+    "strings",
+    "parsing"
+  ]
+}

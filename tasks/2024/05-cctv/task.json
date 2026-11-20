@@ -1,1 +1,11 @@
-{ "number": 5, "title": "CCTV", "topics": ["circular arrays", "independence of axes"], "country": "Spain" }
+{
+  "number": 5,
+  "title": "CCTV",
+  "summary": "Shift camera images around a wrapping screen until they are as compact as possible.",
+  "result": "4; 2 and 6; 0",
+  "topics": [
+    "circular arrays",
+    "independence of axes"
+  ],
+  "country": "Spain"
+}

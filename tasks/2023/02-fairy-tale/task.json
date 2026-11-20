@@ -1,1 +1,12 @@
-{ "number": 2, "title": "A fairy tale", "topics": ["cryptography", "Vigenère cipher", "index of coincidence"], "check": "custom" }
+{
+  "number": 2,
+  "title": "A fairy tale",
+  "summary": "A fairy tale hidden under a Vigenère cipher: find the key and name the tale.",
+  "result": "Key SUPERHESLO, The Emperor's New Clothes",
+  "topics": [
+    "cryptography",
+    "Vigenère cipher",
+    "index of coincidence"
+  ],
+  "check": "custom"
+}

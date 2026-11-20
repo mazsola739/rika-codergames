@@ -1,1 +1,12 @@
-{ "number": 4, "title": "Bike path in Valencia during Las Fallas", "original": "Bike Path in Valencia During Las Fallas", "topics": ["Dijkstra", "time-dependent shortest path"], "country": "Spain" }
+{
+  "number": 4,
+  "title": "Bike path in Valencia during Las Fallas",
+  "original": "Bike Path in Valencia During Las Fallas",
+  "summary": "The earliest arrival by bike when roads close at certain times.",
+  "result": "145, 90, 90, 305, 145, 105",
+  "topics": [
+    "Dijkstra",
+    "time-dependent shortest path"
+  ],
+  "country": "Spain"
+}

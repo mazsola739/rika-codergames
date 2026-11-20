@@ -84,7 +84,9 @@ CG.visual("2026-1", (root, sets, { h, s, segmented, slider, stats, scale, fmt, b
     const W = 640;
     const Hh = 210;
     const m = { l: 46, r: 12, t: 12, b: 28 };
-    const top = maxP();
+    // Show prices up to a bit above the highest ceiling (beyond it nobody buys), or up to P.
+    const ceilings = fans.map((f) => f.ceiling).filter((c) => c !== null && c >= 1);
+    const top = Math.min(maxP(), Math.max(P + 1, Math.ceil((ceilings.length ? Math.max(...ceilings) : maxP()) * 1.3)));
     const values = Array.from({ length: top }, (_, i) => revenue(fans, i + 1));
     const peak = Math.max(1, ...values);
     const x = scale(1, top, m.l, W - m.r);
@@ -117,8 +119,15 @@ CG.visual("2026-1", (root, sets, { h, s, segmented, slider, stats, scale, fmt, b
         h("td", { text: f.ceiling !== null && f.ceiling >= P ? "buys ✓" : "–" }),
       ),
     );
+    const buying = fans.filter((f) => f.ceiling !== null && f.ceiling >= P).length;
+    const wasOpen = table.querySelector("details")?.open;
     table.replaceChildren(
-      h("table", { class: "vis-table" }, h("thead", {}, h("tr", {}, ...["Fans walking", "Patience K", "Share", "Buys from us at", `At ${P}`].map((t) => h("th", { text: t })))), h("tbody", {}, rows)),
+      h(
+        "details",
+        { class: "more", open: wasOpen },
+        h("summary", {}, `Who buys from us at ${P}: ${buying} of ${fans.length} kinds of fans`),
+        h("div", { class: "tablewrap more-body" }, h("table", { class: "vis-table" }, h("thead", {}, h("tr", {}, ...["Fans walking", "Patience K", "Share", "Buys from us at", `At ${P}`].map((t) => h("th", { text: t })))), h("tbody", {}, rows))),
+      ),
     );
   }
 

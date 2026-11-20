@@ -103,6 +103,18 @@
     }
   });
 
+  // Detail buttons under a task: each opens its own panel; open one closes the others; click again to fold.
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".detail-btn");
+    if (!btn) return;
+    const open = btn.getAttribute("aria-expanded") === "true";
+    for (const b of btn.closest(".detail-bar").querySelectorAll(".detail-btn")) {
+      const on = b === btn && !open;
+      b.setAttribute("aria-expanded", String(on));
+      document.getElementById(b.getAttribute("aria-controls")).hidden = !on;
+    }
+  });
+
   window.addEventListener("hashchange", route);
   route();
 })();

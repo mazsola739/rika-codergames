@@ -1,1 +1,13 @@
-{ "number": 5, "title": "Islands and bridges", "original": "Ostrovy a mosty", "topics": ["flood fill", "minimum spanning tree", "union-find"], "check": "custom" }
+{
+  "number": 5,
+  "title": "Islands and bridges",
+  "original": "Ostrovy a mosty",
+  "summary": "Join all islands with straight bridges of 1–3 cells, using as little material as possible.",
+  "result": "Minimum spanning tree; the official answers are wrong for 93 of 103 maps",
+  "topics": [
+    "flood fill",
+    "minimum spanning tree",
+    "union-find"
+  ],
+  "check": "custom"
+}

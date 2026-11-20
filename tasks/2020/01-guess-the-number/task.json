@@ -1,1 +1,12 @@
-{ "number": 1, "title": "Guess the number", "original": "Úloha č. 1", "topics": ["logic", "deduction"], "input": null }
+{
+  "number": 1,
+  "title": "Guess the number",
+  "original": "Úloha č. 1",
+  "summary": "Five numbers, two people who each know one digit, two statements: work out the number.",
+  "result": "23",
+  "topics": [
+    "logic",
+    "deduction"
+  ],
+  "input": null
+}

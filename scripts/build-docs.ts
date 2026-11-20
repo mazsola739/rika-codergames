@@ -61,23 +61,41 @@ function highlight(src: string): string {
   return out
 }
 
-// ---------- README.md -> HTML ----------
-function renderReadme(t: Task): string {
-  const md = readFileSync(join(t.dir, 'README.md'), 'utf8').replace(/\r\n/g, '\n')
-  const lines = md.split('\n')
-  // The page shows the title and the "CoderGames ... · Task n" line itself.
-  while (lines.length && (lines[0]!.startsWith('# ') || lines[0]!.startsWith('**CoderGames') || !lines[0]!.trim())) lines.shift()
-  let html = marked.parse(lines.join('\n'), { gfm: true, async: false }) as string
-  html = html
+// ---------- README.md -> HTML, split into sections ----------
+function renderMarkdown(t: Task, md: string): string {
+  return (marked.parse(md, { gfm: true, async: false }) as string)
     .replace(/<h3>/g, '<h4>').replace(/<\/h3>/g, '</h4>')
-    .replace(/<h2>/g, '<h3>').replace(/<\/h2>/g, '</h3>')
     .replace(/<table>/g, '<div class="tablewrap"><table>').replace(/<\/table>/g, '</table></div>')
     .replace(/<pre><code(?: class="[^"]*")?>/g, '<pre class="code"><code>')
     .replace(/<a href="([^"]+)"/g, (_, href: string) => {
       const url = /^(https?:|mailto:|#)/.test(href) ? href : `${BLOB}/${folder(t)}/${href}`
       return `<a href="${url}" target="_blank" rel="noopener"`
     })
-  return html
+}
+
+// Short labels for the usual headings; other headings (the interesting ones, like "The official
+// answers have a bug") keep their own text.
+const sectionLabel = (heading: string) =>
+  /^the task$/i.test(heading) ? 'The task'
+    : /^answer$/i.test(heading) ? 'Answer'
+      : /^checking it$/i.test(heading) ? 'How it’s checked'
+        : /^(the idea|how to think about it)$/i.test(heading) ? 'The idea'
+          : heading
+
+function readmeSections(t: Task): { label: string; html: string }[] {
+  const lines = readFileSync(join(t.dir, 'README.md'), 'utf8').replace(/\r\n/g, '\n').split('\n')
+  // The page shows the title and the "CoderGames ... · Task n" line itself.
+  while (lines.length && (lines[0]!.startsWith('# ') || lines[0]!.startsWith('**CoderGames') || !lines[0]!.trim())) lines.shift()
+  const sections: { heading: string; body: string[] }[] = []
+  for (const line of lines) {
+    const m = line.match(/^## (.+)$/)
+    if (m) sections.push({ heading: m[1]!, body: [] })
+    else if (sections.length) sections.at(-1)!.body.push(line)
+    else sections.push({ heading: '', body: [line] })
+  }
+  return sections
+    .filter((s) => s.body.join('').trim())
+    .map((s) => ({ label: sectionLabel(s.heading), html: renderMarkdown(t, s.body.join('\n')) }))
 }
 
 // ---------- visualisations ----------
@@ -134,18 +152,32 @@ function extraFiles(t: Task): string[] {
 }
 
 function taskArticle(t: Task, selected: boolean): string {
+  const s = slug(t)
   const pending = t.status === 'pending'
-  const eyebrow = [`Task ${t.number}`, t.original && t.original !== t.title && !/^Úloha/.test(t.original) ? `original: ${t.original}` : '', t.country ? `country: ${t.country}` : '']
-    .filter(Boolean)
-    .join(' · ')
-  const chips = t.topics.map((x) => `<li>${esc(x)}</li>`).join('')
+  const eyebrow = [`Task ${t.number}`, t.country ?? ''].filter(Boolean).join(' · ')
+  const sections = readmeSections(t)
+
+  // Details stay folded away: one button per README section, plus the code.
+  const panels: { label: string; html: string }[] = [...sections]
   const solutionPath = join(t.dir, 'solution.ts')
-  let code = ''
   if (!pending && existsSync(solutionPath)) {
     const src = readFileSync(solutionPath, 'utf8').replace(/\r\n/g, '\n').trimEnd()
-    code = `<details class="code-box"><summary><span>solution.ts</span><small>${plural(src.split('\n').length, 'line')} · TypeScript</small></summary>
-          <pre class="code"><code>${highlight(src)}</code></pre></details>`
+    panels.push({
+      label: 'Code',
+      html: `<p class="vis-note"><code>solution.ts</code> · ${plural(src.split('\n').length, 'line')} of TypeScript. It reads the input file and prints the answer.</p>
+          <pre class="code code-full"><code>${highlight(src)}</code></pre>`,
+    })
   }
+  const details = pending
+    ? `<div class="prose">${sections.map((x) => x.html).join('')}</div>`
+    : `<div class="details">
+          <div class="detail-bar" role="group" aria-label="Details">
+            <span class="detail-label">Details</span>
+            ${panels.map((p, i) => `<button class="detail-btn" type="button" aria-expanded="false" aria-controls="d-${s}-${i}">${esc(p.label)}</button>`).join('\n            ')}
+          </div>
+          ${panels.map((p, i) => `<div class="detail-panel prose" id="d-${s}-${i}" hidden>${p.html}</div>`).join('\n          ')}
+        </div>`
+
   const extras = extraFiles(t)
     .map((f) => `<a href="${BLOB}/${folder(t)}/${f}" target="_blank" rel="noopener"><code>${f}</code></a>`)
     .join(' ')
@@ -156,16 +188,21 @@ function taskArticle(t: Task, selected: boolean): string {
   ]
     .filter(Boolean)
     .join('<span aria-hidden="true"> · </span>')
-  return `<article class="task" id="task-${slug(t)}" aria-labelledby="h-${slug(t)}"${selected ? '' : ' hidden'}>
+  const chips = t.topics.map((x) => `<li>${esc(x)}</li>`).join('')
+
+  return `<article class="task" id="task-${s}" aria-labelledby="h-${s}"${selected ? '' : ' hidden'}>
         <header class="task-head">
           <p class="eyebrow">${esc(eyebrow)}</p>
-          <h2 id="h-${slug(t)}">${esc(t.title)}</h2>
-          ${chips ? `<ul class="chips" aria-label="Topics">${chips}</ul>` : ''}
+          <h2 id="h-${s}">${esc(t.title)}</h2>
+          ${t.summary ? `<p class="task-summary">${esc(t.summary)}</p>` : ''}
+          ${t.result ? `<p class="task-result"><span>Answer</span>${esc(t.result)}</p>` : ''}
         </header>
         ${visualSection(t)}
-        <div class="prose">${renderReadme(t)}</div>
-        ${code}
-        <p class="task-links">${links}</p>
+        ${details}
+        <footer class="task-foot">
+          ${chips ? `<ul class="chips" aria-label="Topics">${chips}</ul>` : ''}
+          <p class="task-links">${links}</p>
+        </footer>
       </article>`
 }
 
@@ -175,10 +212,8 @@ function editionPanel(e: Edition, tasks: Task[]): string {
   const count = solved === tasks.length ? plural(tasks.length, 'task') : `${solved} of ${tasks.length} tasks`
   return `<section class="panel-edition" id="p-${e.id}" role="tabpanel" aria-labelledby="tab-${e.id}" tabindex="0" hidden>
     <header class="edition-head">
-      <p class="eyebrow">${esc(e.dates)} · ${esc(e.language)} · ${count}</p>
       <h2>${esc(e.title)} <span>${esc(e.theme)}</span></h2>
-      <p class="lead">${esc(e.summary)}</p>
-      <p class="actions"><a class="pill" href="${e.source}" target="_blank" rel="noopener">Original tasks</a></p>
+      <p class="eyebrow">${esc(e.dates)} · ${esc(e.language)} · ${count} · <a href="${e.source}" target="_blank" rel="noopener">original tasks ↗</a></p>
     </header>
     <div class="split">
       <nav class="task-nav" aria-label="Tasks of ${esc(e.title)}"><ol>
@@ -191,11 +226,26 @@ function editionPanel(e: Edition, tasks: Task[]): string {
   </section>`
 }
 
+// The tasks shown first on the overview.
+const HIGHLIGHTS = ['2026-2', '2022-5', '2026-1', '2024-5', '2020-3', '2023-5']
+
 function overviewPanel(editions: Edition[], byEdition: Map<string, Task[]>): string {
   const all = [...byEdition.values()].flat()
   const solved = all.filter((t) => t.status !== 'pending')
   const pending = all.length - solved.length
   const custom = solved.filter((t) => t.check === 'custom').length
+  const label = (t: Task) => `${TAB_LABEL[t.edition.id] ?? t.edition.id} · Task ${t.number}`
+  const highlights = HIGHLIGHTS.map((id) => all.find((t) => slug(t) === id))
+    .filter((t): t is Task => !!t)
+    .map((t) => {
+      const v = visuals.get(slug(t))
+      return `<li><a class="highlight" href="#${slug(t)}">
+          <small>${esc(label(t))}</small>
+          <b>${esc(v?.title ?? t.title)}</b>
+          <span>${esc(t.title)}: ${esc(t.summary ?? '')}</span>
+        </a></li>`
+    })
+    .join('\n      ')
   const cards = editions
     .map((e) => {
       const tasks = byEdition.get(e.id)!
@@ -210,31 +260,36 @@ function overviewPanel(editions: Edition[], byEdition: Map<string, Task[]>): str
     .join('\n      ')
   const findings = FINDINGS.map(([id, text]) => {
     const t = all.find((x) => slug(x) === id)!
-    return `<li><a href="#${id}" data-task="${id}"><b>${esc(TAB_LABEL[t.edition.id] ?? t.edition.id)} · ${esc(t.title)}</b></a> ${esc(text)}</li>`
+    return `<li><a href="#${id}"><b>${esc(TAB_LABEL[t.edition.id] ?? t.edition.id)} · ${esc(t.title)}</b></a> ${esc(text)}</li>`
   }).join('\n        ')
   return `<section class="panel-doc" id="p-overview" role="tabpanel" aria-labelledby="tab-overview" tabindex="0">
-    <div class="intro">
-      <p>CoderGames is a week-long online coding competition by Deutsche Telekom IT Solutions Slovakia: one task a day, points for correct answers and for speed. This page collects every published task since 2020, each with an interactive visualisation, a short explanation of the idea and a TypeScript solution that reproduces the official answer.</p>
-    </div>
-    <div class="cards">
-      <div class="card"><small>Tasks solved</small><b>${solved.length}</b><span>${pending ? `${pending} still to be published` : 'all published tasks'}</span></div>
-      <div class="card"><small>Editions</small><b>${editions.length}</b><span>${editions.at(-1)!.dates}–${editions[0]!.dates.slice(-4)}</span></div>
-      <div class="card"><small>Checked by <code>npm test</code></small><b>${solved.length}</b><span>${custom} with their own checker</span></div>
-      <div class="card"><small>Interactive visualisations</small><b>${visuals.size}</b><span>one for every solved task</span></div>
-      <div class="card"><small>Official mistakes found</small><b>${FINDINGS.length}</b><span>2 answers, 3 examples</span></div>
-    </div>
-    <h2>Editions</h2>
+    <h2>Start here</h2>
+    <ul class="highlights">
+      ${highlights}
+    </ul>
+    <h2>All editions</h2>
     <ul class="edition-grid">
       ${cards}
     </ul>
-    <h2>Found along the way</h2>
-    <p>Checking every solution against the official answers also turned up a few places where the official material is wrong:</p>
-    <ul class="findings">
+    <p class="stat-strip">
+      <span><b>${solved.length}</b> tasks solved${pending ? ` (${pending} still to come)` : ''}</span>
+      <span><b>${visuals.size}</b> interactive visualisations</span>
+      <span><b>${editions.length}</b> editions, ${editions.at(-1)!.dates}–${editions[0]!.dates.slice(-4)}</span>
+      <span><b>${FINDINGS.length}</b> mistakes found in the official material</span>
+    </p>
+    <details class="more">
+      <summary>Mistakes found in the official material <span>${FINDINGS.length}</span></summary>
+      <ul class="findings">
         ${findings}
-    </ul>
-    <h2>How it's built and checked</h2>
-    <p>Every task has its own folder with the write-up, a standalone <code>solution.ts</code> that reads the input file and prints the answer (ready to paste into the submission form), the input and the official answer. <code>npm test</code> runs all of them and compares the output with the official answer. When several answers are equally correct, like a different but equally short path, the task gets its own <code>check.ts</code> that validates the answer instead of comparing text.</p>
-    <p>The visualisations are plain JavaScript and SVG or canvas, with no framework. Each task folder has a <code>visual.js</code> that runs in the browser and a <code>visual.ts</code> that prepares its data from the real input at build time.</p>
+      </ul>
+    </details>
+    <details class="more">
+      <summary>How it’s built and checked</summary>
+      <div class="more-body">
+        <p>Every task has its own folder with the write-up, a standalone <code>solution.ts</code> that reads the input file and prints the answer (ready to paste into the submission form), the input and the official answer. <code>npm test</code> runs all of them and compares the output with the official answer. When several answers are equally correct, like a different but equally short path, the task gets its own <code>check.ts</code> (${custom} tasks) that validates the answer instead of comparing text.</p>
+        <p>The visualisations are plain JavaScript with SVG or canvas, no framework. Each task folder has a <code>visual.js</code> that runs in the browser and a <code>visual.ts</code> that prepares its data from the real input at build time.</p>
+      </div>
+    </details>
   </section>`
 }
 
@@ -267,7 +322,7 @@ const body = `<div class="app">
     <div class="titleblock">
       <p class="eyebrow">Coding competition · TypeScript · 2020–2026</p>
       <h1>CoderGames Solutions</h1>
-      <p class="lead">Every task of <a href="https://codergames.deutschetelekomitsolutions.sk/" target="_blank" rel="noopener">CoderGames</a>, the online coding competition by <strong class="brand">Deutsche Telekom IT Solutions Slovakia</strong>, solved and explained: an interactive visualisation for each one, the idea behind the solution, the program, and how it was checked against the official answer.</p>
+      <p class="lead">Every task of <a href="https://codergames.deutschetelekomitsolutions.sk/" target="_blank" rel="noopener">CoderGames</a>, the coding competition by <strong class="brand">Deutsche Telekom IT Solutions Slovakia</strong>: solved, visualised and explained.</p>
     </div>
     <p class="actions">
       <a class="pill" href="${REPO}" target="_blank" rel="noopener">${GITHUB_ICON}Source code</a>

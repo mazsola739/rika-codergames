@@ -1,1 +1,13 @@
-{ "number": 1, "title": "Claim a spot", "topics": ["optimisation", "thresholds", "brute-force cross-check"], "country": "Spain", "check": "custom" }
+{
+  "number": 1,
+  "title": "Claim a spot",
+  "summary": "Where to open a new stall in the fan zone, and at what price.",
+  "result": "1 6",
+  "topics": [
+    "optimisation",
+    "thresholds",
+    "brute-force cross-check"
+  ],
+  "country": "Spain",
+  "check": "custom"
+}

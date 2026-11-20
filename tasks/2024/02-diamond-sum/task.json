@@ -1,1 +1,13 @@
-{ "number": 2, "title": "Diamond sum", "original": "Diamond amount/sum", "topics": ["math", "closed formula", "big integers"], "country": "Hungary" }
+{
+  "number": 2,
+  "title": "Diamond sum",
+  "original": "Diamond amount/sum",
+  "summary": "The sum along the diamond of an N × N grid, for N up to 10¹⁸.",
+  "result": "(N − 1)(N² + 1)",
+  "topics": [
+    "math",
+    "closed formula",
+    "big integers"
+  ],
+  "country": "Hungary"
+}

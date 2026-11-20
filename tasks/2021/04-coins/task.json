@@ -1,1 +1,11 @@
-{ "number": 4, "title": "Money", "original": "Peniaze", "topics": ["dynamic programming", "coin change"] }
+{
+  "number": 4,
+  "title": "Money",
+  "original": "Peniaze",
+  "summary": "Pay an amount with the fewest coins of a strange coin system.",
+  "result": "e.g. 134,123 with 1,605 coins",
+  "topics": [
+    "dynamic programming",
+    "coin change"
+  ]
+}

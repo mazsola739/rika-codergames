@@ -1,1 +1,11 @@
-{ "number": 4, "title": "Missing numbers", "topics": ["arrays", "counting"], "country": "Slovakia" }
+{
+  "number": 4,
+  "title": "Missing numbers",
+  "summary": "The numbers missing between the smallest and largest value of an array.",
+  "result": "202 missing numbers",
+  "topics": [
+    "arrays",
+    "counting"
+  ],
+  "country": "Slovakia"
+}

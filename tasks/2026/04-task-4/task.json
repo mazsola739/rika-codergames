@@ -1,1 +1,9 @@
-{ "number": 4, "title": "Task 4", "topics": [], "status": "pending", "input": null, "answer": null }
+{
+  "number": 4,
+  "title": "Task 4",
+  "summary": "Published on 19 November 2026; only visible to signed-in participants so far.",
+  "topics": [],
+  "input": null,
+  "answer": null,
+  "status": "pending"
+}

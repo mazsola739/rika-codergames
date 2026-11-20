@@ -1,1 +1,11 @@
-{ "number": 3, "title": "Stringeria", "topics": ["dynamic programming", "longest common subsequence"], "check": "custom" }
+{
+  "number": 3,
+  "title": "Stringeria",
+  "summary": "The longest common subsequence of two 1000-letter strings.",
+  "result": "Length 319",
+  "topics": [
+    "dynamic programming",
+    "longest common subsequence"
+  ],
+  "check": "custom"
+}

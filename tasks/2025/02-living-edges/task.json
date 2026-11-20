@@ -1,1 +1,12 @@
-{ "number": 2, "title": "Night of the living edges", "original": "Night of the Living Edges", "topics": ["union-find", "cycle detection", "online queries"] }
+{
+  "number": 2,
+  "title": "Night of the living edges",
+  "original": "Night of the Living Edges",
+  "summary": "Edges keep appearing: after each question, count the components that contain a cycle.",
+  "result": "28 answers, ending at 6",
+  "topics": [
+    "union-find",
+    "cycle detection",
+    "online queries"
+  ]
+}

@@ -1,1 +1,12 @@
-{ "number": 2, "title": "Stability of the universe", "original": "Stability of Universe", "topics": ["grids", "torus", "symmetry"] }
+{
+  "number": 2,
+  "title": "Stability of the universe",
+  "original": "Stability of Universe",
+  "summary": "Find the local maxima on a 200 × 200 torus and check whether they are symmetric.",
+  "result": "31 stable, 21 unstable",
+  "topics": [
+    "grids",
+    "torus",
+    "symmetry"
+  ]
+}

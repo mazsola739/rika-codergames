@@ -1,1 +1,11 @@
-{ "number": 3, "title": "Haunted mansion", "topics": ["graphs", "in-degree", "breadth-first search"] }
+{
+  "number": 3,
+  "title": "Haunted mansion",
+  "summary": "Rooms vanish from a one-way mansion: find the entrance and what can still be reached.",
+  "result": "4 possible entrances, 9 extra rooms vanish",
+  "topics": [
+    "graphs",
+    "in-degree",
+    "breadth-first search"
+  ]
+}

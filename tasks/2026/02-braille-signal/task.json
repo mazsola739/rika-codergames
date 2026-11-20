@@ -1,1 +1,12 @@
-{ "number": 2, "title": "The Braille signal", "topics": ["parsing", "bit masks", "Braille"], "country": "Germany" }
+{
+  "number": 2,
+  "title": "The Braille signal",
+  "summary": "Rebuild a Braille picture from a shuffled telemetry log and read its captions.",
+  "result": "AVUS, Max Esser",
+  "topics": [
+    "parsing",
+    "bit masks",
+    "Braille"
+  ],
+  "country": "Germany"
+}

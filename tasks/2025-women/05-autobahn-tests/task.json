@@ -1,1 +1,13 @@
-{ "number": 5, "title": "The flawed Autobahn speed tests", "original": "The Flawed Autobahn Speed Tests", "topics": ["parsing", "rules", "testing"], "country": "Germany" }
+{
+  "number": 5,
+  "title": "The flawed Autobahn speed tests",
+  "original": "The Flawed Autobahn Speed Tests",
+  "summary": "Find the speed-camera unit tests whose expected result is wrong.",
+  "result": "20 faulty tests",
+  "topics": [
+    "parsing",
+    "rules",
+    "testing"
+  ],
+  "country": "Germany"
+}

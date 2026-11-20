@@ -2,7 +2,13 @@
   "number": 4,
   "title": "Tomorrow's stock prices",
   "original": "Úloha č. 4",
-  "topics": ["single pass", "big integers", "streaming"],
+  "summary": "Ten million future share prices: find the best single buy-then-sell in one pass.",
+  "result": "Buy at 1,282,018,114,205, sell at 18,446,743,764,542,202,088",
+  "topics": [
+    "single pass",
+    "big integers",
+    "streaming"
+  ],
   "fetch": "https://codergames.deutschetelekomitsolutions.sk/svc/stream/media/input",
   "timeout": 120
 }

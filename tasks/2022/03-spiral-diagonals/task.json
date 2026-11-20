@@ -1,1 +1,12 @@
-{ "number": 3, "title": "Spiral diagonals", "original": "Úloha č. 3", "topics": ["math", "patterns"], "input": null }
+{
+  "number": 3,
+  "title": "Spiral diagonals",
+  "original": "Úloha č. 3",
+  "summary": "The sum of both diagonals of a 501 × 501 number spiral.",
+  "result": "83,960,501",
+  "topics": [
+    "math",
+    "patterns"
+  ],
+  "input": null
+}

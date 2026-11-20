@@ -1,1 +1,11 @@
-{ "number": 3, "title": "Shortest paths", "original": "Najkratšia cesta", "topics": ["breadth-first search", "graphs"] }
+{
+  "number": 3,
+  "title": "Shortest paths",
+  "original": "Najkratšia cesta",
+  "summary": "Shortest distance from every vertex to a target in four directed graphs.",
+  "result": "Four distance tables",
+  "topics": [
+    "breadth-first search",
+    "graphs"
+  ]
+}

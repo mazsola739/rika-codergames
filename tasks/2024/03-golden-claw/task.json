@@ -1,1 +1,14 @@
-{ "number": 3, "title": "The Golden Claw", "topics": ["simulation", "modular arithmetic", "greedy"], "country": "Greece", "answer": null, "check": "custom" }
+{
+  "number": 3,
+  "title": "The Golden Claw",
+  "summary": "Turn a pyramid of pillars, where every turn cascades downwards, until it matches the door.",
+  "result": "One pass from the top, one turn per pillar",
+  "topics": [
+    "simulation",
+    "modular arithmetic",
+    "greedy"
+  ],
+  "country": "Greece",
+  "answer": null,
+  "check": "custom"
+}

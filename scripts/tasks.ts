@@ -21,6 +21,10 @@ export interface TaskMeta {
   number: number
   title: string
   original?: string
+  /** One sentence for the website: what the task asks. */
+  summary?: string
+  /** The answer in a few words, for the website. */
+  result?: string
   topics: string[]
   country?: string
   /** File name of the input, or null when the task has no input file. */

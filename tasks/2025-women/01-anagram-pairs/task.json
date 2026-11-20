@@ -1,1 +1,11 @@
-{ "number": 1, "title": "Anagram pairs", "topics": ["strings", "counting"], "country": "Slovakia" }
+{
+  "number": 1,
+  "title": "Anagram pairs",
+  "summary": "Are the two words on each line anagrams of each other?",
+  "result": "35 YES/NO answers",
+  "topics": [
+    "strings",
+    "counting"
+  ],
+  "country": "Slovakia"
+}

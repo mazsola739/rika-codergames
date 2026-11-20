@@ -255,11 +255,8 @@ const BEST_OF: [id: string, why: string][] = [
 const dots = (d?: number) =>
   d ? `<span class="dots" title="Difficulty ${d} of 5" aria-label="Difficulty ${d} of 5">${[1, 2, 3, 4, 5].map((i) => `<i${i <= d ? ' class="on"' : ''}></i>`).join('')}</span>` : ''
 
-// Decorative bubbles for a hero: [left %, top %, size px].
-const bubbles = (seed: number) =>
-  [[62, 12, 54], [74, 58, 26], [88, 30, 72], [55, 70, 18], [93, 78, 34], [80, 8, 16]]
-    .map(([l, t, s], i) => `<span class="bubble" style="left:${(l! + seed * 7 * (i % 2 ? -1 : 1)) % 96}%;top:${t}%;width:${s}px;height:${s}px"></span>`)
-    .join('')
+// The hero background (code rain) is drawn in the browser from this seed, so each page differs.
+const heroArt = (seed: number) => `<div class="hero-art" data-seed="${seed}" aria-hidden="true"></div>`
 
 function extraFiles(t: Task): string[] {
   return readdirSync(t.dir)
@@ -308,9 +305,9 @@ function taskPage(t: Task, prev: Task | undefined, next: Task | undefined): stri
 
   return `<article class="task-page" id="task-${s}" aria-labelledby="h-${s}" hidden>
         <header class="hero hero-task">
-          ${bubbles(t.number)}
+          ${heroArt(t.edition.id.length * 31 + t.number * 7)}
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">${esc(t.edition.title)} · Task ${t.number}</p>
               <h2 class="hero-title" id="h-${s}">${esc(t.title)}</h2>
             </div>
@@ -403,10 +400,10 @@ function homeView(editions: Edition[], byEdition: Map<string, Task[]>): string {
   return `<section class="view" id="v-home" aria-label="Home">
     <div class="wrap">
       <header class="hero hero-home">
-        ${bubbles(0)}
-        <div class="hero-blob">
+        ${heroArt(2026)}
+        <div class="hero-heading">
           <p class="hero-kicker">2020–2026 · TypeScript</p>
-          <h1>CoderGames<br>Solutions</h1>
+          <h1>CoderGames <em>Solutions</em></h1>
         </div>
         <div>
           <p class="hero-lead">Every task of <a href="https://codergames.deutschetelekomitsolutions.sk/" target="_blank" rel="noopener">CoderGames</a>, the coding competition by Deutsche Telekom IT Solutions Slovakia: solved, visualised and explained.</p>

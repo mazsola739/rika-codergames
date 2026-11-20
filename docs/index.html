@@ -22,6 +22,8 @@
   --accent: #e20074; --accent-soft: #fde6f1; --on-accent: #ffffff; --accent-text: #c4006a;
   --brand: #e20074; --on-brand: #ffffff;
   --sky-1: #9be7e8; --sky-2: #3cbfdc; --on-sky: #062f38; --bubble: rgba(255, 255, 255, 0.85);
+  --hero-deep: #050b1a; --hero-mid: #0c1a3f; --hero-glow: #4a22a8; --hero-text: #e8f1ff; --hero-soft: #b9cbe3;
+  --rain: #48e0ea; --rain-pink: #ff4fae; --rain-head: #f2fdff; --streak: #4f7dff; --brand-glow: #ff3d9e;
   --tk-com: #6b7385; --tk-str: #17805a; --tk-kw: #c4006a; --tk-num: #a85400; --tk-re: #0b7285;
   --cell: #eceff4; --wall: #5b6374; --water: #dde8f3; --good: #1b9a73; --bad: #d4572e; --info: #6b5fd3; --warn: #b7800f; --isl-s: 55%; --isl-l: 62%;
   --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
@@ -81,23 +83,32 @@ code { font-family: var(--font-mono); font-size: 0.86em; background: var(--surfa
 :root[data-theme="dark"] .theme-toggle .sun { display: block; }
 :root[data-theme="dark"] .theme-toggle .moon { display: none; }
 
-/* Hero: turquoise with a magenta blob and bubbles */
-.hero { position: relative; overflow: hidden; isolation: isolate; border-radius: 0 0 22px 22px; color: var(--on-sky);
-  background: radial-gradient(120% 140% at 85% 10%, var(--sky-1), var(--sky-2)); padding: 22px clamp(16px, 3vw, 34px) 26px; }
-.hero::after { content: ""; position: absolute; z-index: -1; right: -60px; top: -70px; width: 260px; height: 220px; background: var(--brand); border-radius: 46% 54% 38% 62% / 52% 38% 62% 48%; opacity: 0.92; }
-.bubble { position: absolute; z-index: -1; border-radius: 50%; border: 1px solid var(--bubble); pointer-events: none;
-  background: radial-gradient(circle at 32% 28%, var(--bubble) 0 9%, rgba(255, 255, 255, 0.18) 30%, rgba(255, 255, 255, 0.04) 62%, transparent 70%); }
-.hero-blob { display: inline-grid; gap: 2px; background: var(--brand); color: var(--on-brand); padding: 16px 30px 18px 24px; max-width: 100%;
-  border-radius: 28px 46px 40px 22px / 30px 40px 46px 28px; box-shadow: 0 10px 30px rgba(120, 0, 60, 0.18); }
-.hero-kicker { font: 600 12px var(--font-mono); text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.9; }
-.hero h1, .hero .hero-title { font: 700 clamp(28px, 4.2vw, 46px)/1.02 var(--font-display); text-transform: uppercase; letter-spacing: 0.01em; margin: 0; text-wrap: balance; overflow-wrap: anywhere; }
-.hero-home { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 18px 28px; align-items: center; }
-.hero-home .hero-lead { font-size: 17px; max-width: 46ch; font-weight: 500; }
+/* Hero: a deep blue-violet band with generated code rain (dark in both themes) */
+.hero { position: relative; overflow: hidden; isolation: isolate; border-radius: 0 0 22px 22px; color: var(--hero-text);
+  background: radial-gradient(90% 140% at 82% 50%, var(--hero-glow) 0%, var(--hero-mid) 45%, var(--hero-deep) 100%); padding: 26px clamp(16px, 3vw, 36px) 28px; }
+.hero::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(90deg, var(--hero-deep) 0%, rgba(5, 11, 26, 0.82) 38%, rgba(5, 11, 26, 0.25) 68%, rgba(5, 11, 26, 0) 100%); }
+.hero-art { position: absolute; inset: 0; z-index: -2; pointer-events: none; }
+.hero-art svg { width: 100%; height: 100%; display: block; }
+.hero-art .rain { font-family: var(--font-mono); fill: var(--rain); }
+.hero-art .rain-m { fill: var(--rain-pink); }
+.hero-art .head { fill: var(--rain-head); }
+.hero-art .streak { fill: var(--streak); }
+.hero-art .streak-m { fill: var(--rain-pink); }
+.hero-heading { display: grid; gap: 4px; max-width: 100%; }
+.hero-kicker { font: 600 12px var(--font-mono); text-transform: uppercase; letter-spacing: 0.12em; color: var(--rain); }
+.hero h1, .hero .hero-title { font: 700 clamp(30px, 4.4vw, 50px)/1.02 var(--font-display); letter-spacing: -0.01em; margin: 0; color: var(--hero-text); text-wrap: balance; overflow-wrap: anywhere; }
+.hero h1 em { font-style: normal; color: var(--brand-glow); }
+.hero .hero-title { position: relative; padding-bottom: 10px; }
+.hero .hero-title::after { content: ""; position: absolute; left: 0; bottom: 0; width: 64px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--brand-glow), var(--rain)); }
+.hero-home { display: grid; grid-template-columns: minmax(0, 620px); gap: 14px; align-content: center; min-height: 230px; padding-block: 30px 32px; }
+.hero-home .hero-lead { font-size: 17px; max-width: 46ch; font-weight: 500; color: var(--hero-soft); }
 .hero-home .hero-lead a { color: inherit; }
 .hero-stats { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-top: 10px; font-size: 14px; }
-.hero-stats b { font: 700 20px var(--font-display); margin-right: 4px; }
-@media (max-width: 760px) { .hero-home { grid-template-columns: minmax(0, 1fr); } }
-.hero-home .hero-blob, .hero-copy .hero-blob { justify-self: start; }
+.hero-stats { color: var(--hero-soft); }
+.hero-stats b { font: 700 20px var(--font-display); margin-right: 4px; color: var(--hero-text); }
+@media (max-width: 760px) { .hero-home { grid-template-columns: minmax(0, 1fr); } .hero::before { background: linear-gradient(180deg, rgba(5, 11, 26, 0.88), rgba(5, 11, 26, 0.7)); } }
+.hero-home .hero-lead a { color: var(--hero-text); }
 
 /* Home */
 .home-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px; align-items: start; padding-block: 22px 10px; }
@@ -183,15 +194,16 @@ details.more summary span { display: inline-block; margin-left: 6px; font: 500 1
 .hero-task { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 18px 26px; align-items: center; border-radius: 22px; }
 @media (max-width: 760px) { .hero-task { grid-template-columns: minmax(0, 1fr); } }
 .hero-copy { display: grid; gap: 12px; justify-items: start; min-width: 0; }
-.hero-summary { font-size: 17.5px; line-height: 1.45; font-weight: 500; max-width: 46ch; }
+.hero-summary { font-size: 17.5px; line-height: 1.45; font-weight: 500; max-width: 46ch; color: var(--hero-soft); }
 .hero-facts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .task-result { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; background: var(--surface); color: var(--accent-text); border-radius: 10px; padding: 6px 12px;
   font-weight: 600; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; max-width: 100%; box-shadow: 0 4px 14px rgba(0, 40, 60, 0.12); }
 .task-result span, .fact span { font: 500 11px var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.85; }
-.fact { display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.35); border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 5px 11px; font-weight: 500; font-size: 14px; }
-:root[data-theme="dark"] .fact { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.18); }
-.hero-snap { margin: 0; justify-self: stretch; align-self: stretch; min-height: 180px; display: grid; place-items: center; overflow: hidden; border-radius: 24px; padding: 10px;
-  background: var(--surface); border: 4px solid rgba(255, 255, 255, 0.7); box-shadow: 0 14px 34px rgba(0, 40, 60, 0.2); }
+.fact { display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 10px; padding: 5px 11px; font-weight: 500; font-size: 14px; color: var(--hero-text); }
+.hero .dots i { background: rgba(255, 255, 255, 0.22); }
+.hero .dots i.on { background: var(--brand-glow); }
+.hero-snap { margin: 0; justify-self: stretch; align-self: stretch; min-height: 180px; display: grid; place-items: center; overflow: hidden; border-radius: 18px; padding: 10px;
+  background: var(--surface); border: 1px solid rgba(255, 255, 255, 0.25); box-shadow: 0 0 0 6px rgba(72, 224, 234, 0.08), 0 18px 40px rgba(0, 0, 0, 0.45); }
 .hero-snap > svg, .hero-snap > img { width: 100%; height: 100%; max-height: 300px; object-fit: contain; display: block; }
 .hero-snap.empty::before { content: "?"; font: 700 64px var(--font-display); color: var(--accent); opacity: 0.5; }
 
@@ -292,8 +304,8 @@ svg text { font-family: var(--font-body); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
 /* Playground: "Solve it yourself" hides the spoilers and shows an editor */
-.challenge-btn { font: 600 13.5px var(--font-body); color: var(--accent-text); background: var(--surface); border: 2px solid var(--brand); border-radius: 999px; padding: 5px 14px; cursor: pointer; box-shadow: 0 4px 14px rgba(0, 40, 60, 0.12); }
-.challenge-btn:hover { background: var(--accent-soft); }
+.challenge-btn { font: 600 13.5px var(--font-body); color: var(--hero-text); background: transparent; border: 2px solid var(--brand-glow); border-radius: 999px; padding: 5px 14px; cursor: pointer; }
+.challenge-btn:hover { background: rgba(255, 61, 158, 0.18); }
 .challenge-btn[aria-pressed="true"] { background: var(--brand); color: var(--on-brand); }
 .task-page.challenge .visual, .task-page.challenge .details, .task-page.challenge .task-result, .task-page.challenge .hero-snap > * { display: none !important; }
 .task-page.challenge .hero-snap::before { content: "?"; font: 700 72px var(--font-display); color: var(--accent); opacity: 0.55; }
@@ -335,10 +347,10 @@ svg text { font-family: var(--font-body); }
   <section class="view" id="v-home" aria-label="Home">
     <div class="wrap">
       <header class="hero hero-home">
-        <span class="bubble" style="left:62%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:74%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:88%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:55%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:93%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:80%;top:8%;width:16px;height:16px"></span>
-        <div class="hero-blob">
+        <div class="hero-art" data-seed="2026" aria-hidden="true"></div>
+        <div class="hero-heading">
           <p class="hero-kicker">2020–2026 · TypeScript</p>
-          <h1>CoderGames<br>Solutions</h1>
+          <h1>CoderGames <em>Solutions</em></h1>
         </div>
         <div>
           <p class="hero-lead">Every task of <a href="https://codergames.deutschetelekomitsolutions.sk/" target="_blank" rel="noopener">CoderGames</a>, the coding competition by Deutsche Telekom IT Solutions Slovakia: solved, visualised and explained.</p>
@@ -701,9 +713,9 @@ svg text { font-family: var(--font-body); }
     </nav>
     <article class="task-page" id="task-2026-1" aria-labelledby="h-2026-1" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:69%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:67%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:95%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:48%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:4%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:73%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="131" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2026 · Task 1</p>
               <h2 class="hero-title" id="h-2026-1">Claim a spot</h2>
             </div>
@@ -850,9 +862,9 @@ console.log(<span class="tk-str">`${best.L} ${best.P}`</span>)</code></pre></div
       </article>
     <article class="task-page" id="task-2026-2" aria-labelledby="h-2026-2" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:76%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:60%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:6%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:41%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:11%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:66%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="138" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2026 · Task 2</p>
               <h2 class="hero-title" id="h-2026-2">The Braille signal</h2>
             </div>
@@ -1050,9 +1062,9 @@ console.log(JSON.stringify({ country, location: venue, artist: capitalise(name) 
       </article>
     <article class="task-page" id="task-2026-3" aria-labelledby="h-2026-3" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:83%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:53%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:13%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:34%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:18%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:59%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="145" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2026 · Task 3</p>
               <h2 class="hero-title" id="h-2026-3">From rookie to Formula 1</h2>
             </div>
@@ -1166,9 +1178,9 @@ console.log(ways[n]!.toString())</code></pre></div>
       </article>
     <article class="task-page" id="task-2026-4" aria-labelledby="h-2026-4" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:90%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:46%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:20%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:27%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:25%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:52%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="152" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2026 · Task 4</p>
               <h2 class="hero-title" id="h-2026-4">Task 4</h2>
             </div>
@@ -1197,9 +1209,9 @@ console.log(ways[n]!.toString())</code></pre></div>
       </article>
     <article class="task-page" id="task-2026-5" aria-labelledby="h-2026-5" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:1%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:39%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:27%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:20%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:32%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:45%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="159" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2026 · Task 5</p>
               <h2 class="hero-title" id="h-2026-5">Task 5</h2>
             </div>
@@ -1240,9 +1252,9 @@ console.log(ways[n]!.toString())</code></pre></div>
     </nav>
     <article class="task-page" id="task-2025-1" aria-labelledby="h-2025-1" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:69%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:67%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:95%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:48%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:4%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:73%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="131" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2025 · Task 1</p>
               <h2 class="hero-title" id="h-2025-1">Trick or treat!</h2>
             </div>
@@ -1346,9 +1358,9 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
       </article>
     <article class="task-page" id="task-2025-2" aria-labelledby="h-2025-2" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:76%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:60%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:6%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:41%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:11%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:66%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="138" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2025 · Task 2</p>
               <h2 class="hero-title" id="h-2025-2">Night of the living edges</h2>
             </div>
@@ -1480,9 +1492,9 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
       </article>
     <article class="task-page" id="task-2025-3" aria-labelledby="h-2025-3" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:83%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:53%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:13%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:34%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:18%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:59%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="145" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2025 · Task 3</p>
               <h2 class="hero-title" id="h-2025-3">Haunted mansion</h2>
             </div>
@@ -1659,9 +1671,9 @@ console.log(entrances.length === <span class="tk-num">1</span> ? results[<span c
       </article>
     <article class="task-page" id="task-2025-4" aria-labelledby="h-2025-4" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:90%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:46%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:20%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:27%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:25%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:52%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="152" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2025 · Task 4</p>
               <h2 class="hero-title" id="h-2025-4">Midnight spirits</h2>
             </div>
@@ -1792,9 +1804,9 @@ console.log(out.join(<span class="tk-str">'\n\n'</span>))</code></pre></div>
     </nav>
     <article class="task-page" id="task-2025-women-1" aria-labelledby="h-2025-women-1" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:69%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:67%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:95%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:48%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:4%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:73%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="317" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames for Women 2025 · Task 1</p>
               <h2 class="hero-title" id="h-2025-women-1">Anagram pairs</h2>
             </div>
@@ -1897,9 +1909,9 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
       </article>
     <article class="task-page" id="task-2025-women-2" aria-labelledby="h-2025-women-2" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:76%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:60%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:6%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:41%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:11%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:66%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="324" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames for Women 2025 · Task 2</p>
               <h2 class="hero-title" id="h-2025-women-2">Stability of the universe</h2>
             </div>
@@ -2028,9 +2040,9 @@ console.log(<span class="tk-str">`${stable} ${unstable}`</span>)</code></pre></d
       </article>
     <article class="task-page" id="task-2025-women-3" aria-labelledby="h-2025-women-3" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:83%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:53%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:13%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:34%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:18%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:59%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="331" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames for Women 2025 · Task 3</p>
               <h2 class="hero-title" id="h-2025-women-3">The Lunar Codex treasure</h2>
             </div>
@@ -2173,9 +2185,9 @@ console.log(plain.join(<span class="tk-str">'\n'</span>))</code></pre></div>
       </article>
     <article class="task-page" id="task-2025-women-4" aria-labelledby="h-2025-women-4" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:90%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:46%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:20%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:27%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:25%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:52%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="338" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames for Women 2025 · Task 4</p>
               <h2 class="hero-title" id="h-2025-women-4">Bike path in Valencia during Las Fallas</h2>
             </div>
@@ -2333,9 +2345,9 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
       </article>
     <article class="task-page" id="task-2025-women-5" aria-labelledby="h-2025-women-5" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:1%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:39%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:27%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:20%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:32%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:45%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="345" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames for Women 2025 · Task 5</p>
               <h2 class="hero-title" id="h-2025-women-5">The flawed Autobahn speed tests</h2>
             </div>
@@ -2503,9 +2515,9 @@ console.log(faulty.join(<span class="tk-str">'\n'</span>))</code></pre></div>
     </nav>
     <article class="task-page" id="task-2024-1" aria-labelledby="h-2024-1" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:69%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:67%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:95%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:48%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:4%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:73%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="131" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2024 · Task 1</p>
               <h2 class="hero-title" id="h-2024-1">Perfect numbers</h2>
             </div>
@@ -2641,9 +2653,9 @@ console.log(perfect.join(<span class="tk-str">'\n'</span>))</code></pre></div>
       </article>
     <article class="task-page" id="task-2024-2" aria-labelledby="h-2024-2" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:76%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:60%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:6%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:41%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:11%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:66%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="138" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2024 · Task 2</p>
               <h2 class="hero-title" id="h-2024-2">Diamond sum</h2>
             </div>
@@ -2769,9 +2781,9 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
       </article>
     <article class="task-page" id="task-2024-3" aria-labelledby="h-2024-3" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:83%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:53%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:13%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:34%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:18%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:59%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="145" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2024 · Task 3</p>
               <h2 class="hero-title" id="h-2024-3">The Golden Claw</h2>
             </div>
@@ -2900,9 +2912,9 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
       </article>
     <article class="task-page" id="task-2024-4" aria-labelledby="h-2024-4" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:90%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:46%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:20%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:27%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:25%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:52%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="152" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2024 · Task 4</p>
               <h2 class="hero-title" id="h-2024-4">Missing numbers</h2>
             </div>
@@ -2991,9 +3003,9 @@ console.log(<span class="tk-str">`${missing.length}: ${missing.join(', ')}`</spa
       </article>
     <article class="task-page" id="task-2024-5" aria-labelledby="h-2024-5" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:1%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:39%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:27%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:20%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:32%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:45%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="159" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2024 · Task 5</p>
               <h2 class="hero-title" id="h-2024-5">CCTV</h2>
             </div>
@@ -3140,9 +3152,9 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
     </nav>
     <article class="task-page" id="task-2023-1" aria-labelledby="h-2023-1" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:69%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:67%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:95%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:48%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:4%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:73%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="131" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2023 · Task 1</p>
               <h2 class="hero-title" id="h-2023-1">Buggy's master password</h2>
             </div>
@@ -3274,9 +3286,9 @@ console.log(<span class="tk-str">`The longest removed string: &quot;${longest}&q
       </article>
     <article class="task-page" id="task-2023-2" aria-labelledby="h-2023-2" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:76%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:60%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:6%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:41%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:11%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:66%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="138" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2023 · Task 2</p>
               <h2 class="hero-title" id="h-2023-2">A fairy tale</h2>
             </div>
@@ -3417,9 +3429,9 @@ console.log(<span class="tk-str">`Key: ${key.map((s) =&gt; String.fromCharCode(6
       </article>
     <article class="task-page" id="task-2023-3" aria-labelledby="h-2023-3" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:83%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:53%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:13%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:34%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:18%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:59%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="145" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2023 · Task 3</p>
               <h2 class="hero-title" id="h-2023-3">Stringeria</h2>
             </div>
@@ -3536,9 +3548,9 @@ console.log(<span class="tk-str">`Length: ${lcs.length}`</span>)</code></pre></d
       </article>
     <article class="task-page" id="task-2023-4" aria-labelledby="h-2023-4" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:90%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:46%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:20%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:27%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:25%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:52%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="152" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2023 · Task 4</p>
               <h2 class="hero-title" id="h-2023-4">Tourist rescue net</h2>
             </div>
@@ -3677,9 +3689,9 @@ console.log(<span class="tk-str">`Path: ${best.slice(1).map((v, i) =&gt; `</span
       </article>
     <article class="task-page" id="task-2023-5" aria-labelledby="h-2023-5" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:1%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:39%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:27%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:20%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:32%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:45%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="159" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2023 · Task 5</p>
               <h2 class="hero-title" id="h-2023-5">Voyage to Mars</h2>
             </div>
@@ -3879,9 +3891,9 @@ console.error(<span class="tk-str">`${nodes} search nodes, ${proven ? 'optimal' 
     </nav>
     <article class="task-page" id="task-2022-1" aria-labelledby="h-2022-1" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:69%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:67%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:95%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:48%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:4%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:73%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="131" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2022 · Task 1</p>
               <h2 class="hero-title" id="h-2022-1">Clean the array</h2>
             </div>
@@ -3979,9 +3991,9 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
       </article>
     <article class="task-page" id="task-2022-2" aria-labelledby="h-2022-2" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:76%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:60%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:6%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:41%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:11%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:66%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="138" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2022 · Task 2</p>
               <h2 class="hero-title" id="h-2022-2">Divisible by 1 to 21</h2>
             </div>
@@ -4062,9 +4074,9 @@ console.log((<span class="tk-num">2n</span> * l).toString())</code></pre></div>
       </article>
     <article class="task-page" id="task-2022-3" aria-labelledby="h-2022-3" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:83%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:53%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:13%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:34%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:18%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:59%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="145" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2022 · Task 3</p>
               <h2 class="hero-title" id="h-2022-3">Spiral diagonals</h2>
             </div>
@@ -4162,9 +4174,9 @@ console.log(sum)</code></pre></div>
       </article>
     <article class="task-page" id="task-2022-4" aria-labelledby="h-2022-4" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:90%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:46%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:20%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:27%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:25%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:52%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="152" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2022 · Task 4</p>
               <h2 class="hero-title" id="h-2022-4">Roman numerals</h2>
             </div>
@@ -4279,9 +4291,9 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
       </article>
     <article class="task-page" id="task-2022-5" aria-labelledby="h-2022-5" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:1%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:39%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:27%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:20%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:32%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:45%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="159" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2022 · Task 5</p>
               <h2 class="hero-title" id="h-2022-5">Islands and bridges</h2>
             </div>
@@ -4489,9 +4501,9 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
     </nav>
     <article class="task-page" id="task-2021-1" aria-labelledby="h-2021-1" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:69%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:67%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:95%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:48%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:4%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:73%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="131" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2021 · Task 1</p>
               <h2 class="hero-title" id="h-2021-1">Maze</h2>
             </div>
@@ -4619,9 +4631,9 @@ function solve(input) {
       </article>
     <article class="task-page" id="task-2021-2" aria-labelledby="h-2021-2" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:76%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:60%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:6%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:41%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:11%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:66%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="138" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2021 · Task 2</p>
               <h2 class="hero-title" id="h-2021-2">Selling wine</h2>
             </div>
@@ -4745,9 +4757,9 @@ function solve(input) {
       </article>
     <article class="task-page" id="task-2021-3" aria-labelledby="h-2021-3" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:83%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:53%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:13%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:34%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:18%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:59%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="145" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2021 · Task 3</p>
               <h2 class="hero-title" id="h-2021-3">Shortest paths</h2>
             </div>
@@ -4873,9 +4885,9 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
       </article>
     <article class="task-page" id="task-2021-4" aria-labelledby="h-2021-4" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:90%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:46%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:20%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:27%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:25%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:52%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="152" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2021 · Task 4</p>
               <h2 class="hero-title" id="h-2021-4">Money</h2>
             </div>
@@ -5033,9 +5045,9 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
       </article>
     <article class="task-page" id="task-2021-5" aria-labelledby="h-2021-5" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:1%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:39%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:27%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:20%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:32%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:45%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="159" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2021 · Task 5</p>
               <h2 class="hero-title" id="h-2021-5">Inconsistent array</h2>
             </div>
@@ -5144,9 +5156,9 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
     </nav>
     <article class="task-page" id="task-2020-1" aria-labelledby="h-2020-1" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:69%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:67%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:95%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:48%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:4%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:73%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="131" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2020 · Task 1</p>
               <h2 class="hero-title" id="h-2020-1">Guess the number</h2>
             </div>
@@ -5253,9 +5265,9 @@ console.log(afterJanka.join(<span class="tk-str">'\n'</span>))</code></pre></div
       </article>
     <article class="task-page" id="task-2020-2" aria-labelledby="h-2020-2" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:76%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:60%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:6%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:41%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:11%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:66%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="138" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2020 · Task 2</p>
               <h2 class="hero-title" id="h-2020-2">Three passwords</h2>
             </div>
@@ -5381,9 +5393,9 @@ console.log(<span class="tk-str">`${working.length} of ${tried} strategies alway
       </article>
     <article class="task-page" id="task-2020-3" aria-labelledby="h-2020-3" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:83%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:53%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:13%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:34%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:18%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:59%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="145" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2020 · Task 3</p>
               <h2 class="hero-title" id="h-2020-3">The fairies' alphabet</h2>
             </div>
@@ -5610,9 +5622,9 @@ console.log(plain)</code></pre></div>
       </article>
     <article class="task-page" id="task-2020-4" aria-labelledby="h-2020-4" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:90%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:46%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:20%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:27%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:25%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:52%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="152" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2020 · Task 4</p>
               <h2 class="hero-title" id="h-2020-4">Tomorrow's stock prices</h2>
             </div>
@@ -5768,9 +5780,9 @@ closeSync(fd)
       </article>
     <article class="task-page" id="task-2020-5" aria-labelledby="h-2020-5" hidden>
         <header class="hero hero-task">
-          <span class="bubble" style="left:1%;top:12%;width:54px;height:54px"></span><span class="bubble" style="left:39%;top:58%;width:26px;height:26px"></span><span class="bubble" style="left:27%;top:30%;width:72px;height:72px"></span><span class="bubble" style="left:20%;top:70%;width:18px;height:18px"></span><span class="bubble" style="left:32%;top:78%;width:34px;height:34px"></span><span class="bubble" style="left:45%;top:8%;width:16px;height:16px"></span>
+          <div class="hero-art" data-seed="159" aria-hidden="true"></div>
           <div class="hero-copy">
-            <div class="hero-blob">
+            <div class="hero-heading">
               <p class="hero-kicker">CoderGames 2020 · Task 5</p>
               <h2 class="hero-title" id="h-2020-5">Two bottles, a thousand floors</h2>
             </div>
@@ -8534,11 +8546,46 @@ CG.visual("2020-5", (root, _, { h, s, slider, stats, scale, segmented }) => {
     if (open && open.querySelector(".hero-snap img[data-raster]")) heroSnap(open);
   }
 
+  // ----- hero art: columns of code falling through a deep blue, a few in magenta -----
+  const RAIN = "0123456789abcdef{}()[]<>=;+*/#$";
+  function drawArt(scope) {
+    for (const el of scope.querySelectorAll(".hero-art:not([data-drawn])")) {
+      el.dataset.drawn = "1";
+      let x = (Number(el.dataset.seed) || 1) * 7919;
+      const rnd = () => ((x = (x * 16807) % 2147483647) / 2147483647);
+      const W = 1200;
+      const H = 380;
+      const { s } = window.CG;
+      const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: "xMaxYMid slice" });
+      // light streaks rushing out of a point on the right, like a zoomed photo
+      for (let i = 0; i < 16; i++) {
+        const angle = (rnd() - 0.5) * 1.3;
+        const len = 260 + rnd() * 520;
+        svg.append(s("rect", { x: 900 + rnd() * 80, y: 190 + (rnd() - 0.5) * 40, width: len, height: 1 + rnd() * 2.5, rx: 1.5, class: i % 3 ? "streak" : "streak streak-m",
+          transform: `rotate(${(180 + (angle * 180) / Math.PI).toFixed(1)} 960 190)`, opacity: (0.15 + rnd() * 0.35).toFixed(2) }));
+      }
+      for (let c = 0; c < 48; c++) {
+        const size = [11, 13, 15, 18][Math.floor(rnd() * 4)];
+        const cx = c * 25 + rnd() * 12;
+        const len = 5 + Math.floor(rnd() * 13);
+        const y0 = rnd() * H - 60;
+        const pink = rnd() < 0.12;
+        for (let k = 0; k < len; k++) {
+          const head = k === len - 1;
+          svg.append(s("text", { x: cx.toFixed(1), y: (y0 + k * size * 1.2).toFixed(1), "font-size": size, class: `rain${pink ? " rain-m" : ""}${head ? " head" : ""}`,
+            opacity: head ? 1 : (0.08 + 0.55 * (k / len)).toFixed(2), text: RAIN[Math.floor(rnd() * RAIN.length)] }));
+        }
+      }
+      el.append(svg);
+    }
+  }
+
   // ----- views -----
   function show(id) {
     for (const v of views) v.hidden = v.id !== id;
     main.scrollTop = 0;
     window.scrollTo(0, 0);
+    drawArt(document.getElementById(id));
   }
   function openTask(edition, slug) {
     show("v-" + edition);
@@ -8551,6 +8598,7 @@ CG.visual("2020-5", (root, _, { h, s, slider, stats, scale, segmented }) => {
       if (on) tab.scrollIntoView({ block: "nearest", inline: "nearest" });
     }
     const article = document.getElementById("task-" + slug);
+    drawArt(article);
     const body = article.querySelector("[data-visual]");
     if (body && window.CG) window.CG.start(body.dataset.visual, body);
     if (!article.querySelector(".hero-snap").childElementCount) heroSnap(article);

@@ -1,3 +1,5 @@
 node_modules/
 # Inputs too large for git; `npm run fetch` downloads them
 tasks/2020/04-stock-profit/input.txt
+# Inspiration images collected from the web: keep them local, not in the public repo
+design/inspiration/

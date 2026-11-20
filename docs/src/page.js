@@ -74,11 +74,46 @@
     if (open && open.querySelector(".hero-snap img[data-raster]")) heroSnap(open);
   }
 
+  // ----- hero art: columns of code falling through a deep blue, a few in magenta -----
+  const RAIN = "0123456789abcdef{}()[]<>=;+*/#$";
+  function drawArt(scope) {
+    for (const el of scope.querySelectorAll(".hero-art:not([data-drawn])")) {
+      el.dataset.drawn = "1";
+      let x = (Number(el.dataset.seed) || 1) * 7919;
+      const rnd = () => ((x = (x * 16807) % 2147483647) / 2147483647);
+      const W = 1200;
+      const H = 380;
+      const { s } = window.CG;
+      const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: "xMaxYMid slice" });
+      // light streaks rushing out of a point on the right, like a zoomed photo
+      for (let i = 0; i < 16; i++) {
+        const angle = (rnd() - 0.5) * 1.3;
+        const len = 260 + rnd() * 520;
+        svg.append(s("rect", { x: 900 + rnd() * 80, y: 190 + (rnd() - 0.5) * 40, width: len, height: 1 + rnd() * 2.5, rx: 1.5, class: i % 3 ? "streak" : "streak streak-m",
+          transform: `rotate(${(180 + (angle * 180) / Math.PI).toFixed(1)} 960 190)`, opacity: (0.15 + rnd() * 0.35).toFixed(2) }));
+      }
+      for (let c = 0; c < 48; c++) {
+        const size = [11, 13, 15, 18][Math.floor(rnd() * 4)];
+        const cx = c * 25 + rnd() * 12;
+        const len = 5 + Math.floor(rnd() * 13);
+        const y0 = rnd() * H - 60;
+        const pink = rnd() < 0.12;
+        for (let k = 0; k < len; k++) {
+          const head = k === len - 1;
+          svg.append(s("text", { x: cx.toFixed(1), y: (y0 + k * size * 1.2).toFixed(1), "font-size": size, class: `rain${pink ? " rain-m" : ""}${head ? " head" : ""}`,
+            opacity: head ? 1 : (0.08 + 0.55 * (k / len)).toFixed(2), text: RAIN[Math.floor(rnd() * RAIN.length)] }));
+        }
+      }
+      el.append(svg);
+    }
+  }
+
   // ----- views -----
   function show(id) {
     for (const v of views) v.hidden = v.id !== id;
     main.scrollTop = 0;
     window.scrollTo(0, 0);
+    drawArt(document.getElementById(id));
   }
   function openTask(edition, slug) {
     show("v-" + edition);
@@ -91,6 +126,7 @@
       if (on) tab.scrollIntoView({ block: "nearest", inline: "nearest" });
     }
     const article = document.getElementById("task-" + slug);
+    drawArt(article);
     const body = article.querySelector("[data-visual]");
     if (body && window.CG) window.CG.start(body.dataset.visual, body);
     if (!article.querySelector(".hero-snap").childElementCount) heroSnap(article);

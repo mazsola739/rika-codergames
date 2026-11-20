@@ -1,9 +1,9 @@
 {
   "number": 1,
   "title": "Clean the array",
-  "original": "Úloha č. 1",
   "summary": "The fewest deletions that leave only one distinct value in an array.",
   "result": "n − the highest count, 100 times",
+  "difficulty": 1,
   "topics": [
     "counting",
     "hash map"

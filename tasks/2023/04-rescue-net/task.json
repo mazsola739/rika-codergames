@@ -4,6 +4,7 @@
   "original": "Tourist Rescue Net",
   "summary": "Visit as many of 100 trail points as possible, each at most once.",
   "result": "All 100 points",
+  "difficulty": 3,
   "topics": [
     "graphs",
     "longest path",

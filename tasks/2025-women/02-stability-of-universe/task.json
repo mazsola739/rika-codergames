@@ -4,6 +4,7 @@
   "original": "Stability of Universe",
   "summary": "Find the local maxima on a 200 × 200 torus and check whether they are symmetric.",
   "result": "31 stable, 21 unstable",
+  "difficulty": 2,
   "topics": [
     "grids",
     "torus",

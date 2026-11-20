@@ -4,6 +4,7 @@
   "original": "The Flawed Autobahn Speed Tests",
   "summary": "Find the speed-camera unit tests whose expected result is wrong.",
   "result": "20 faulty tests",
+  "difficulty": 1,
   "topics": [
     "parsing",
     "rules",

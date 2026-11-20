@@ -1,6 +1,6 @@
 # CoderGames Solutions
 
-Solutions and explanations for every published task of **[CoderGames](https://codergames.deutschetelekomitsolutions.sk/)**, the week-long online coding competition by Deutsche Telekom IT Solutions Slovakia, from 2020 to 2026, written in TypeScript.
+Solutions and explanations for every published task of **[CoderGames](https://codergames.deutschetelekomitsolutions.sk/)**, the week-long online coding competition by Deutsche Telekom IT Solutions, from 2020 to 2026, written in TypeScript.
 
 **Website:** https://mazsola739.github.io/rika-codergames/
 

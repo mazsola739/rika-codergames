@@ -16,7 +16,7 @@ A fairy tells little Ann a bedtime story, but "the fairies' language is encrypte
 
 **2. Break each column like a Caesar cipher.** For each column, try all 26 shifts and keep the one whose letter counts are closest to English letter frequencies (smallest **χ²** distance).
 
-The key comes out as **`SUPERHESLO`**, Slovak for "super password", and the text begins:
+The key comes out as **`SUPERHESLO`** ("super password"), and the text begins:
 
 > TWO SWINDLERS ARRIVE AT THE CAPITAL CITY OF AN EMPEROR WHO SPENDS LAVISHLY ON CLOTHING…
 
@@ -24,4 +24,4 @@ That's the summary of Hans Christian Andersen's **The Emperor's New Clothes**.
 
 ## Answer
 
-**The Emperor's New Clothes** (the official answer calls it *The Emperor's New Suit*, in Slovak *Cisárove nové šaty*). Vigenère cipher, key `SUPERHESLO`.
+**The Emperor's New Clothes** (the official answer calls it *The Emperor's New Suit*). Vigenère cipher, key `SUPERHESLO`.

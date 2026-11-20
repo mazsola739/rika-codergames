@@ -38,7 +38,10 @@ export function data(dir: string) {
   const pos = Buffer.from(new Uint16Array(positions).buffer).toString('base64')
   const bits = new Uint8Array(Math.ceil(noise.length / 8))
   noise.forEach((b, i) => b && (bits[i >> 3]! |= 1 << (i & 7)))
-  const text = [43, 44, 45].map((r) => ({
+  // English glosses of the three German caption rows.
+  const english = ['AVUS, north curve', 'Ewald Kluge on a DKW & Ernst Jakob Henne on a BMW', 'Sculpture by Max Esser']
+  const text = [43, 44, 45].map((r, i) => ({
+    english: english[i],
     braille: String.fromCodePoint(...[...cells.subarray(r * COLS, (r + 1) * COLS)].map((b) => 0x2800 + b)).replace(/⠀+$/u, ''),
     letters: [...cells.subarray(r * COLS, (r + 1) * COLS)].map((b) => LETTERS.get(b) ?? '?').join('').trimEnd(),
   }))

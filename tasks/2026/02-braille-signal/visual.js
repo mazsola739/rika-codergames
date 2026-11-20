@@ -74,6 +74,8 @@ CG.visual("2026-2", (root, d, { h, css, onTheme, player, segmented, stats, fmt, 
         h("span", { class: "dim", text: label + "\n" }),
         h("span", { text: row.braille + "\n", style: { fontSize: "20px", letterSpacing: "2px" } }),
         h("mark", { text: row.letters }),
+        h("span", { class: "dim", text: `
+In English: ${row.english}` }),
       ),
     );
   }

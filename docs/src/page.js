@@ -1,10 +1,11 @@
-// Tabs (Overview + one per edition), the task list inside each edition, the theme toggle, and
-// links of the form #2026, #2026-1 or #overview, so any task can be shared directly.
+// Views: the home page (#home) and one view per edition, which shows one task page at a time
+// (#2026-1). Links are plain #names, so any task can be shared directly. Also: the theme toggle,
+// the difficulty filter, the folding detail buttons and the visualisation snapshots.
 (() => {
   const root = document.documentElement;
-  const panels = document.getElementById("panels");
-  const tabs = [...document.querySelectorAll('[role="tab"]')];
-  const editionOf = (tab) => tab.id.slice(4); // "tab-2026" -> "2026"
+  const main = document.getElementById("main");
+  const views = [...document.querySelectorAll(".view")];
+  const editions = views.map((v) => v.dataset.edition).filter(Boolean);
 
   // ----- theme: opens light, the toggle switches for this visit only -----
   const toggle = document.getElementById("themeToggle");
@@ -18,100 +19,119 @@
     root.setAttribute("data-theme", current() === "dark" ? "light" : "dark");
     label();
     window.CG?.themeChanged();
+    // Canvas snapshots were drawn in the old colours: make them again once the visuals redrew.
+    setTimeout(refreshRasterSnapshots, 0);
   });
   label();
 
-  // ----- showing things -----
-  function showTab(id, focus) {
-    for (const tab of tabs) {
-      const on = editionOf(tab) === id;
-      tab.setAttribute("aria-selected", String(on));
-      tab.tabIndex = on ? 0 : -1;
-      document.getElementById(tab.getAttribute("aria-controls")).hidden = !on;
-      if (on && focus) tab.focus();
+  // ----- snapshots -----
+  // Work in short slices between frames so the page stays responsive (all of them take ~0.3 s).
+  const queue = [];
+  let working = false;
+  const idle = (fn) => setTimeout(fn, 16);
+  function fillSnaps(scope) {
+    for (const el of scope.querySelectorAll(".snap[data-snap]")) {
+      if (el.dataset.filled) continue;
+      el.dataset.filled = "1";
+      el.classList.add("loading");
+      queue.push(el);
+    }
+    pump();
+  }
+  function pump() {
+    if (working || !queue.length) return;
+    working = true;
+    idle(() => {
+      const until = performance.now() + 12;
+      while (queue.length && performance.now() < until) {
+        const el = queue.shift();
+        const node = window.CG?.snapshot(el.dataset.snap);
+        el.classList.remove("loading");
+        el.replaceChildren();
+        if (node) el.append(node);
+        else el.classList.add("snap-none");
+      }
+      working = false;
+      pump();
+    });
+  }
+  function heroSnap(article) {
+    const fig = article.querySelector(".hero-snap");
+    const body = article.querySelector("[data-visual]");
+    if (!fig) return;
+    const node = body && window.CG ? window.CG.copyGraphic(window.CG.mainGraphic(body)) : null;
+    fig.replaceChildren();
+    fig.classList.toggle("empty", !node);
+    if (node) fig.append(node);
+  }
+  function refreshRasterSnapshots() {
+    window.CG?.forgetRasterSnapshots();
+    for (const el of document.querySelectorAll(".snap[data-snap]")) {
+      if (el.querySelector("img[data-raster]")) delete el.dataset.filled;
+    }
+    fillSnaps(document);
+    const open = document.querySelector(".task-page:not([hidden])");
+    if (open && open.querySelector(".hero-snap img[data-raster]")) heroSnap(open);
+  }
+
+  // ----- views -----
+  function show(id) {
+    for (const v of views) v.hidden = v.id !== id;
+    main.scrollTop = 0;
+    window.scrollTo(0, 0);
+  }
+  function openTask(edition, slug) {
+    show("v-" + edition);
+    const view = document.getElementById("v-" + edition);
+    for (const a of view.querySelectorAll(".task-page")) a.hidden = a.id !== "task-" + slug;
+    for (const tab of view.querySelectorAll(".task-tab")) {
+      const on = tab.dataset.task === slug;
+      if (on) tab.setAttribute("aria-current", "page");
+      else tab.removeAttribute("aria-current");
       if (on) tab.scrollIntoView({ block: "nearest", inline: "nearest" });
     }
-  }
-
-  function showTask(slug) {
     const article = document.getElementById("task-" + slug);
-    if (!article) return false;
-    const list = article.closest(".panel-edition");
-    for (const a of list.querySelectorAll("article.task")) a.hidden = a !== article;
-    for (const b of list.querySelectorAll(".task-btn")) b.setAttribute("aria-current", String(b.dataset.task === slug));
-    startVisual(article);
-    return true;
-  }
-
-  // Visualisations start the first time their task is shown (also when its edition tab opens).
-  function startVisual(article) {
-    const body = article && article.querySelector("[data-visual]");
+    const body = article.querySelector("[data-visual]");
     if (body && window.CG) window.CG.start(body.dataset.visual, body);
+    if (!article.querySelector(".hero-snap").childElementCount) heroSnap(article);
+    document.title = `${article.querySelector(".hero-title").textContent} · CoderGames Solutions`;
   }
-
   function route() {
-    const hash = decodeURIComponent(location.hash.slice(1));
-    const editions = tabs.map(editionOf);
-    if (editions.includes(hash)) {
-      showTab(hash);
-      startVisual(document.querySelector("#p-" + CSS.escape(hash) + " article.task:not([hidden])"));
-      return;
-    }
+    let hash = decodeURIComponent(location.hash.slice(1));
+    if (editions.includes(hash)) hash = document.getElementById("v-" + hash).dataset.first;
     const m = hash.match(/^(.+)-(\d+)$/);
-    if (m && editions.includes(m[1]) && showTask(hash)) {
-      showTab(m[1]);
+    if (m && editions.includes(m[1]) && document.getElementById("task-" + hash)) return openTask(m[1], hash);
+    show("v-home");
+    document.title = "CoderGames Solutions";
+    fillSnaps(document.getElementById("v-home"));
+  }
+
+  // ----- clicks -----
+  document.addEventListener("click", (e) => {
+    // Detail buttons: each opens its own panel and closes the others; click again to fold.
+    const btn = e.target.closest(".detail-btn");
+    if (btn) {
+      const open = btn.getAttribute("aria-expanded") === "true";
+      for (const b of btn.closest(".detail-bar").querySelectorAll(".detail-btn")) {
+        const on = b === btn && !open;
+        b.setAttribute("aria-expanded", String(on));
+        document.getElementById(b.getAttribute("aria-controls")).hidden = !on;
+      }
       return;
     }
-    showTab("overview");
-  }
-
-  function go(hash) {
-    if (location.hash.slice(1) === hash) route();
-    else location.hash = hash;
-  }
-
-  // ----- events -----
-  for (const tab of tabs) {
-    tab.addEventListener("click", () => {
-      go(editionOf(tab));
-      panels.scrollTop = 0;
-    });
-    tab.addEventListener("keydown", (e) => {
-      const i = tabs.indexOf(tab);
-      const next = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
-      if (next === undefined) return;
-      e.preventDefault();
-      const target = tabs[(next + tabs.length) % tabs.length];
-      go(editionOf(target));
-      target.focus();
-    });
-  }
-
-  document.addEventListener("click", (e) => {
-    const button = e.target.closest(".task-btn");
-    if (!button) return;
-    go(button.dataset.task);
-    // Bring the start of the write-up into view if it is above the visible area (or, on phones,
-    // where the list sits above the write-up, below it).
-    const article = document.getElementById("task-" + button.dataset.task);
-    const stacked = getComputedStyle(button.closest(".split")).gridTemplateColumns.split(" ").length === 1;
-    const smooth = matchMedia("(prefers-reduced-motion: no-preference)").matches ? "smooth" : "auto";
-    if (stacked) article.scrollIntoView({ block: "start", behavior: smooth });
-    else {
-      const above = article.getBoundingClientRect().top - panels.getBoundingClientRect().top;
-      if (above < 0) panels.scrollTop += above - 8;
-    }
-  });
-
-  // Detail buttons under a task: each opens its own panel; open one closes the others; click again to fold.
-  document.addEventListener("click", (e) => {
-    const btn = e.target.closest(".detail-btn");
-    if (!btn) return;
-    const open = btn.getAttribute("aria-expanded") === "true";
-    for (const b of btn.closest(".detail-bar").querySelectorAll(".detail-btn")) {
-      const on = b === btn && !open;
-      b.setAttribute("aria-expanded", String(on));
-      document.getElementById(b.getAttribute("aria-controls")).hidden = !on;
+    // Difficulty filter on the home page.
+    const f = e.target.closest(".filter button");
+    if (f) {
+      for (const b of f.parentElement.querySelectorAll("button")) b.setAttribute("aria-pressed", String(b === f));
+      const [lo, hi] = f.dataset.range.split("-").map(Number);
+      let shown = 0;
+      for (const row of document.querySelectorAll(".task-row")) {
+        const d = Number(row.dataset.difficulty);
+        const ok = d >= lo && d <= hi;
+        row.hidden = !ok;
+        shown += ok;
+      }
+      document.getElementById("filterCount").textContent = `${shown} task${shown === 1 ? "" : "s"}`;
     }
   });
 

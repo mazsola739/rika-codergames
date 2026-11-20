@@ -1,9 +1,9 @@
 {
   "number": 2,
   "title": "Divisible by 1 to 21",
-  "original": "Úloha č. 2",
   "summary": "The second smallest number divisible by every number from 1 to 21.",
   "result": "465,585,120",
+  "difficulty": 1,
   "topics": [
     "math",
     "least common multiple"

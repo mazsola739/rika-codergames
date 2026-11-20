@@ -3,6 +3,7 @@
   "title": "The Golden Claw",
   "summary": "Turn a pyramid of pillars, where every turn cascades downwards, until it matches the door.",
   "result": "One pass from the top, one turn per pillar",
+  "difficulty": 3,
   "topics": [
     "simulation",
     "modular arithmetic",

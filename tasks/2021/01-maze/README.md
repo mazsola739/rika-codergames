@@ -1,6 +1,6 @@
 # Maze
 
-**CoderGames 2021 · Task 1** · *Bludisko* · breadth-first search, grid
+**CoderGames 2021 · Task 1** · breadth-first search, grid
 
 ## The task
 

@@ -1,6 +1,6 @@
 # Islands and bridges
 
-**CoderGames 2022 · Task 5** · *Ostrovy a mosty* · flood fill, minimum spanning tree, union-find
+**CoderGames 2022 · Task 5** · flood fill, minimum spanning tree, union-find
 
 ## The task
 

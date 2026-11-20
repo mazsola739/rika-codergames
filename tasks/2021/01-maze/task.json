@@ -1,9 +1,9 @@
 {
   "number": 1,
   "title": "Maze",
-  "original": "Bludisko",
   "summary": "Find the shortest way out of a 49 × 39 maze and mark it.",
   "result": "A path of 270 steps",
+  "difficulty": 2,
   "topics": [
     "breadth-first search",
     "grid"

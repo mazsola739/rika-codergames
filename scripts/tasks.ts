@@ -12,7 +12,6 @@ export interface Edition {
   title: string
   dates: string
   theme: string
-  language: string
   source: string
   summary: string
 }
@@ -25,6 +24,8 @@ export interface TaskMeta {
   summary?: string
   /** The answer in a few words, for the website. */
   result?: string
+  /** How hard the task is, 1 (a few lines) to 5 (needs a real idea). */
+  difficulty?: number
   topics: string[]
   country?: string
   /** File name of the input, or null when the task has no input file. */

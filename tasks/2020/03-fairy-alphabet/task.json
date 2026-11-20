@@ -1,9 +1,9 @@
 {
   "number": 3,
   "title": "The fairies' alphabet",
-  "original": "Úloha č. 3",
   "summary": "An English fairy tale hidden under a letter-substitution cipher. Break it without the key.",
   "result": "Cinderella",
+  "difficulty": 4,
   "topics": [
     "cryptography",
     "frequency analysis",

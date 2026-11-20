@@ -1,9 +1,9 @@
 {
   "number": 4,
   "title": "Roman numerals",
-  "original": "Úloha č. 4",
   "summary": "Rewrite 1000 Roman numerals in their shortest valid form.",
   "result": "1000 rewritten numerals",
+  "difficulty": 2,
   "topics": [
     "parsing",
     "strings"

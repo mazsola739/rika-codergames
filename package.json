@@ -1,7 +1,7 @@
 {
   "name": "rika-codergames",
   "version": "1.0.0",
-  "description": "Solutions and explanations for every CoderGames task by Deutsche Telekom IT Solutions Slovakia, 2020-2026",
+  "description": "Solutions and explanations for every CoderGames task by Deutsche Telekom IT Solutions, 2020-2026",
   "type": "module",
   "private": true,
   "engines": {

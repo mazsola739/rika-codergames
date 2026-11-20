@@ -4,6 +4,7 @@
   "original": "Buggy – Master Password Manager",
   "summary": "Spell words from matrix coordinates, then merge them where they overlap.",
   "result": "92 characters removed, longest pAssWorD",
+  "difficulty": 2,
   "topics": [
     "strings",
     "parsing"

@@ -3,6 +3,7 @@
   "title": "Missing numbers",
   "summary": "The numbers missing between the smallest and largest value of an array.",
   "result": "202 missing numbers",
+  "difficulty": 1,
   "topics": [
     "arrays",
     "counting"

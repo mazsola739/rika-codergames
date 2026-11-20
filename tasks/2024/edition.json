@@ -2,7 +2,6 @@
   "title": "CoderGames 2024",
   "dates": "2024",
   "theme": "Guess the country",
-  "language": "English",
   "source": "https://codergames.deutschetelekomitsolutions.sk/history-2024",
-  "summary": "Every story hides a country (Czechia, Hungary, Greece, Slovakia, Spain) and every task has a mathematical shortcut: Euclid–Euler perfect numbers, a closed formula, a one-pass pyramid and a problem that splits into rows and columns."
+  "summary": "Every story hides a country and every task has a mathematical shortcut: Euclid–Euler perfect numbers, a closed formula, a one-pass pyramid and a problem that splits into rows and columns."
 }

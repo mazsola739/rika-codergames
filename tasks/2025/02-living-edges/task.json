@@ -4,6 +4,7 @@
   "original": "Night of the Living Edges",
   "summary": "Edges keep appearing: after each question, count the components that contain a cycle.",
   "result": "28 answers, ending at 6",
+  "difficulty": 3,
   "topics": [
     "union-find",
     "cycle detection",

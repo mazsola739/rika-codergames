@@ -4,6 +4,7 @@
   "original": "The Lunar Codex Treasure",
   "summary": "A poem in which every stanza uses a different Caesar shift.",
   "result": "Keys 4, 7, 16, 2",
+  "difficulty": 3,
   "topics": [
     "cryptography",
     "Caesar cipher",

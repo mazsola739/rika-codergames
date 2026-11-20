@@ -1,6 +1,6 @@
 # Selling wine
 
-**CoderGames 2021 · Task 2** · *Predaj vína* · dynamic programming over intervals
+**CoderGames 2021 · Task 2** · dynamic programming over intervals
 
 ## The task
 

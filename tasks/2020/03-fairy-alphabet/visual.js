@@ -1,4 +1,4 @@
-CG.visual("2020-3", (root, d, { h, player, stats, button, fmt }) => {
+CG.visual("2020-3", (root, d, { h, s, player, stats, button, fmt }) => {
   const A = "abcdefghijklmnopqrstuvwxyz";
   const FREQ = "etaoinshrdlcumwfgypbvkjxqz";
   const code = (ch) => ch.charCodeAt(0) - 97;
@@ -88,6 +88,15 @@ CG.visual("2020-3", (root, d, { h, player, stats, button, fmt }) => {
     return snaps;
   }
 
+  // Letter counts of the cipher text, most frequent first: where frequency analysis starts.
+  const counts = [...A].map((c) => [c, [...lower].filter((x) => x === c).length]).sort((a, b) => b[1] - a[1]);
+  const top = counts[0][1];
+  const freq = s("svg", { class: "vis-svg", viewBox: "0 0 640 130", role: "img", "aria-label": "Letter counts of the cipher text" });
+  counts.forEach(([c, n], i) => {
+    const hgt = (n / top) * 92;
+    freq.append(s("rect", { x: 6 + i * 24.4, y: 104 - hgt, width: 19, height: hgt, rx: 3, class: i < 6 ? "f-accent" : "f-info", opacity: i < 6 ? 0.9 : 0.55 }));
+    freq.append(s("text", { x: 15.5 + i * 24.4, y: 122, "text-anchor": "middle", class: "t-label t-mono", text: c }));
+  });
   const text = h("div", { class: "vis-text" }, d.cipher);
   const tiles = stats([["Improvements", "–"], ["Score", "–"], ["Title", "?"]]);
   const holder = h("div", { class: "visual-body" });
@@ -119,5 +128,10 @@ CG.visual("2020-3", (root, d, { h, player, stats, button, fmt }) => {
     },
   });
   holder.append(h("div", { class: "vis-row" }, go));
-  root.append(tiles, holder, text);
+  root.append(
+    tiles,
+    h("div", { class: "vis-frame" }, freq, h("p", { class: "vis-note", text: "Cipher letters by frequency. The pink six probably stand for e, t, a, o, i, n: the starting guess." })),
+    holder,
+    text,
+  );
 });

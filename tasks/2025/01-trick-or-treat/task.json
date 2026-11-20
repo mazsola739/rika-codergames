@@ -3,6 +3,7 @@
   "title": "Trick or treat!",
   "summary": "The first two chocolates whose weights add up to the target.",
   "result": "e.g. [2, 3]; null when there is none",
+  "difficulty": 1,
   "topics": [
     "hash map",
     "two-sum"

@@ -3,6 +3,7 @@
   "title": "Stringeria",
   "summary": "The longest common subsequence of two 1000-letter strings.",
   "result": "Length 319",
+  "difficulty": 3,
   "topics": [
     "dynamic programming",
     "longest common subsequence"

@@ -1,6 +1,6 @@
 # Shortest paths
 
-**CoderGames 2021 · Task 3** · *Najkratšia cesta* · breadth-first search, graphs
+**CoderGames 2021 · Task 3** · breadth-first search, graphs
 
 ## The task
 

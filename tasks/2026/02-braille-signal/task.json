@@ -3,6 +3,7 @@
   "title": "The Braille signal",
   "summary": "Rebuild a Braille picture from a shuffled telemetry log and read its captions.",
   "result": "AVUS, Max Esser",
+  "difficulty": 3,
   "topics": [
     "parsing",
     "bit masks",

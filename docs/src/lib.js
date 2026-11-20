@@ -154,6 +154,53 @@ window.CG = (() => {
     return () => ((x = (Math.imul(x, 1664525) + 1013904223) >>> 0) / 2 ** 32);
   }
 
+  // ----- snapshots: a still copy of a visualisation's main picture -----
+  // The main picture is the biggest canvas, or else the SVG with the most shapes.
+  function mainGraphic(root) {
+    const canvases = [...root.querySelectorAll("canvas")];
+    if (canvases.length) return canvases.sort((a, b) => b.width * b.height - a.width * a.height)[0];
+    const svgs = [...root.querySelectorAll("svg.vis-svg")];
+    return svgs.sort((a, b) => b.querySelectorAll("*").length - a.querySelectorAll("*").length)[0] ?? null;
+  }
+  // SVG copies keep their CSS classes, so they follow the theme; canvas copies are images.
+  function copyGraphic(el) {
+    if (!el) return null;
+    if (el.tagName === "CANVAS") {
+      const img = h("img", { src: el.toDataURL(), alt: "" });
+      img.dataset.raster = "1";
+      return img;
+    }
+    const svg = el.cloneNode(true);
+    for (const a of ["style", "tabindex", "role", "aria-label", "class"]) svg.removeAttribute(a);
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+    return svg;
+  }
+  const snapCache = new Map();
+  // Render a visualisation off screen once and keep a copy of its picture.
+  function snapshot(id) {
+    if (snapCache.has(id)) return snapCache.get(id)?.cloneNode(true) ?? null;
+    const init = registry[id];
+    if (!init) return null;
+    const tmp = h("div", { class: "visual-body snap-tmp" });
+    document.body.append(tmp);
+    let out = null;
+    try {
+      const node = document.getElementById("vd-" + id);
+      init(tmp, node ? JSON.parse(node.textContent) : null, { ...window.CG, onTheme: () => {} });
+      out = copyGraphic(mainGraphic(tmp));
+    } catch (e) {
+      console.warn("snapshot", id, e);
+    }
+    tmp.remove();
+    snapCache.set(id, out);
+    return out ? out.cloneNode(true) : null;
+  }
+  // Canvas copies are drawn in the colours of one theme; forget them when the theme changes.
+  function forgetRasterSnapshots() {
+    for (const [id, n] of snapCache) if (n?.dataset?.raster) snapCache.delete(id);
+  }
+
   function visual(id, init) {
     registry[id] = init;
   }
@@ -174,5 +221,5 @@ window.CG = (() => {
     }
   }
 
-  return { visual, start, h, s, css, onTheme, themeChanged, fmt, button, segmented, slider, stats, player, scale, hue, bytes, rng };
+  return { visual, start, h, s, css, onTheme, themeChanged, fmt, button, segmented, slider, stats, player, scale, hue, bytes, rng, mainGraphic, copyGraphic, snapshot, forgetRasterSnapshots };
 })();

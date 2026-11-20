@@ -1,9 +1,9 @@
 {
   "number": 2,
   "title": "Selling wine",
-  "original": "Predaj vína",
   "summary": "Sell a shelf of wine one bottle a year, always from an end, earning year × price. Earn the most.",
   "result": "30 totals, starting 4163",
+  "difficulty": 3,
   "topics": [
     "dynamic programming",
     "intervals"

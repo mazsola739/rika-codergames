@@ -3,6 +3,7 @@
   "title": "Anagram pairs",
   "summary": "Are the two words on each line anagrams of each other?",
   "result": "35 YES/NO answers",
+  "difficulty": 1,
   "topics": [
     "strings",
     "counting"

@@ -4,6 +4,7 @@
   "original": "From Rookie to Formula 1",
   "summary": "Count the ways from rookie to Formula 1 driver in a directed acyclic graph.",
   "result": "4,768,729,922,192 paths",
+  "difficulty": 2,
   "topics": [
     "graphs",
     "topological order",

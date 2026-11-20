@@ -1,6 +1,6 @@
 # Money
 
-**CoderGames 2021 · Task 4** · *Peniaze* · dynamic programming, coin change
+**CoderGames 2021 · Task 4** · dynamic programming, coin change
 
 ## The task
 

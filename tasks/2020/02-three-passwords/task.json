@@ -1,9 +1,9 @@
 {
   "number": 2,
   "title": "Three passwords",
-  "original": "Úloha č. 2",
   "summary": "Two of three notes hold the right password. One yes/no question, sometimes answered at random, must find one.",
   "result": "Point at one note, ask about another",
+  "difficulty": 2,
   "topics": [
     "logic",
     "brute force"

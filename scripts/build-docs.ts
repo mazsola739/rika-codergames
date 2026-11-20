@@ -135,29 +135,41 @@ function visualSection(t: Task): string {
 
 // ---------- page parts ----------
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
+const editionLabel = (e: Edition) => TAB_LABEL[e.id] ?? e.id
+const solvedOf = (tasks: Task[]) => tasks.filter((t) => t.status !== 'pending')
 
-function taskButton(t: Task, selected: boolean): string {
-  const pending = t.status === 'pending'
-  const meta = pending ? 'Not published yet' : [t.country, ...t.topics.slice(0, 2)].filter(Boolean).join(' · ')
-  return `<li><button class="task-btn${pending ? ' pending' : ''}" type="button" data-task="${slug(t)}" aria-controls="task-${slug(t)}" aria-current="${selected}">
-          <span class="num">${t.number}</span><span class="t"><b>${esc(t.title)}</b><small>${esc(meta)}</small></span></button></li>`
-}
+// The best-of side bar on the home page: picked by hand (no per-task popularity data exists).
+const BEST_OF: [id: string, why: string][] = [
+  ['2026-2', 'A picture rebuilt from a shuffled log'],
+  ['2022-5', 'The official answers have a bug'],
+  ['2026-1', 'The hardest task, and a wrong example'],
+  ['2020-3', 'Watch a cipher crack live'],
+  ['2024-5', 'A puzzle you can play'],
+  ['2023-5', '10,000 machines, provably optimal'],
+  ['2023-4', 'NP-hard, solved in a blink'],
+  ['2025-women-4', 'Dijkstra against the clock'],
+]
+
+const dots = (d?: number) =>
+  d ? `<span class="dots" title="Difficulty ${d} of 5" aria-label="Difficulty ${d} of 5">${[1, 2, 3, 4, 5].map((i) => `<i${i <= d ? ' class="on"' : ''}></i>`).join('')}</span>` : ''
+
+// Decorative bubbles for a hero: [left %, top %, size px].
+const bubbles = (seed: number) =>
+  [[62, 12, 54], [74, 58, 26], [88, 30, 72], [55, 70, 18], [93, 78, 34], [80, 8, 16]]
+    .map(([l, t, s], i) => `<span class="bubble" style="left:${(l! + seed * 7 * (i % 2 ? -1 : 1)) % 96}%;top:${t}%;width:${s}px;height:${s}px"></span>`)
+    .join('')
 
 function extraFiles(t: Task): string[] {
   return readdirSync(t.dir)
-    .filter((f) => /\.(ts|txt|json)$/.test(f) && !f.startsWith('visual') && f !== 'solution.ts' && f !== 'task.json' && !f.startsWith('input') && f !== 'answer.txt' && f !== 'example.txt')
+    .filter((f) => /\.(ts|txt|json)$/.test(f) && !f.startsWith('visual') && !['solution.ts', 'task.json', 'answer.txt', 'example.txt'].includes(f) && !f.startsWith('input'))
     .concat(readdirSync(t.dir).filter((f) => f === 'input-original.txt'))
-    .filter((f, i, a) => a.indexOf(f) === i)
     .sort()
 }
 
-function taskArticle(t: Task, selected: boolean): string {
+function taskPage(t: Task, prev: Task | undefined, next: Task | undefined): string {
   const s = slug(t)
   const pending = t.status === 'pending'
-  const eyebrow = [`Task ${t.number}`, t.country ?? ''].filter(Boolean).join(' · ')
   const sections = readmeSections(t)
-
-  // Details stay folded away: one button per README section, plus the code.
   const panels: { label: string; html: string }[] = [...sections]
   const solutionPath = join(t.dir, 'solution.ts')
   if (!pending && existsSync(solutionPath)) {
@@ -177,7 +189,6 @@ function taskArticle(t: Task, selected: boolean): string {
           </div>
           ${panels.map((p, i) => `<div class="detail-panel prose" id="d-${s}-${i}" hidden>${p.html}</div>`).join('\n          ')}
         </div>`
-
   const extras = extraFiles(t)
     .map((f) => `<a href="${BLOB}/${folder(t)}/${f}" target="_blank" rel="noopener"><code>${f}</code></a>`)
     .join(' ')
@@ -188,108 +199,157 @@ function taskArticle(t: Task, selected: boolean): string {
   ]
     .filter(Boolean)
     .join('<span aria-hidden="true"> · </span>')
-  const chips = t.topics.map((x) => `<li>${esc(x)}</li>`).join('')
+  const pager = `<nav class="pager" aria-label="More tasks">
+          ${prev ? `<a href="#${slug(prev)}">← ${esc(prev.title)}</a>` : '<span></span>'}
+          ${next ? `<a href="#${slug(next)}">${esc(next.title)} →</a>` : '<span></span>'}
+        </nav>`
 
-  return `<article class="task" id="task-${s}" aria-labelledby="h-${s}"${selected ? '' : ' hidden'}>
-        <header class="task-head">
-          <p class="eyebrow">${esc(eyebrow)}</p>
-          <h2 id="h-${s}">${esc(t.title)}</h2>
-          ${t.summary ? `<p class="task-summary">${esc(t.summary)}</p>` : ''}
-          ${t.result ? `<p class="task-result"><span>Answer</span>${esc(t.result)}</p>` : ''}
+  return `<article class="task-page" id="task-${s}" aria-labelledby="h-${s}" hidden>
+        <header class="hero hero-task">
+          ${bubbles(t.number)}
+          <div class="hero-copy">
+            <div class="hero-blob">
+              <p class="hero-kicker">${esc(t.edition.title)} · Task ${t.number}</p>
+              <h2 class="hero-title" id="h-${s}">${esc(t.title)}</h2>
+            </div>
+            ${t.summary ? `<p class="hero-summary">${esc(t.summary)}</p>` : ''}
+            <p class="hero-facts">
+              ${t.result ? `<span class="task-result"><span>Answer</span>${esc(t.result)}</span>` : ''}
+              ${t.country ? `<span class="fact"><span>Country</span>${esc(t.country)}</span>` : ''}
+              ${t.difficulty ? `<span class="fact"><span>Difficulty</span>${dots(t.difficulty)}</span>` : ''}
+            </p>
+          </div>
+          <figure class="hero-snap${pending ? ' empty' : ''}" aria-hidden="true"></figure>
         </header>
         ${visualSection(t)}
         ${details}
+        ${pager}
         <footer class="task-foot">
-          ${chips ? `<ul class="chips" aria-label="Topics">${chips}</ul>` : ''}
+          ${t.topics.length ? `<ul class="chips" aria-label="Topics">${t.topics.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
           <p class="task-links">${links}</p>
         </footer>
       </article>`
 }
 
-function editionPanel(e: Edition, tasks: Task[]): string {
-  const first = tasks.find((t) => t.status !== 'pending') ?? tasks[0]!
-  const solved = tasks.filter((t) => t.status !== 'pending').length
-  const count = solved === tasks.length ? plural(tasks.length, 'task') : `${solved} of ${tasks.length} tasks`
-  return `<section class="panel-edition" id="p-${e.id}" role="tabpanel" aria-labelledby="tab-${e.id}" tabindex="0" hidden>
-    <header class="edition-head">
-      <h2>${esc(e.title)} <span>${esc(e.theme)}</span></h2>
-      <p class="eyebrow">${esc(e.dates)} · ${esc(e.language)} · ${count} · <a href="${e.source}" target="_blank" rel="noopener">original tasks ↗</a></p>
-    </header>
-    <div class="split">
-      <nav class="task-nav" aria-label="Tasks of ${esc(e.title)}"><ol>
-        ${tasks.map((t) => taskButton(t, t === first)).join('\n        ')}
-      </ol></nav>
-      <div class="articles">
-      ${tasks.map((t) => taskArticle(t, t === first)).join('\n      ')}
-      </div>
+function editionView(e: Edition, tasks: Task[]): string {
+  const first = solvedOf(tasks)[0] ?? tasks[0]!
+  const done = solvedOf(tasks).length
+  const tabs = tasks
+    .map(
+      (t) =>
+        `<a class="task-tab${t.status === 'pending' ? ' pending' : ''}" href="#${slug(t)}" data-task="${slug(t)}"><span class="num">${t.number}</span>${esc(t.title)}${t.status === 'pending' ? ' (coming)' : ''}</a>`,
+    )
+    .join('\n      ')
+  return `<section class="view wrap" id="v-${e.id}" data-edition="${e.id}" data-first="${slug(first)}" aria-label="${esc(e.title)}" hidden>
+    <div class="edition-bar">
+      <a class="back" href="#home">← All editions</a>
+      <span class="edition-name">${esc(e.title)} <span>${esc(e.theme)} · ${esc(e.dates)} · ${done === tasks.length ? plural(done, 'task') : `${done} of ${tasks.length} tasks`}</span></span>
+      <a class="orig" href="${e.source}" target="_blank" rel="noopener">Original tasks ↗</a>
     </div>
+    <nav class="task-tabs" aria-label="Tasks of ${esc(e.title)}">
+      ${tabs}
+    </nav>
+    ${tasks.map((t, i) => taskPage(t, tasks[i - 1], tasks[i + 1])).join('\n    ')}
   </section>`
 }
 
-// The tasks shown first on the overview.
-const HIGHLIGHTS = ['2026-2', '2022-5', '2026-1', '2024-5', '2020-3', '2023-5']
-
-function overviewPanel(editions: Edition[], byEdition: Map<string, Task[]>): string {
-  const all = [...byEdition.values()].flat()
-  const solved = all.filter((t) => t.status !== 'pending')
+function homeView(editions: Edition[], byEdition: Map<string, Task[]>): string {
+  const all = editions.flatMap((e) => byEdition.get(e.id)!)
+  const solved = solvedOf(all)
   const pending = all.length - solved.length
   const custom = solved.filter((t) => t.check === 'custom').length
-  const label = (t: Task) => `${TAB_LABEL[t.edition.id] ?? t.edition.id} · Task ${t.number}`
-  const highlights = HIGHLIGHTS.map((id) => all.find((t) => slug(t) === id))
-    .filter((t): t is Task => !!t)
-    .map((t) => {
-      const v = visuals.get(slug(t))
-      return `<li><a class="highlight" href="#${slug(t)}">
-          <small>${esc(label(t))}</small>
-          <b>${esc(v?.title ?? t.title)}</b>
-          <span>${esc(t.title)}: ${esc(t.summary ?? '')}</span>
-        </a></li>`
-    })
-    .join('\n      ')
-  const cards = editions
+  const byId = new Map(all.map((t) => [slug(t), t]))
+
+  const editionCards = editions
     .map((e) => {
       const tasks = byEdition.get(e.id)!
-      const done = tasks.filter((t) => t.status !== 'pending').length
-      return `<li><a class="edition-card" href="#${e.id}" data-edition="${e.id}">
-          <small>${esc(e.dates)} · ${esc(e.language)}</small>
+      const done = solvedOf(tasks).length
+      return `<li><a class="edition-card" href="#${e.id}">
+          <div class="edition-snaps" aria-hidden="true">${solvedOf(tasks).slice(0, 4).map((t) => `<span class="snap" data-snap="${slug(t)}"></span>`).join('')}</div>
+          <small>${esc(e.dates)}</small>
           <b>${esc(e.title)}</b>
           <span class="theme">${esc(e.theme)}</span>
           <span class="count">${done === tasks.length ? plural(done, 'task') : `${done} of ${tasks.length} tasks so far`}</span>
         </a></li>`
     })
-    .join('\n      ')
-  const findings = FINDINGS.map(([id, text]) => {
-    const t = all.find((x) => slug(x) === id)!
-    return `<li><a href="#${id}"><b>${esc(TAB_LABEL[t.edition.id] ?? t.edition.id)} · ${esc(t.title)}</b></a> ${esc(text)}</li>`
+    .join('\n        ')
+
+  const rows = all
+    .map(
+      (t) => `<li class="task-row${t.status === 'pending' ? ' pending' : ''}" data-difficulty="${t.difficulty ?? 0}"><a href="#${slug(t)}">
+          <span class="row-ed">${esc(editionLabel(t.edition))} · ${t.number}</span>
+          <b>${esc(t.title)}${t.status === 'pending' ? ' (coming)' : ''}</b>
+          ${dots(t.difficulty)}
+          <span class="row-sum">${esc(t.summary ?? '')}</span>
+        </a></li>`,
+    )
+    .join('\n        ')
+
+  const best = BEST_OF.map(([id, why]) => {
+    const t = byId.get(id)
+    if (!t) return ''
+    return `<li><a href="#${id}"><span class="snap" data-snap="${id}" aria-hidden="true"></span><span><small>${esc(editionLabel(t.edition))} · Task ${t.number}</small><b>${esc(t.title)}</b><span class="why">${esc(why)}</span></span></a></li>`
   }).join('\n        ')
-  return `<section class="panel-doc" id="p-overview" role="tabpanel" aria-labelledby="tab-overview" tabindex="0">
-    <h2>Start here</h2>
-    <ul class="highlights">
-      ${highlights}
-    </ul>
-    <h2>All editions</h2>
-    <ul class="edition-grid">
-      ${cards}
-    </ul>
-    <p class="stat-strip">
-      <span><b>${solved.length}</b> tasks solved${pending ? ` (${pending} still to come)` : ''}</span>
-      <span><b>${visuals.size}</b> interactive visualisations</span>
-      <span><b>${editions.length}</b> editions, ${editions.at(-1)!.dates}–${editions[0]!.dates.slice(-4)}</span>
-      <span><b>${FINDINGS.length}</b> mistakes found in the official material</span>
-    </p>
-    <details class="more">
-      <summary>Mistakes found in the official material <span>${FINDINGS.length}</span></summary>
-      <ul class="findings">
-        ${findings}
-      </ul>
-    </details>
-    <details class="more">
-      <summary>How it’s built and checked</summary>
-      <div class="more-body">
-        <p>Every task has its own folder with the write-up, a standalone <code>solution.ts</code> that reads the input file and prints the answer (ready to paste into the submission form), the input and the official answer. <code>npm test</code> runs all of them and compares the output with the official answer. When several answers are equally correct, like a different but equally short path, the task gets its own <code>check.ts</code> (${custom} tasks) that validates the answer instead of comparing text.</p>
-        <p>The visualisations are plain JavaScript with SVG or canvas, no framework. Each task folder has a <code>visual.js</code> that runs in the browser and a <code>visual.ts</code> that prepares its data from the real input at build time.</p>
+
+  const findings = FINDINGS.map(([id, text]) => {
+    const t = byId.get(id)!
+    return `<li><a href="#${id}"><b>${esc(editionLabel(t.edition))} · ${esc(t.title)}</b></a> ${esc(text)}</li>`
+  }).join('\n          ')
+
+  return `<section class="view" id="v-home" aria-label="Home">
+    <div class="wrap">
+      <header class="hero hero-home">
+        ${bubbles(0)}
+        <div class="hero-blob">
+          <p class="hero-kicker">2020–2026 · TypeScript</p>
+          <h1>CoderGames<br>Solutions</h1>
+        </div>
+        <div>
+          <p class="hero-lead">Every task of <a href="https://codergames.deutschetelekomitsolutions.sk/" target="_blank" rel="noopener">CoderGames</a>, the coding competition by Deutsche Telekom IT Solutions Slovakia: solved, visualised and explained.</p>
+          <p class="hero-stats"><span><b>${solved.length}</b>tasks</span><span><b>${visuals.size}</b>visualisations</span><span><b>${editions.length}</b>editions</span><span><b>${FINDINGS.length}</b>official mistakes found</span></p>
+        </div>
+      </header>
+      <div class="home-grid">
+        <div class="home-main">
+          <h2>Editions</h2>
+          <ul class="edition-grid">
+        ${editionCards}
+          </ul>
+          <h2>All tasks</h2>
+          <div class="filter" role="group" aria-label="Filter by difficulty">
+            <span>Difficulty</span>
+            <button type="button" data-range="0-5" aria-pressed="true">All</button>
+            <button type="button" data-range="1-2" aria-pressed="false">Easy</button>
+            <button type="button" data-range="3-3" aria-pressed="false">Medium</button>
+            <button type="button" data-range="4-5" aria-pressed="false">Hard</button>
+            <span id="filterCount" aria-live="polite">${plural(all.length, 'task')}</span>
+          </div>
+          <ul class="task-list">
+        ${rows}
+          </ul>
+          <details class="more">
+            <summary>Mistakes found in the official material <span>${FINDINGS.length}</span></summary>
+            <ul class="findings">
+          ${findings}
+            </ul>
+          </details>
+          <details class="more">
+            <summary>How it’s built and checked</summary>
+            <div class="more-body">
+              <p>Every task has its own folder with the write-up, a standalone <code>solution.ts</code> that reads the input file and prints the answer (ready to paste into the submission form), the input and the official answer. <code>npm test</code> runs all of them and compares the output with the official answer. When several answers are equally correct, like a different but equally short path, the task gets its own <code>check.ts</code> (${custom} tasks) that validates the answer instead of comparing text.</p>
+              <p>The visualisations are plain JavaScript with SVG or canvas, no framework. Each task folder has a <code>visual.js</code> that runs in the browser and a <code>visual.ts</code> that prepares its data from the real input at build time. Difficulty is my own 1–5 rating.${pending ? ` ${plural(pending, 'task')} of this year’s edition will be added once published.` : ''}</p>
+            </div>
+          </details>
+        </div>
+        <aside class="bestof" aria-labelledby="bestof-title">
+          <h2 id="bestof-title">Best of</h2>
+          <p>Picked by hand: the most interesting problems and visualisations. There is no public per-task popularity data.</p>
+          <ol>
+        ${best}
+          </ol>
+        </aside>
       </div>
-    </details>
+    </div>
   </section>`
 }
 
@@ -297,15 +357,8 @@ function overviewPanel(editions: Edition[], byEdition: Map<string, Task[]>): str
 const editions = ORDER.map((id) => loadEditions().find((e) => e.id === id)).filter((e): e is Edition => !!e)
 const byEdition = new Map(editions.map((e) => [e.id, loadTasks(e)]))
 for (const t of [...byEdition.values()].flat()) await loadVisual(t)
-const total = [...byEdition.values()].flat().filter((t) => t.status !== 'pending').length
-const DESCRIPTION = `All ${total} published CoderGames tasks (2020–2026) by Deutsche Telekom IT Solutions Slovakia, solved in TypeScript and explained.`
-
-const tabs = [
-  `<button class="tab" role="tab" id="tab-overview" aria-controls="p-overview" aria-selected="true">Overview</button>`,
-  ...editions.map(
-    (e) => `<button class="tab" role="tab" id="tab-${e.id}" aria-controls="p-${e.id}" aria-selected="false" tabindex="-1">${esc(TAB_LABEL[e.id] ?? e.id)}</button>`,
-  ),
-].join('\n    ')
+const total = solvedOf([...byEdition.values()].flat()).length
+const DESCRIPTION = `All ${total} published CoderGames tasks (2020–2026) by Deutsche Telekom IT Solutions, solved in TypeScript, visualised and explained.`
 
 const STYLE = readFileSync(join(ROOT, 'docs', 'src', 'style.css'), 'utf8')
 const SCRIPT = [
@@ -313,45 +366,38 @@ const SCRIPT = [
   ...[...visuals.entries()].map(([id, v]) => `// ----- visualisation ${id} -----\n${v.script}`),
   readFileSync(join(ROOT, 'docs', 'src', 'page.js'), 'utf8'),
 ].join('\n')
+
 const GITHUB_ICON = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>`
 const THEME_ICONS = `<svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a.6.6 0 0 0-.8-.7A9.5 9.5 0 1 0 21.2 15.4a.6.6 0 0 0-.7-.8z"/></svg>
         <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5a1 1 0 0 1 1 1v1.8a1 1 0 0 1-2 0V2.5a1 1 0 0 1 1-1zm0 17.2a1 1 0 0 1 1 1v1.8a1 1 0 0 1-2 0v-1.8a1 1 0 0 1 1-1zM22.5 12a1 1 0 0 1-1 1h-1.8a1 1 0 0 1 0-2h1.8a1 1 0 0 1 1 1zM5.3 12a1 1 0 0 1-1 1H2.5a1 1 0 0 1 0-2h1.8a1 1 0 0 1 1 1zm13.1-6.4a1 1 0 0 1 0 1.4l-1.3 1.3a1 1 0 1 1-1.4-1.4l1.3-1.3a1 1 0 0 1 1.4 0zM8.3 15.7a1 1 0 0 1 0 1.4L7 18.4A1 1 0 0 1 5.6 17l1.3-1.3a1 1 0 0 1 1.4 0zm10.1 2.7a1 1 0 0 1-1.4 0l-1.3-1.3a1 1 0 0 1 1.4-1.4l1.3 1.3a1 1 0 0 1 0 1.4zM8.3 8.3a1 1 0 0 1-1.4 0L5.6 7A1 1 0 0 1 7 5.6l1.3 1.3a1 1 0 0 1 0 1.4z"/></svg>`
 
-const body = `<div class="app">
-  <header class="top">
-    <div class="titleblock">
-      <p class="eyebrow">Coding competition · TypeScript · 2020–2026</p>
-      <h1>CoderGames Solutions</h1>
-      <p class="lead">Every task of <a href="https://codergames.deutschetelekomitsolutions.sk/" target="_blank" rel="noopener">CoderGames</a>, the coding competition by <strong class="brand">Deutsche Telekom IT Solutions Slovakia</strong>: solved, visualised and explained.</p>
-    </div>
+const body = `<header class="topbar">
+  <div class="wrap">
+    <a class="brandmark" href="#home"><i aria-hidden="true"></i>CoderGames Solutions</a>
     <p class="actions">
       <a class="pill" href="${REPO}" target="_blank" rel="noopener">${GITHUB_ICON}Source code</a>
       <button class="pill icon theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
         ${THEME_ICONS}
       </button>
     </p>
-  </header>
-
-  <nav class="tabs" role="tablist" aria-label="Editions">
-    ${tabs}
-  </nav>
-
-  <main class="panels" id="panels">
-  ${overviewPanel(editions, byEdition)}
-  ${editions.map((e) => editionPanel(e, byEdition.get(e.id)!)).join('\n  ')}
-  </main>
-
-  <footer>
-    <p class="copy"><b>© 2026 <a href="https://github.com/mazsola739" target="_blank" rel="noopener">mazsola739</a></b> · Task statements summarised in my own words; follow "Original task" for the full text</p>
-    <p>Not an official Telekom page.</p>
+  </div>
+</header>
+<main id="main">
+  ${homeView(editions, byEdition)}
+  ${editions.map((e) => editionView(e, byEdition.get(e.id)!)).join('')}
+  <footer class="site-foot">
+    <div class="wrap">
+      <p><b>© 2026 <a href="https://github.com/mazsola739" target="_blank" rel="noopener">mazsola739</a></b> · Task statements summarised in my own words; follow “Original task” for the full text</p>
+      <p>Not an official Telekom page.</p>
+    </div>
   </footer>
-</div>
+</main>
 <script>
 ${SCRIPT}
 </script>`
 
 const FONTS = `<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">`
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">`
 const ICON = `data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%2716%27 rx=%273%27 fill=%27%23e20074%27/%3E%3Cpath d=%27M11.5 4.5h-5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h5%27 stroke=%27white%27 stroke-width=%272%27 fill=%27none%27/%3E%3C/svg%3E`
 
 const page = `<!doctype html>

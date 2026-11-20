@@ -1,6 +1,6 @@
 # Inconsistent array
 
-**CoderGames 2021 · Task 5** · *Nekonzistentné pole* · math, arrays
+**CoderGames 2021 · Task 5** · math, arrays
 
 ## The task
 

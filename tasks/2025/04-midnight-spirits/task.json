@@ -3,6 +3,7 @@
   "title": "Midnight spirits",
   "summary": "The safest path through a danger map, moving only right or down.",
   "result": "7, 11, 5, 10, 20, 21, 38, 148",
+  "difficulty": 2,
   "topics": [
     "dynamic programming",
     "minimum path sum"

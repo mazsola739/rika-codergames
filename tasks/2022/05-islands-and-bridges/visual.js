@@ -1,5 +1,6 @@
 CG.visual("2022-5", (root, cases, { h, s, segmented, stats, hue }) => {
-  let current = 0;
+  // Open on a real map (it makes the better picture); the tiny bug demo is one click away.
+  let current = Math.max(0, cases.findIndex((c) => c.name === "Map 101"));
   let mode = "correct";
   const tiles = stats([["Islands", ""], ["Bridge material", ""], ["Bridges", ""]]);
   const svgWrap = h("div", { class: "vis-frame" });
@@ -64,7 +65,7 @@ CG.visual("2022-5", (root, cases, { h, s, segmented, stats, hue }) => {
           : "On this map the leak doesn't merge any islands, so both answers agree.";
   }
 
-  const picker = segmented(cases.map((c, i) => ({ value: i, label: c.name })), (v) => ((current = v), draw()), 0, "Map");
+  const picker = segmented(cases.map((c, i) => ({ value: i, label: c.name })), (v) => ((current = v), draw()), current, "Map");
   const modes = segmented(
     [
       { value: "correct", label: "Correct" },

@@ -1,9 +1,9 @@
 {
   "number": 5,
   "title": "Inconsistent array",
-  "original": "Nekonzistentné pole",
   "summary": "An array of 0 … N−2 contains one value twice. Find it.",
   "result": "0, 4, 12, 9, 1",
+  "difficulty": 1,
   "topics": [
     "math",
     "arrays"

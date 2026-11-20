@@ -3,6 +3,7 @@
   "title": "Perfect numbers",
   "summary": "The first five perfect numbers below 100 million.",
   "result": "6, 28, 496, 8128, 33,550,336",
+  "difficulty": 2,
   "topics": [
     "number theory",
     "Mersenne primes"

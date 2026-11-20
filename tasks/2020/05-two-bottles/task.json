@@ -1,9 +1,9 @@
 {
   "number": 5,
   "title": "Two bottles, a thousand floors",
-  "original": "Úloha č. 5",
   "summary": "Two bottles and 1000 floors: the fewest drops that always find the floor where a bottle breaks.",
   "result": "45 drops",
+  "difficulty": 3,
   "topics": [
     "dynamic programming",
     "egg drop"

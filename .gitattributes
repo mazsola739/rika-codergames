@@ -1,0 +1,4 @@
+* text=auto eol=lf
+# Keep the official inputs and answers byte for byte
+tasks/**/input* -text
+tasks/**/answer.txt -text

@@ -1,0 +1,1 @@
+point at middle, ask "is left right?": yes -> take left, no -> take right

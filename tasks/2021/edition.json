@@ -1,0 +1,8 @@
+{
+  "title": "CoderGames 2021",
+  "dates": "2021",
+  "theme": "Classic algorithms",
+  "language": "Slovak",
+  "source": "https://codergames.deutschetelekomitsolutions.sk/history-2021",
+  "summary": "Five textbook algorithm tasks in Slovak, each with an input file: a maze, an interval DP, breadth-first search on a graph, coin change and a duplicate in an array."
+}

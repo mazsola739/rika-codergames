@@ -1,0 +1,8 @@
+{
+  "title": "CoderGames 2022",
+  "dates": "2022",
+  "theme": "Number puzzles and a graph finale",
+  "language": "Slovak",
+  "source": "https://codergames.deutschetelekomitsolutions.sk/history-2022",
+  "summary": "Five tasks in Slovak: counting, two Project Euler-style number puzzles, Roman numerals, and islands joined by bridges, which is a minimum spanning tree in disguise."
+}

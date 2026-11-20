@@ -1,0 +1,8 @@
+{
+  "number": 4,
+  "title": "Tomorrow's stock prices",
+  "original": "Úloha č. 4",
+  "topics": ["single pass", "big integers", "streaming"],
+  "fetch": "https://codergames.deutschetelekomitsolutions.sk/svc/stream/media/input",
+  "timeout": 120
+}

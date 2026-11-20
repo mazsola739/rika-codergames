@@ -1,0 +1,3 @@
+node_modules/
+# Inputs too large for git; `npm run fetch` downloads them
+tasks/2020/04-stock-profit/input.txt

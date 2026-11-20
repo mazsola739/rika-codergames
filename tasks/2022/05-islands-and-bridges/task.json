@@ -1,0 +1,1 @@
+{ "number": 5, "title": "Islands and bridges", "original": "Ostrovy a mosty", "topics": ["flood fill", "minimum spanning tree", "union-find"], "check": "custom" }

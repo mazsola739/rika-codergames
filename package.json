@@ -1,0 +1,24 @@
+{
+  "name": "rika-codergames",
+  "version": "1.0.0",
+  "description": "Solutions and explanations for every CoderGames task by Deutsche Telekom IT Solutions Slovakia, 2020-2026",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22.6"
+  },
+  "scripts": {
+    "test": "node --experimental-strip-types --no-warnings scripts/test.ts",
+    "typecheck": "tsc --noEmit -p .",
+    "fetch": "node --experimental-strip-types --no-warnings scripts/fetch.ts",
+    "docs": "node --experimental-strip-types --no-warnings scripts/build-docs.ts",
+    "solve": "node --experimental-strip-types --no-warnings scripts/solve.ts",
+    "preview": "node --experimental-strip-types --no-warnings scripts/serve.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "marked": "^15.0.12",
+    "typescript": "^5.8.0"
+  },
+  "license": "MIT"
+}

@@ -270,7 +270,7 @@ function playground(t: Task): string {
     : ''
   const inputInfo = p.input
     ? `<div class="pg-input">
-            <p class="pg-label">${tr('Input', 'Bemenet')} <span>${tr(`${num(p.inputLines)} lines · showing the start`, `${num(p.inputLines)} sor · az eleje látszik`)}</span> <a href="${p.input}" target="_blank" rel="noopener">${tr('open the whole file ↗', 'a teljes fájl ↗')}</a></p>
+            <p class="pg-label">${tr('Input', 'Bemenet')} <span>${tr(`${num(p.inputLines)} lines · showing the start`, `${num(p.inputLines)} sor · az eleje látszik`)}</span> <a href="${p.input}" target="_blank" rel="noopener">${tr('open the whole file', 'a teljes fájl')}</a></p>
             <pre class="code pg-input-text" data-src="${p.input}">${tr('Loading…', 'Betöltés…')}</pre>
             ${note ? `<p class="vis-note">${esc(note)}</p>` : ''}
           </div>`
@@ -651,7 +651,7 @@ ${LANG === 'hu' ? '<p class="mt-note" role="note">AI-fordítás, a finomítása 
         'Task statements summarised in my own words; <a href="#about">sources</a>',
         'A feladatleírásokat saját szavaimmal foglaltam össze; <a href="#about">források</a>',
       )}</p>
-      <p><a href="https://mazsola739.github.io/mazsola739/" target="_blank" rel="noopener">${tr('My portfolio', 'A portfólióm')}</a> · ${tr('Not an official Telekom page.', 'Nem hivatalos Telekom-oldal.')}</p>
+      <p><a href="https://mazsola739.github.io/mazsola739/" target="_blank" rel="noopener">mazsola739</a> · ${tr('Not an official Telekom page.', 'Nem hivatalos Telekom-oldal.')}</p>
     </div>
   </footer>
 </main>

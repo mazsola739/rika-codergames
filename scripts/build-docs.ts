@@ -640,6 +640,7 @@ function render(): { page: string; body: string; description: string } {
     </p>
   </div>
 </header>
+${LANG === 'hu' ? '<p class="mt-note" role="note">AI-fordítás, a finomítása folyamatban.</p>' : ''}
 <main id="main">
   ${homeView(editions, byEdition)}
   ${editions.map((e) => editionView(e, byEdition.get(e.id)!)).join('')}

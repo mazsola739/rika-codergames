@@ -25,17 +25,17 @@ CG.visual("2021-4", (root, sets, { h, s, slider, segmented, scale }) => {
   const chart = h("div", { class: "vis-frame" });
   const coinRow = (label, list) => {
     const svg = s("svg", { class: "vis-svg", viewBox: `0 0 640 ${list ? 54 : 30}`, role: "img", "aria-label": label });
-    if (!list) svg.append(s("text", { x: 0, y: 20, class: "t-label", text: "cannot pay this amount exactly" }));
+    if (!list) svg.append(s("text", { x: 0, y: 20, class: "t-label", text: CG.t("cannot pay this amount exactly", "ez az összeg nem fizethető ki pontosan") }));
     else
       list.slice(0, 22).forEach((c, i) => {
         svg.append(s("circle", { cx: 24 + i * 28, cy: 26, r: 12 + Math.min(8, Math.log2(c)), class: "f-warn", opacity: 0.85 }));
         svg.append(s("text", { x: 24 + i * 28, y: 30, "text-anchor": "middle", "font-size": 10, "font-weight": 700, class: "f-surface", text: String(c) }));
       });
     if (list && list.length > 22) svg.append(s("text", { x: 636, y: 30, "text-anchor": "end", class: "t-label", text: `+${list.length - 22}` }));
-    return h("div", {}, h("p", { class: "vis-note", text: `${label}: ${list ? `${list.length} coins` : "impossible"}` }), svg);
+    return h("div", {}, h("p", { class: "vis-note", text: `${label}: ${list ? CG.t(`${list.length} coins`, `${list.length} érme`) : CG.t("impossible", "lehetetlen")}` }), svg);
   };
   function draw() {
-    rows.replaceChildren(coinRow("Greedy", sol.greedy(amount)), coinRow("Optimal (DP)", sol.optimal(amount)));
+    rows.replaceChildren(coinRow(CG.t("Greedy", "Mohó"), sol.greedy(amount)), coinRow(CG.t("Optimal (DP)", "Optimális (DP)"), sol.optimal(amount)));
     const W = 640;
     const H = 110;
     const x = scale(0, LIMIT, 30, W - 8);
@@ -49,17 +49,17 @@ CG.visual("2021-4", (root, sets, { h, s, slider, segmented, scale }) => {
       worst = Math.max(worst, d);
     }
     const y = scale(0, worst, H - 20, 10);
-    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Extra coins greedy needs, per amount" });
+    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": CG.t("Extra coins greedy needs, per amount", "A mohó módszer plusz érméi összegenként") });
     diffs.forEach((d, i) => d && svg.append(s("rect", { x: x(i + 1) - 1, y: y(d), width: 2.2, height: H - 20 - y(d), class: "f-bad" })));
     svg.append(s("line", { x1: 30, x2: W - 8, y1: H - 20, y2: H - 20, class: "s-line" }));
     svg.append(s("line", { x1: x(amount), x2: x(amount), y1: 6, y2: H - 20, class: "s-accent", "stroke-dasharray": "3 2" }));
     svg.append(s("text", { x: 26, y: y(worst) + 4, "text-anchor": "end", class: "t-label", text: `+${worst}` }));
-    svg.append(s("text", { x: W - 8, y: H - 4, "text-anchor": "end", class: "t-label", text: `amount → ${LIMIT}` }));
+    svg.append(s("text", { x: W - 8, y: H - 4, "text-anchor": "end", class: "t-label", text: CG.t(`amount → ${LIMIT}`, `összeg → ${LIMIT}`) }));
     const bad = diffs.filter((d) => d).length;
-    chart.replaceChildren(svg, h("p", { class: "vis-note", text: bad ? `Greedy is worse (or stuck) for ${bad} of the amounts 1–${LIMIT}.` : `For these coins greedy is always optimal up to ${LIMIT}.` }));
+    chart.replaceChildren(svg, h("p", { class: "vis-note", text: bad ? CG.t(`Greedy is worse (or stuck) for ${bad} of the amounts 1–${LIMIT}.`, `A mohó módszer az 1–${LIMIT} összegek közül ${bad} esetben rosszabb (vagy elakad).`) : CG.t(`For these coins greedy is always optimal up to ${LIMIT}.`, `Ezekkel az érmékkel a mohó módszer ${LIMIT}-ig mindig optimális.`) }));
   }
-  const amountSlider = slider({ label: "Amount", min: 1, max: LIMIT, value: amount, onInput: (v) => ((amount = v), draw()) });
-  const pick = segmented(sets.map((cs, i) => ({ value: i, label: cs.join(", ") })), (i) => ((coins = sets[i]), (sol = solve(coins)), draw()), sets.indexOf(coins), "Coins");
+  const amountSlider = slider({ label: CG.t("Amount", "Összeg"), min: 1, max: LIMIT, value: amount, onInput: (v) => ((amount = v), draw()) });
+  const pick = segmented(sets.map((cs, i) => ({ value: i, label: cs.join(", ") })), (i) => ((coins = sets[i]), (sol = solve(coins)), draw()), sets.indexOf(coins), CG.t("Coins", "Érmék"));
   root.append(h("div", { class: "vis-row" }, pick), amountSlider, rows, chart);
   draw();
 });

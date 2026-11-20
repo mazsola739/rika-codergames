@@ -5,5 +5,9 @@
   "topics": [],
   "input": null,
   "answer": null,
-  "status": "pending"
+  "status": "pending",
+  "hu": {
+    "title": "4. feladat",
+    "summary": "2026. november 19-én jelent meg; egyelőre csak a bejelentkezett versenyzők látják."
+  }
 }

@@ -9,5 +9,15 @@
     "frequency analysis",
     "hill climbing"
   ],
-  "check": "custom"
+  "check": "custom",
+  "hu": {
+    "title": "A tündérek ábécéje",
+    "summary": "Egy angol tündérmese betűhelyettesítéses titkosírás alatt. Törd fel kulcs nélkül.",
+    "result": "Hamupipőke",
+    "topics": [
+      "kriptográfia",
+      "gyakoriságelemzés",
+      "hegymászó keresés"
+    ]
+  }
 }

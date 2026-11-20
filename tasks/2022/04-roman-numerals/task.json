@@ -7,5 +7,14 @@
   "topics": [
     "parsing",
     "strings"
-  ]
+  ],
+  "hu": {
+    "title": "Római számok",
+    "summary": "Írj át 1000 római számot a legrövidebb érvényes alakjukra.",
+    "result": "1000 átírt szám",
+    "topics": [
+      "elemzés",
+      "szövegkezelés"
+    ]
+  }
 }

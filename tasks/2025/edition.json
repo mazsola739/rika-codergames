@@ -3,5 +3,9 @@
   "dates": "2025",
   "theme": "Halloween",
   "source": "https://codergames.deutschetelekomitsolutions.sk/history-2025",
-  "summary": "A spooky week: two-sum with chocolates, cursed components with a union-find, a haunted mansion graph and the safest path home. Four tasks are published."
+  "summary": "A spooky week: two-sum with chocolates, cursed components with a union-find, a haunted mansion graph and the safest path home. Four tasks are published.",
+  "hu": {
+    "theme": "Halloween",
+    "summary": "Kísérteties hét: kétösszeg csokikkal, átkozott komponensek union-finddal, egy kísértetkastély-gráf és a legbiztonságosabb út hazafelé. Négy feladat jelent meg."
+  }
 }

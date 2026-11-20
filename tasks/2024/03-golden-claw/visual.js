@@ -42,7 +42,7 @@ CG.visual("2024-3", (root, cases, { h, s, player, segmented }) => {
     const H = rows * size * 0.92 + 30;
     function render(step) {
       const f = facesAfter(step);
-      const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Pyramid of pillars", style: { maxWidth: `${Math.min(640, W * 1.6)}px`, margin: "0 auto" } });
+      const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": CG.t("Pyramid of pillars", "Oszlopokból álló piramis"), style: { maxWidth: `${Math.min(640, W * 1.6)}px`, margin: "0 auto" } });
       for (let r = 0; r < rows; r++)
         for (let j = 0; j <= r; j++) {
           const i = start(r) + j;
@@ -58,7 +58,7 @@ CG.visual("2024-3", (root, cases, { h, s, player, segmented }) => {
       stage.replaceChildren(svg);
     }
     if (!p) {
-      p = player({ count: n + 1, render, interval: 500, label: (i) => (i === 0 ? "Start position." : `Turn ${i} of ${n}: pillar ${i} by ${turns[i - 1] > 0 ? "+" : ""}${turns[i - 1]}${turns[i - 1] === 0 ? " (no turn needed)" : ""}.`) });
+      p = player({ count: n + 1, render, interval: 500, label: (i) => (i === 0 ? CG.t("Start position.", "Kezdőállás.") : CG.t(`Turn ${i} of ${n}: pillar ${i} by ${turns[i - 1] > 0 ? "+" : ""}${turns[i - 1]}${turns[i - 1] === 0 ? " (no turn needed)" : ""}.`, `${i}/${n}. forgatás, ${i}. oszlop: ${turns[i - 1] > 0 ? "+" : ""}${turns[i - 1]}${turns[i - 1] === 0 ? " (nem kell forgatni)" : ""}.`)) });
       root.append(p.el);
     }
     p.reset(n + 1);
@@ -66,7 +66,7 @@ CG.visual("2024-3", (root, cases, { h, s, player, segmented }) => {
   }
   // A new case gets a new player (its steps and drawing depend on the pyramid).
   let current = 0;
-  root.append(h("div", { class: "vis-row" }, segmented(cases.map((c, i) => ({ value: i, label: `${c.name} · ${c.m} faces` })), (k) => rebuild(k), 0, "Pyramid")), stage);
+  root.append(h("div", { class: "vis-row" }, segmented(cases.map((c, i) => ({ value: i, label: CG.t(`${c.name} · ${c.m} faces`, `${c.name === "Example" ? "Példa" : c.name.replace(/^Case (\d+)$/, "$1. eset")} · ${c.m} lap`) })), (k) => rebuild(k), 0, CG.t("Pyramid", "Piramis"))), stage);
   function rebuild(k) {
     current = k;
     if (p) {

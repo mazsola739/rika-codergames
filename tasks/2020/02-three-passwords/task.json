@@ -9,5 +9,14 @@
     "brute force"
   ],
   "input": null,
-  "check": "custom"
+  "check": "custom",
+  "hu": {
+    "title": "Három jelszó",
+    "summary": "Három cetliből kettőn a helyes jelszó áll. Egyetlen igen/nem kérdéssel kell egy jót találni, de a válasz néha véletlenszerű.",
+    "result": "Mutass az egyik cetlire, és kérdezz egy másikról",
+    "topics": [
+      "logika",
+      "nyers erő"
+    ]
+  }
 }

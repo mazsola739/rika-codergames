@@ -1,16 +1,16 @@
 CG.visual("2020-1", (root, _, { h, s, player }) => {
   const numbers = [13, 14, 22, 23, 32];
   const steps = [
-    { out: [], mark: [], text: "Michal picks one of five numbers. Peter knows the first digit, Janka the second." },
-    { out: [], mark: [14], text: "Only 14 has a second digit (4) that no other number shares. If Janka had heard 4, she would know at once." },
-    { out: [13, 14], mark: [], text: "Peter: “I know Janka can’t tell.” So his digit can’t be 1, or the number might be 14. 13 and 14 are out." },
-    { out: [13, 14, 22, 32], mark: [23], text: "Janka: “Now I know.” Among 22, 23 and 32 the digit 2 still fits two numbers, the digit 3 only one." },
+    { out: [], mark: [], text: CG.t("Michal picks one of five numbers. Peter knows the first digit, Janka the second.", "Michal választ egyet az öt szám közül. Peter az első számjegyet tudja, Janka a másodikat.") },
+    { out: [], mark: [14], text: CG.t("Only 14 has a second digit (4) that no other number shares. If Janka had heard 4, she would know at once.", "Csak a 14 második számjegye (4) nem közös egyetlen másik számmal sem. Ha Janka 4-et hallott volna, azonnal tudná.") },
+    { out: [13, 14], mark: [], text: CG.t("Peter: “I know Janka can’t tell.” So his digit can’t be 1, or the number might be 14. 13 and 14 are out.", "Peter: „Tudom, hogy Janka nem tudhatja.” A számjegye tehát nem lehet 1, különben a szám lehetne 14 is. A 13 és a 14 kiesik.") },
+    { out: [13, 14, 22, 32], mark: [23], text: CG.t("Janka: “Now I know.” Among 22, 23 and 32 the digit 2 still fits two numbers, the digit 3 only one.", "Janka: „Most már tudom.” A 22, 23 és 32 közül a 2-es számjegy még két számra illik, a 3-as csak egyre.") },
   ];
   const stage = h("div", { class: "vis-frame" });
   const text = h("p", { class: "vis-note" });
   const render = (i) => {
     const st = steps[i];
-    const svg = s("svg", { class: "vis-svg", viewBox: "0 0 562 120", role: "img", "aria-label": "The five candidate numbers" });
+    const svg = s("svg", { class: "vis-svg", viewBox: "0 0 562 120", role: "img", "aria-label": CG.t("The five candidate numbers", "Az öt jelölt szám") });
     numbers.forEach((n, k) => {
       const x = 12 + k * 110;
       const out = st.out.includes(n);
@@ -24,6 +24,6 @@ CG.visual("2020-1", (root, _, { h, s, player }) => {
     text.textContent = st.text;
   };
   const p = player({ count: steps.length, render, interval: 2200 });
-  root.append(stage, text, p.el, h("div", { class: "vis-legend" }, h("span", {}, h("i", { style: { background: "var(--fg)" } }), "Peter’s digit"), h("span", {}, h("i", { style: { background: "var(--info)" } }), "Janka’s digit")));
+  root.append(stage, text, p.el, h("div", { class: "vis-legend" }, h("span", {}, h("i", { style: { background: "var(--fg)" } }), CG.t("Peter’s digit", "Peter számjegye")), h("span", {}, h("i", { style: { background: "var(--info)" } }), CG.t("Janka’s digit", "Janka számjegye"))));
   p.set(0);
 });

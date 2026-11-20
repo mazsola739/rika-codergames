@@ -7,5 +7,14 @@
   "topics": [
     "breadth-first search",
     "grid"
-  ]
+  ],
+  "hu": {
+    "title": "Útvesztő",
+    "summary": "Keresd meg a legrövidebb kiutat egy 49 × 39-es útvesztőből, és jelöld be.",
+    "result": "270 lépéses út",
+    "topics": [
+      "szélességi keresés",
+      "rács"
+    ]
+  }
 }

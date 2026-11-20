@@ -9,5 +9,15 @@
     "minimum spanning tree",
     "union-find"
   ],
-  "check": "custom"
+  "check": "custom",
+  "hu": {
+    "title": "Szigetek és hidak",
+    "summary": "Kösd össze az összes szigetet 1–3 cella hosszú egyenes hidakkal, a lehető legkevesebb anyagból.",
+    "result": "Minimális feszítőfa; a hivatalos válaszok a 103 térképből 93-nál hibásak",
+    "topics": [
+      "elárasztásos kitöltés",
+      "minimális feszítőfa",
+      "union-find"
+    ]
+  }
 }

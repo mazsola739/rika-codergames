@@ -1,7 +1,7 @@
 CG.visual("2025-women-1", (root, pairs, { h, s, slider, stats }) => {
   const stage = h("div", { class: "vis-frame" });
   const words = h("p", { class: "vis-mono", style: { overflowWrap: "anywhere" } });
-  const tiles = stats([["Lengths", ""], ["Letters that differ", ""], ["Answer", ""]]);
+  const tiles = stats([[CG.t("Lengths", "Hosszak"), ""], [CG.t("Letters that differ", "Eltérő betűk"), ""], [CG.t("Answer", "Válasz"), ""]]);
   function draw(k) {
     const [a, b = ""] = pairs[k - 1];
     const diff = Array(26).fill(0);
@@ -12,7 +12,7 @@ CG.visual("2025-women-1", (root, pairs, { h, s, slider, stats }) => {
     const H = 150;
     const bw = (W - 20) / 26;
     const mid = H / 2 - 6;
-    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Letter count differences" });
+    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": CG.t("Letter count differences", "Betűszám-eltérések") });
     svg.append(s("line", { x1: 10, x2: W - 10, y1: mid, y2: mid, class: "s-line" }));
     diff.forEach((d, i) => {
       const hgt = (Math.abs(d) / max) * (mid - 10);
@@ -26,6 +26,6 @@ CG.visual("2025-women-1", (root, pairs, { h, s, slider, stats }) => {
     tiles.set(1, String(bad));
     tiles.set(2, a.length === b.length && !bad ? "YES" : "NO");
   }
-  root.append(slider({ label: "Pair", min: 1, max: pairs.length, value: 2, onInput: draw, format: (v) => `#${v}` }), words, tiles, stage);
+  root.append(slider({ label: CG.t("Pair", "Pár"), min: 1, max: pairs.length, value: 2, onInput: draw, format: (v) => `#${v}` }), words, tiles, stage);
   draw(2);
 });

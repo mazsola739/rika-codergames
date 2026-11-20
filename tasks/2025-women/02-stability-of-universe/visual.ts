@@ -10,3 +10,10 @@ export function data(dir: string) {
   const flat = lines.slice(1, 1 + rows).flatMap((l) => l.split(/\s+/).map(Number))
   return { rows, cols, values: Buffer.from(Uint8Array.from(flat)).toString('base64') }
 }
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'Az univerzum és a középpontjai',
+  caption:
+    'A 200 × 200-as tórusz; a sötétebb cellákban nagyobb érték áll. A zöld gyűrűk stabil gravitációs középpontok, a rózsaszínek instabilak. Kattints egy gyűrűre (vagy válassz egyet a listából), hogy lásd a 16 tengelyértékét, és hogy mely párok törik meg a szimmetriát.',
+}

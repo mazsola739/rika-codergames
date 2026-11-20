@@ -13,7 +13,7 @@ CG.visual("2023-3", (root, [s1, s2], { h, css, onTheme, stats }) => {
     else j--;
   }
   const best = L[n * W + m];
-  const canvas = h("canvas", { class: "vis-canvas", width: m + 1, height: n + 1, role: "img", "aria-label": "Heat map of the dynamic programming table", style: { imageRendering: "auto", maxWidth: "560px" } });
+  const canvas = h("canvas", { class: "vis-canvas", width: m + 1, height: n + 1, role: "img", "aria-label": CG.t("Heat map of the dynamic programming table", "A dinamikus programozási táblázat hőtérképe"), style: { imageRendering: "auto", maxWidth: "560px" } });
   const ctx = canvas.getContext("2d");
   function draw() {
     const img = ctx.createImageData(m + 1, n + 1);
@@ -35,7 +35,7 @@ CG.visual("2023-3", (root, [s1, s2], { h, css, onTheme, stats }) => {
     ctx.fillStyle = css("--accent");
     for (const [i, j] of path) ctx.fillRect(j - 1, i - 1, 3, 3);
   }
-  root.append(stats([["Length of s1 × s2", `${n} × ${m}`], ["Cells filled", (n * m).toLocaleString("en-US")], ["LCS length", String(best)]]), h("div", { class: "vis-frame" }, canvas));
+  root.append(stats([[CG.t("Length of s1 × s2", "s1 × s2 hossza"), `${n} × ${m}`], [CG.t("Cells filled", "Kitöltött cellák"), (n * m).toLocaleString(CG.t("en-US", "hu-HU"))], [CG.t("LCS length", "LCS-hossz"), String(best)]]), h("div", { class: "vis-frame" }, canvas));
   onTheme(draw);
   draw();
 });

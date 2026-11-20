@@ -21,7 +21,7 @@ CG.visual("2025-women-3", (root, lines, { h, s, stats }) => {
   const cell = 22;
   const W = 40 + 26 * cell;
   const H = 20 + lines.length * cell;
-  const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Scores of every shift for every line" });
+  const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": CG.t("Scores of every shift for every line", "Minden eltolás pontszáma minden sorra") });
   for (let k = 0; k < 26; k++) svg.append(s("text", { x: 40 + k * cell + cell / 2, y: 13, "text-anchor": "middle", class: "t-label", "font-size": 10, text: String(k) }));
   scores.forEach((row, i) => {
     const lo = Math.min(...row);
@@ -34,7 +34,7 @@ CG.visual("2025-women-3", (root, lines, { h, s, stats }) => {
   const keys = chosen.filter((k, i) => k !== chosen[i - 1]);
   const poem = h("div", { class: "vis-text" }, lines.map((l, i) => h("div", {}, h("span", { class: "dim", text: `${String(i + 1).padStart(2)}  ` }), own[i] !== chosen[i] ? h("mark", { text: shift(l, chosen[i]) }) : shift(l, chosen[i]))));
   root.append(
-    stats([["Lines", String(lines.length)], ["Keys", keys.join(", ")], ["Lines saved by the penalty", String(own.filter((k, i) => k !== chosen[i]).length)]]),
+    stats([[CG.t("Lines", "Sorok"), String(lines.length)], [CG.t("Keys", "Kulcsok"), keys.join(", ")], [CG.t("Lines saved by the penalty", "A büntetés által megmentett sorok"), String(own.filter((k, i) => k !== chosen[i]).length)]]),
     h("div", { class: "vis-frame" }, svg),
     poem,
   );

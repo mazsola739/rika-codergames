@@ -9,5 +9,15 @@
     "grids",
     "torus",
     "symmetry"
-  ]
+  ],
+  "hu": {
+    "title": "Az univerzum stabilitása",
+    "summary": "Keresd meg a lokális maximumokat egy 200 × 200-as tóruszon, és nézd meg, szimmetrikusak-e.",
+    "result": "31 stabil, 21 instabil",
+    "topics": [
+      "rácsok",
+      "tórusz",
+      "szimmetria"
+    ]
+  }
 }

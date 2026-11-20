@@ -7,5 +7,14 @@
   "topics": [
     "breadth-first search",
     "graphs"
-  ]
+  ],
+  "hu": {
+    "title": "Legrövidebb utak",
+    "summary": "Minden csúcs legrövidebb távolsága egy célcsúcsig, négy irányított gráfban.",
+    "result": "Négy távolságtáblázat",
+    "topics": [
+      "szélességi keresés",
+      "gráfok"
+    ]
+  }
 }

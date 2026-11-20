@@ -13,3 +13,10 @@ export function data(dir: string) {
   }
   return sets
 }
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'Az út egy idővonalon',
+  caption:
+    'Válassz egy készletet. A térkép az állomásokat és a leggyorsabb útvonalat mutatja; az idővonalon az útvonal minden útja látszik a lezárásaival (sraffozva), a menetidőddel (rózsaszín) és az esetleges várakozással (szürke).',
+}

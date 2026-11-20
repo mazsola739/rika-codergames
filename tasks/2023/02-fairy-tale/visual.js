@@ -26,8 +26,8 @@ CG.visual("2023-2", (root, text, { h, s, scale, segmented, fmt }) => {
   const W = 640, H = 170;
   const x = scale(0.5, 20.5, 40, W - 10);
   const y = scale(0.03, 0.075, H - 24, 10);
-  const c1 = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Index of coincidence per key length" });
-  for (const [v, cls, label] of [[0.066, "s-good", "English 0.066"], [0.038, "s-muted", "random 0.038"]]) {
+  const c1 = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": CG.t("Index of coincidence per key length", "Koincidenciaindex kulcshosszanként") });
+  for (const [v, cls, label] of [[0.066, "s-good", CG.t("English 0.066", "angol 0,066")], [0.038, "s-muted", CG.t("random 0.038", "véletlen 0,038")]]) {
     c1.append(s("line", { x1: 40, x2: W - 10, y1: y(v), y2: y(v), class: cls, "stroke-dasharray": "4 3" }));
     c1.append(s("text", { x: W - 12, y: y(v) - 4, "text-anchor": "end", class: "t-label", text: label }));
   }
@@ -45,23 +45,23 @@ CG.visual("2023-2", (root, text, { h, s, scale, segmented, fmt }) => {
     const max = Math.max(...counts.map((c) => c / xs.length), 0.13);
     const cx = scale(0, 26, 20, W - 10);
     const cy = scale(0, max, H - 24, 10);
-    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": `Letter frequencies of column ${j + 1}` });
+    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": CG.t(`Letter frequencies of column ${j + 1}`, `A ${j + 1}. oszlop betűgyakoriságai`) });
     counts.forEach((c, i) => {
       const bw = (W - 30) / 26;
       svg.append(s("rect", { x: cx(i) + 2, y: cy(c / xs.length), width: bw - 4, height: H - 24 - cy(c / xs.length), rx: 2, class: "f-info", opacity: 0.8 }));
       svg.append(s("line", { x1: cx(i) + 1, x2: cx(i) + bw - 1, y1: cy(EN[i] / 100), y2: cy(EN[i] / 100), class: "s-accent", "stroke-width": 2.5 }));
       svg.append(s("text", { x: cx(i) + bw / 2, y: H - 8, "text-anchor": "middle", class: "t-label", text: String.fromCharCode(65 + i) }));
     });
-    colChart.replaceChildren(svg, h("p", { class: "vis-note", text: `Column ${j + 1}: shift ${key[j]} (key letter ${String.fromCharCode(65 + key[j])}). Blue: its letters after shifting back; pink: English.` }));
+    colChart.replaceChildren(svg, h("p", { class: "vis-note", text: CG.t(`Column ${j + 1}: shift ${key[j]} (key letter ${String.fromCharCode(65 + key[j])}). Blue: its letters after shifting back; pink: English.`, `${j + 1}. oszlop: ${key[j]} eltolás (kulcsbetű: ${String.fromCharCode(65 + key[j])}). Kék: a betűi visszatolás után; rózsaszín: angol.`) }));
   }
-  const keyPick = segmented(key.map((k, j) => ({ value: j, label: String.fromCharCode(65 + k) })), drawColumn, 0, "Key letter");
+  const keyPick = segmented(key.map((k, j) => ({ value: j, label: String.fromCharCode(65 + k) })), drawColumn, 0, CG.t("Key letter", "Kulcsbetű"));
   const out = h("div", { class: "vis-text" }, plain);
   let showPlain = true;
-  const toggle = segmented([{ value: true, label: "Decrypted" }, { value: false, label: "Cipher text" }], (v) => ((showPlain = v), (out.textContent = v ? plain : text)), true, "Text");
+  const toggle = segmented([{ value: true, label: CG.t("Decrypted", "Visszafejtve") }, { value: false, label: CG.t("Cipher text", "Titkos szöveg") }], (v) => ((showPlain = v), (out.textContent = v ? plain : text)), true, CG.t("Text", "Szöveg"));
   root.append(
     h("div", { class: "vis-frame" }, c1),
-    h("p", { class: "vis-note", text: `Key length ${K}, average IoC ${fmt(iocs[K - 1], 3)}. Its multiples (blue) look English too.` }),
-    h("div", { class: "vis-row" }, h("span", { class: "vis-note", text: "Key:" }), keyPick),
+    h("p", { class: "vis-note", text: CG.t(`Key length ${K}, average IoC ${fmt(iocs[K - 1], 3)}. Its multiples (blue) look English too.`, `Kulcshossz: ${K}, átlagos IoC: ${fmt(iocs[K - 1], 3)}. A többszörösei (kék) is angolnak tűnnek.`) }),
+    h("div", { class: "vis-row" }, h("span", { class: "vis-note", text: CG.t("Key:", "Kulcs:") }), keyPick),
     colChart,
     h("div", { class: "vis-row" }, toggle),
     out,

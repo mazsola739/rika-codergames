@@ -1,8 +1,9 @@
 CG.visual("2022-5", (root, cases, { h, s, segmented, stats, hue }) => {
   // Open on a real map (it makes the better picture); the tiny bug demo is one click away.
   let current = Math.max(0, cases.findIndex((c) => c.name === "Map 101"));
+  const nameOf = (n) => CG.t(n, n.replace(/^Bug demo/, "Hibademó").replace(/^Example (\d+)$/, "$1. példa").replace(/^Map (\d+)$/, "$1. térkép"));
   let mode = "correct";
-  const tiles = stats([["Islands", ""], ["Bridge material", ""], ["Bridges", ""]]);
+  const tiles = stats([[CG.t("Islands", "Szigetek"), ""], [CG.t("Bridge material", "Hídanyag"), ""], [CG.t("Bridges", "Hidak"), ""]]);
   const svgWrap = h("div", { class: "vis-frame" });
   const note = h("p", { class: "vis-note" });
 
@@ -21,7 +22,7 @@ CG.visual("2022-5", (root, cases, { h, s, segmented, stats, hue }) => {
     });
     const merged = new Set([...realOf].filter(([, set]) => set.size > 1).map(([off]) => off));
     const pad = 1;
-    const svg = s("svg", { class: "vis-svg", viewBox: `${-pad} ${-pad} ${W + 2 * pad} ${H + 2 * pad}`, role: "img", "aria-label": `${c.name}: ${H} by ${W} map` });
+    const svg = s("svg", { class: "vis-svg", viewBox: `${-pad} ${-pad} ${W + 2 * pad} ${H + 2 * pad}`, role: "img", "aria-label": CG.t(`${c.name}: ${H} by ${W} map`, `${nameOf(c.name)}: ${H} × ${W}-es térkép`) });
     svg.append(s("rect", { x: 0, y: 0, width: W, height: H, class: "f-water", rx: 0.3 }));
     for (let r = 0; r < H; r++)
       for (let col = 0; col < W; col++) {
@@ -59,21 +60,21 @@ CG.visual("2022-5", (root, cases, { h, s, segmented, stats, hue }) => {
     const diff = c.material - c.officialMaterial;
     note.textContent =
       mode === "correct"
-        ? `Correct answer: ${c.material}. The official program answers ${c.officialMaterial}${diff ? `, ${diff} too little` : ", the same"}.`
+        ? CG.t(`Correct answer: ${c.material}. The official program answers ${c.officialMaterial}${diff ? `, ${diff} too little` : ", the same"}.`, `Helyes válasz: ${c.material}. A hivatalos program válasza ${c.officialMaterial}${diff ? `, ennyivel kevesebb: ${diff}` : ", ugyanannyi"}.`)
         : merged.size
-          ? `The official program merges ${[...merged].reduce((sum, off) => sum + realOf.get(off).size, 0)} real islands into ${merged.size} (outlined), so it sees ${c.officialIslands} islands instead of ${c.islands} and needs only ${c.officialMaterial}.`
-          : "On this map the leak doesn't merge any islands, so both answers agree.";
+          ? CG.t(`The official program merges ${[...merged].reduce((sum, off) => sum + realOf.get(off).size, 0)} real islands into ${merged.size} (outlined), so it sees ${c.officialIslands} islands instead of ${c.islands} and needs only ${c.officialMaterial}.`, `A hivatalos program ${[...merged].reduce((sum, off) => sum + realOf.get(off).size, 0)} valódi szigetet ${merged.size} szigetté olvaszt össze (körvonalazva), így ${c.islands} helyett ${c.officialIslands} szigetet lát, és csak ${c.officialMaterial} anyag kell neki.`)
+          : CG.t("On this map the leak doesn't merge any islands, so both answers agree.", "Ezen a térképen a szivárgás nem olvaszt össze szigeteket, így a két válasz egyezik.");
   }
 
-  const picker = segmented(cases.map((c, i) => ({ value: i, label: c.name })), (v) => ((current = v), draw()), current, "Map");
+  const picker = segmented(cases.map((c, i) => ({ value: i, label: nameOf(c.name) })), (v) => ((current = v), draw()), current, CG.t("Map", "Térkép"));
   const modes = segmented(
     [
-      { value: "correct", label: "Correct" },
-      { value: "official", label: "Official program" },
+      { value: "correct", label: CG.t("Correct", "Helyes") },
+      { value: "official", label: CG.t("Official program", "Hivatalos program") },
     ],
     (v) => ((mode = v), draw()),
     "correct",
-    "Which islands",
+    CG.t("Which islands", "Melyik szigetek"),
   );
   root.append(h("div", { class: "vis-row" }, picker), h("div", { class: "vis-row" }, modes), tiles, svgWrap, note);
   draw();

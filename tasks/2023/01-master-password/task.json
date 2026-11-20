@@ -8,5 +8,14 @@
   "topics": [
     "strings",
     "parsing"
-  ]
+  ],
+  "hu": {
+    "title": "Buggy mesterjelszava",
+    "summary": "Rakj ki szavakat mátrixkoordinátákból, aztán fésüld össze őket ott, ahol átfednek.",
+    "result": "92 törölt karakter, a leghosszabb: pAssWorD",
+    "topics": [
+      "szövegkezelés",
+      "elemzés"
+    ]
+  }
 }

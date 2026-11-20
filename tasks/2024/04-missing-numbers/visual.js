@@ -6,7 +6,7 @@ CG.visual("2024-4", (root, values, { h, css, onTheme, stats, fmt }) => {
   const missing = [...present.keys()].filter((i) => !present[i]).map((i) => i + min);
   const PER_ROW = 400;
   const rows = Math.ceil(present.length / PER_ROW);
-  const canvas = h("canvas", { class: "vis-canvas", width: PER_ROW, height: rows * 12, role: "img", "aria-label": "Barcode of present and missing numbers" });
+  const canvas = h("canvas", { class: "vis-canvas", width: PER_ROW, height: rows * 12, role: "img", "aria-label": CG.t("Barcode of present and missing numbers", "A meglévő és a hiányzó számok vonalkódja") });
   const ctx = canvas.getContext("2d");
   function draw() {
     ctx.fillStyle = css("--bg");
@@ -17,9 +17,9 @@ CG.visual("2024-4", (root, values, { h, css, onTheme, stats, fmt }) => {
     }
   }
   root.append(
-    stats([["Numbers in the array", fmt(values.length)], ["Range", `${fmt(min)} … ${fmt(max)}`], ["Missing", fmt(missing.length)]]),
+    stats([[CG.t("Numbers in the array", "Számok a tömbben"), fmt(values.length)], [CG.t("Range", "Tartomány"), `${fmt(min)} … ${fmt(max)}`], [CG.t("Missing", "Hiányzó"), fmt(missing.length)]]),
     h("div", { class: "vis-frame" }, canvas),
-    h("p", { class: "vis-note", text: `Each row covers ${PER_ROW} numbers. First missing: ${missing.slice(0, 8).join(", ")} …` }),
+    h("p", { class: "vis-note", text: CG.t(`Each row covers ${PER_ROW} numbers. First missing: ${missing.slice(0, 8).join(", ")} …`, `Minden sor ${PER_ROW} számot fed le. Az első hiányzók: ${missing.slice(0, 8).join(", ")} …`) }),
   );
   onTheme(draw);
   draw();

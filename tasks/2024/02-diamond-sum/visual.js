@@ -1,10 +1,10 @@
 CG.visual("2024-2", (root, _, { h, s, slider, stats, fmt }) => {
   const stage = h("div", { class: "vis-frame" });
-  const tiles = stats([["Sum of the diamond", ""], ["(N − 1)(N² + 1)", ""]]);
+  const tiles = stats([[CG.t("Sum of the diamond", "A gyémánt összege"), ""], ["(N − 1)(N² + 1)", ""]]);
   function draw(N) {
     const m = (N - 1) / 2;
     const size = Math.min(44, 620 / N);
-    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${N * size} ${N * size}`, role: "img", "aria-label": `${N} by ${N} grid with the diamond highlighted`, style: { maxWidth: `${Math.min(620, N * 46)}px`, margin: "0 auto" } });
+    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${N * size} ${N * size}`, role: "img", "aria-label": CG.t(`${N} by ${N} grid with the diamond highlighted`, `${N} × ${N}-es rács, kiemelt gyémánttal`), style: { maxWidth: `${Math.min(620, N * 46)}px`, margin: "0 auto" } });
     let sum = 0;
     for (let r = 0; r < N; r++)
       for (let c = 0; c < N; c++) {

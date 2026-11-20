@@ -1,6 +1,6 @@
 CG.visual("2022-3", (root, _, { h, s, slider, stats, fmt }) => {
   const stage = h("div", { class: "vis-frame" });
-  const tiles = stats([["Diagonal sum", ""], ["By the formula", ""], ["For 501 × 501", "83,960,501"]]);
+  const tiles = stats([[CG.t("Diagonal sum", "Átlók összege"), ""], [CG.t("By the formula", "A képlet szerint"), ""], [CG.t("For 501 × 501", "501 × 501-re"), CG.t("83,960,501", "83 960 501")]]);
   function spiral(n) {
     const g = Array.from({ length: n }, () => Array(n).fill(0));
     let r = (n - 1) / 2;
@@ -21,7 +21,7 @@ CG.visual("2022-3", (root, _, { h, s, slider, stats, fmt }) => {
   function draw(n) {
     const g = spiral(n);
     const size = Math.min(48, 600 / n);
-    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${n * size} ${n * size}`, role: "img", "aria-label": `Number spiral of side ${n}`, style: { maxWidth: `${Math.min(600, n * 52)}px`, margin: "0 auto" } });
+    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${n * size} ${n * size}`, role: "img", "aria-label": CG.t(`Number spiral of side ${n}`, `${n} oldalú számspirál`), style: { maxWidth: `${Math.min(600, n * 52)}px`, margin: "0 auto" } });
     let sum = 0;
     for (let r = 0; r < n; r++)
       for (let c = 0; c < n; c++) {
@@ -37,6 +37,6 @@ CG.visual("2022-3", (root, _, { h, s, slider, stats, fmt }) => {
     tiles.set(0, fmt(sum));
     tiles.set(1, fmt(formula));
   }
-  root.append(slider({ label: "Side", min: 1, max: 13, step: 2, value: 5, onInput: draw }), tiles, stage);
+  root.append(slider({ label: CG.t("Side", "Oldal"), min: 1, max: 13, step: 2, value: 5, onInput: draw }), tiles, stage);
   draw(5);
 });

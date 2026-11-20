@@ -7,5 +7,14 @@
   "topics": [
     "dynamic programming",
     "coin change"
-  ]
+  ],
+  "hu": {
+    "title": "Pénz",
+    "summary": "Fizess ki egy összeget a lehető legkevesebb érmével egy furcsa pénzrendszerben.",
+    "result": "pl. 134 123, 1605 érmével",
+    "topics": [
+      "dinamikus programozás",
+      "pénzváltás"
+    ]
+  }
 }

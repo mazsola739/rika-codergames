@@ -18,3 +18,10 @@ export function data(dir: string) {
     { name: 'Real input', ...parse(readFileSync(join(dir, 'input.txt'), 'utf8')), official: readFileSync(join(dir, 'answer.txt'), 'utf8').trim() },
   ]
 }
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'Helyezd el a standot, szabd meg az árat',
+  caption:
+    'Mozgasd az új standot a sorban, és változtasd az árát. Minden szurkolótípus vagy sosem vásárol tőlünk, vagy van egy árplafonja, így a bevétel fűrészfogasan nő, és a legjobb ár mindig egy plafonon van.',
+}

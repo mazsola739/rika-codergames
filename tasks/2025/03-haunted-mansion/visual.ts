@@ -17,3 +17,10 @@ export function data(dir: string) {
     real: { rooms: n, entrances: [6496, 7741, 15415, 16841], reachable: [19953, 19950, 1348, 19952], extra: 9 },
   }
 }
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'Eltűnés, varázslat, felfedezés',
+  caption:
+    'A két példakastély lépésről lépésre: keresd meg a bejáratot (oda nem vezet folyosó), töröld az eltűnt szobákat, alkalmazd egyszer a varázslatot, aztán fedezd fel a bejárattól. Lent: a valódi, 20 000 szobás kastély négy lehetséges bejárata.',
+}

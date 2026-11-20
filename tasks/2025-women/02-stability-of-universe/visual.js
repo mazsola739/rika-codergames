@@ -13,7 +13,7 @@ CG.visual("2025-women-2", (root, d, { h, s, css, onTheme, stats, bytes }) => {
     }
   const max = Math.max(...v);
   const S = 3;
-  const canvas = h("canvas", { class: "vis-canvas", width: C * S, height: R * S, role: "img", "aria-label": "Heat map of the universe with its gravitational centres", style: { imageRendering: "auto", maxWidth: "600px", cursor: "pointer" } });
+  const canvas = h("canvas", { class: "vis-canvas", width: C * S, height: R * S, role: "img", "aria-label": CG.t("Heat map of the universe with its gravitational centres", "Az univerzum hőtérképe a gravitációs középpontokkal"), style: { imageRendering: "auto", maxWidth: "600px", cursor: "pointer" } });
   const ctx = canvas.getContext("2d");
   let selected = centres.find((x) => !x.stable) ?? centres[0];
   const detail = h("div", { class: "vis-frame" });
@@ -39,7 +39,7 @@ CG.visual("2025-women-2", (root, d, { h, s, css, onTheme, stats, bytes }) => {
   }
   function showDetail() {
     const { r, c } = selected;
-    const svg = s("svg", { class: "vis-svg", viewBox: "0 0 250 250", role: "img", "aria-label": `The 5 by 5 neighbourhood of the centre at row ${r}, column ${c}`, style: { maxWidth: "250px" } });
+    const svg = s("svg", { class: "vis-svg", viewBox: "0 0 250 250", role: "img", "aria-label": CG.t(`The 5 by 5 neighbourhood of the centre at row ${r}, column ${c}`, `Középpont (${r}. sor, ${c}. oszlop) 5 × 5-ös környezete`), style: { maxWidth: "250px" } });
     for (let dr = -2; dr <= 2; dr++)
       for (let dc = -2; dc <= 2; dc++) {
         const onAxis = dr === 0 || dc === 0 || Math.abs(dr) === Math.abs(dc);
@@ -51,7 +51,7 @@ CG.visual("2025-women-2", (root, d, { h, s, css, onTheme, stats, bytes }) => {
         svg.append(s("text", { x: (dc + 2) * 50 + 25, y: (dr + 2) * 50 + 32, "text-anchor": "middle", "font-size": 20, "font-weight": 600, class: onAxis ? "f-fg" : "f-muted", text: String(val) }));
       }
     detail.replaceChildren(
-      h("div", { class: "vis-row" }, svg, h("p", { class: "vis-note", style: { flex: "1 1 220px" }, text: `Centre at row ${r}, column ${c}: ${selected.stable ? "stable, every axis value equals its mirror image." : "unstable, the red cells differ from the cell mirrored through the centre."}` })),
+      h("div", { class: "vis-row" }, svg, h("p", { class: "vis-note", style: { flex: "1 1 220px" }, text: CG.t(`Centre at row ${r}, column ${c}: ${selected.stable ? "stable, every axis value equals its mirror image." : "unstable, the red cells differ from the cell mirrored through the centre."}`, `Középpont, ${r}. sor, ${c}. oszlop: ${selected.stable ? "stabil, minden tengelyérték egyenlő a tükörképével." : "instabil, a piros cellák eltérnek a középponton át tükrözött párjuktól."}`) })),
     );
     draw();
   }
@@ -68,11 +68,11 @@ CG.visual("2025-women-2", (root, d, { h, s, css, onTheme, stats, bytes }) => {
   });
   const list = h(
     "select",
-    { "aria-label": "Gravitational centre", class: "vis-btn", onchange: (e) => ((selected = centres[Number(e.target.value)]), showDetail()) },
-    centres.map((m, i) => h("option", { value: i, text: `${m.stable ? "stable" : "unstable"} · row ${m.r}, col ${m.c}`, selected: m === selected })),
+    { "aria-label": CG.t("Gravitational centre", "Gravitációs középpont"), class: "vis-btn", onchange: (e) => ((selected = centres[Number(e.target.value)]), showDetail()) },
+    centres.map((m, i) => h("option", { value: i, text: CG.t(`${m.stable ? "stable" : "unstable"} · row ${m.r}, col ${m.c}`, `${m.stable ? "stabil" : "instabil"} · ${m.r}. sor, ${m.c}. oszlop`), selected: m === selected })),
   );
   root.append(
-    stats([["Centres", String(centres.length)], ["Stable", String(centres.filter((m) => m.stable).length)], ["Unstable", String(centres.filter((m) => !m.stable).length)]]),
+    stats([[CG.t("Centres", "Középpontok"), String(centres.length)], [CG.t("Stable", "Stabil"), String(centres.filter((m) => m.stable).length)], [CG.t("Unstable", "Instabil"), String(centres.filter((m) => !m.stable).length)]]),
     h("div", { class: "vis-frame" }, canvas),
     h("div", { class: "vis-row" }, list),
     detail,

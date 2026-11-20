@@ -8,5 +8,14 @@
     "dynamic programming",
     "egg drop"
   ],
-  "input": null
+  "input": null,
+  "hu": {
+    "title": "Két üveg, ezer emelet",
+    "summary": "Két üveg és 1000 emelet: a legkevesebb ejtés, amivel mindig kiderül, melyik emelettől törik az üveg.",
+    "result": "45 ejtés",
+    "topics": [
+      "dinamikus programozás",
+      "tojásejtés"
+    ]
+  }
 }

@@ -8,7 +8,7 @@ CG.visual("2023-5", (root, d, { h, css, onTheme, stats, bytes, fmt }) => {
   const W = 960;
   const H = 560;
   const M = { l: 60, r: 16, t: 16, b: 40 };
-  const canvas = h("canvas", { class: "vis-canvas", width: W, height: H, role: "img", "aria-label": "Scatter plot of all machines", style: { imageRendering: "auto", maxWidth: "760px" } });
+  const canvas = h("canvas", { class: "vis-canvas", width: W, height: H, role: "img", "aria-label": CG.t("Scatter plot of all machines", "Az összes gép szórásdiagramja"), style: { imageRendering: "auto", maxWidth: "760px" } });
   const ctx = canvas.getContext("2d");
   const x = (w) => M.l + (w / maxW) * (W - M.l - M.r);
   const y = (v) => H - M.b - (v / maxV) * (H - M.t - M.b);
@@ -42,16 +42,16 @@ CG.visual("2023-5", (root, d, { h, css, onTheme, stats, bytes, fmt }) => {
     ctx.setLineDash([]);
     ctx.fillStyle = css("--muted");
     ctx.font = "14px Inter, system-ui, sans-serif";
-    ctx.fillText("size →", W - M.r - 50, H - 12);
+    ctx.fillText(CG.t("size →", "méret →"), W - M.r - 50, H - 12);
     ctx.save();
     ctx.translate(18, M.t + 80);
     ctx.rotate(-Math.PI / 2);
-    ctx.fillText("usefulness →", 0, 0);
+    ctx.fillText(CG.t("usefulness →", "hasznosság →"), 0, 0);
     ctx.restore();
-    ctx.fillText(`${fmt(d.breakRatio, 2)} per unit of size`, x(wEnd) - 150, y(wEnd * d.breakRatio) + 22);
+    ctx.fillText(CG.t(`${fmt(d.breakRatio, 2)} per unit of size`, `${fmt(d.breakRatio, 2)} méretegységenként`), x(wEnd) - 150, y(wEnd * d.breakRatio) + 22);
   }
   root.append(
-    stats([["Machines", fmt(d.count)], ["Packed", fmt(packed)], ["Size used", `${fmt(d.used, 2)} / ${fmt(d.capacity)}`], ["Value (optimal)", fmt(d.value, 2)], ["Upper bound", fmt(d.bound, 2)]]),
+    stats([[CG.t("Machines", "Gépek"), fmt(d.count)], [CG.t("Packed", "Bepakolva"), fmt(packed)], [CG.t("Size used", "Felhasznált méret"), `${fmt(d.used, 2)} / ${fmt(d.capacity)}`], [CG.t("Value (optimal)", "Érték (optimális)"), fmt(d.value, 2)], [CG.t("Upper bound", "Felső korlát"), fmt(d.bound, 2)]]),
     h("div", { class: "vis-frame" }, canvas),
   );
   onTheme(draw);

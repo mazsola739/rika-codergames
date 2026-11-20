@@ -9,3 +9,10 @@ export const data = (dir: string) =>
     .split('\n')
     .filter((l) => l.trim())
     .map((l) => l.trim().split(';'))
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'Minden teszt a saját sebességhatárához mérve',
+  caption:
+    'Úttípusonként és időjárásonként egy-egy sáv. Minden pont egy teszt a saját sebességénél: telt, ha a teszt szabálysértést vár, üres, ha nem. A vonal a határ; a rózsaszín pontok a hibás tesztek, amelyek elvárása ellentmond neki.',
+}

@@ -11,5 +11,16 @@
     "frequency analysis"
   ],
   "country": "Greece",
-  "check": "custom"
+  "check": "custom",
+  "hu": {
+    "title": "A Holdkódex kincse",
+    "summary": "Egy költemény, amelynek minden versszaka más Caesar-eltolást használ.",
+    "result": "Kulcsok: 4, 7, 16, 2",
+    "topics": [
+      "kriptográfia",
+      "Caesar-titkosítás",
+      "gyakoriságelemzés"
+    ],
+    "country": "Görögország"
+  }
 }

@@ -7,5 +7,14 @@
   "topics": [
     "counting",
     "hash map"
-  ]
+  ],
+  "hu": {
+    "title": "Tisztítsd meg a tömböt",
+    "summary": "A legkevesebb törlés, amitől egy tömbben csak egyféle érték marad.",
+    "result": "n − a leggyakoribb érték darabszáma, 100-szor",
+    "topics": [
+      "számolás",
+      "hasítótábla"
+    ]
+  }
 }

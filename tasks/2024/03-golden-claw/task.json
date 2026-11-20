@@ -11,5 +11,16 @@
   ],
   "country": "Greece",
   "answer": null,
-  "check": "custom"
+  "check": "custom",
+  "hu": {
+    "title": "Az Arany Karom",
+    "summary": "Forgasd az oszlopokból álló piramist, ahol minden forgatás lefelé továbbgyűrűzik, amíg az ajtóhoz nem illik.",
+    "result": "Egy menet felülről, oszloponként egy forgatás",
+    "topics": [
+      "szimuláció",
+      "moduláris aritmetika",
+      "mohó algoritmus"
+    ],
+    "country": "Görögország"
+  }
 }

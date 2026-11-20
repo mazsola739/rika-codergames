@@ -7,5 +7,14 @@
   "topics": [
     "math",
     "arrays"
-  ]
+  ],
+  "hu": {
+    "title": "Következetlen tömb",
+    "summary": "Egy 0 … N−2 számokból álló tömbben egy érték kétszer szerepel. Keresd meg.",
+    "result": "0, 4, 12, 9, 1",
+    "topics": [
+      "matematika",
+      "tömbök"
+    ]
+  }
 }

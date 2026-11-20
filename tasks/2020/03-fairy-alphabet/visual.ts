@@ -11,3 +11,10 @@ export function data(dir: string) {
   const words = source.match(/new Set\(\s*`([^`]*)`/)![1]!.split(/\s+/).filter(Boolean)
   return { cipher: readFileSync(join(dir, 'input.txt'), 'utf8').trim(), words }
 }
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'Törd fel élőben',
+  caption:
+    'Nyomd meg a „Feltörés” gombot: a böngésződ ugyanazt a gyakoriságelemzést és hegymászó keresést futtatja, mint a solution.ts, és visszajátssza az összes javulást. A lépésenként megváltozott betűk ki vannak emelve.',
+}

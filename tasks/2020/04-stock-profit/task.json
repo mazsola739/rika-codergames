@@ -10,5 +10,15 @@
     "streaming"
   ],
   "fetch": "https://codergames.deutschetelekomitsolutions.sk/svc/stream/media/input",
-  "timeout": 120
+  "timeout": 120,
+  "hu": {
+    "title": "A holnapi részvényárak",
+    "summary": "Tízmillió jövőbeli részvényár: keresd meg egyetlen menetben a legjobb egyszeri vételt és eladást.",
+    "result": "Vétel 1 282 018 114 205-ön, eladás 18 446 743 764 542 202 088-on",
+    "topics": [
+      "egy menet",
+      "nagy egészek",
+      "adatfolyam"
+    ]
+  }
 }

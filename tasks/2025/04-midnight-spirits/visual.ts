@@ -10,3 +10,10 @@ export const data = (dir: string) =>
     .map((l) => l.trim().replace(/,\s*\]$/, ']'))
     .filter((l) => l.startsWith('['))
     .map((l) => JSON.parse(l) as number[][])
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'A legbiztonságosabb út haza',
+  caption:
+    'Minden cella a veszélyességét mutatja. Kapcsolj a „Legjobb eddig” nézetre, hogy lásd a DP-táblázatot: a bal felső saroktól az adott celláig vezető legolcsóbb összeget. A rózsaszín út a jobb alsó sarokból visszafelé olvasható ki.',
+}

@@ -9,5 +9,15 @@
     "union-find",
     "cycle detection",
     "online queries"
-  ]
+  ],
+  "hu": {
+    "title": "Az élő élek éjszakája",
+    "summary": "Egyre újabb élek jelennek meg: minden kérdésnél számold meg, hány komponensben van kör.",
+    "result": "28 válasz, az utolsó 6",
+    "topics": [
+      "union-find",
+      "körkeresés",
+      "online lekérdezések"
+    ]
+  }
 }

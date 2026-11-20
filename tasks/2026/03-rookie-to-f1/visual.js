@@ -29,7 +29,7 @@ CG.visual("2026-3", (root, { n, edges }, { h, s, player, stats, hue }) => {
   };
   const final = countsAfter(order.length);
   const maxLog = Math.log10(Number(final.reduce((a, b) => (b > a ? b : a), 1n)));
-  const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": `Graph of ${n} nodes and ${edges.length} edges` });
+  const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": CG.t(`Graph of ${n} nodes and ${edges.length} edges`, `${n} csúcsú, ${edges.length} élű gráf`) });
   const edgeEls = edges.map(([a, b]) => {
     const [x1, y1] = pos.get(a);
     const [x2, y2] = pos.get(b);
@@ -40,11 +40,11 @@ CG.visual("2026-3", (root, { n, edges }, { h, s, player, stats, hue }) => {
   const nodeEls = new Map();
   for (let v = 1; v <= n; v++) {
     const [x, y] = pos.get(v);
-    const c = s("circle", { cx: x, cy: y, r: v === 1 || v === n ? 9 : 6.5, class: "f-cell", stroke: "var(--line)" }, s("title", { text: `node ${v}` }));
+    const c = s("circle", { cx: x, cy: y, r: v === 1 || v === n ? 9 : 6.5, class: "f-cell", stroke: "var(--line)" }, s("title", { text: CG.t(`node ${v}`, `${v}. csúcs`) }));
     svg.append(c);
     nodeEls.set(v, c);
   }
-  const tiles = stats([["Processed", ""], ["Paths to node " + n, ""], ["Edges", String(edges.length)]]);
+  const tiles = stats([[CG.t("Processed", "Feldolgozva"), ""], [CG.t("Paths to node " + n, "Utak a " + n + ". csúcsig"), ""], [CG.t("Edges", "Élek"), String(edges.length)]]);
   function render(k) {
     const ways = countsAfter(k);
     const current = order[k - 1];
@@ -61,7 +61,7 @@ CG.visual("2026-3", (root, { n, edges }, { h, s, player, stats, hue }) => {
       }
       c.setAttribute("stroke", v === current ? "var(--accent)" : "var(--line)");
       c.setAttribute("stroke-width", v === current ? 3 : 1);
-      c.firstChild.textContent = `node ${v}: ${w.toLocaleString("en-US")} paths`;
+      c.firstChild.textContent = CG.t(`node ${v}: ${w.toLocaleString("en-US")} paths`, `${v}. csúcs: ${w.toLocaleString("hu-HU")} út`);
     }
     edges.forEach(([a], i) => {
       const hot = a === current;
@@ -69,9 +69,9 @@ CG.visual("2026-3", (root, { n, edges }, { h, s, player, stats, hue }) => {
       edgeEls[i].setAttribute("stroke-width", hot ? 1.6 : 0.6);
     });
     tiles.set(0, `${k} / ${order.length}`);
-    tiles.set(1, ways[n].toLocaleString("en-US"));
+    tiles.set(1, ways[n].toLocaleString(CG.t("en-US", "hu-HU")));
   }
-  const p = player({ count: order.length + 1, render, interval: 220, label: (k) => (k === 0 ? "Only node 1 has a path (itself)." : `Node ${order[k - 1]} passes its ${countsAfter(k - 1)[order[k - 1]].toLocaleString("en-US")} paths along ${out[order[k - 1]].length} edges.`) });
-  root.append(tiles, h("div", { class: "vis-frame" }, svg), p.el, h("p", { class: "vis-note", text: "Hover a node to see its count." }));
+  const p = player({ count: order.length + 1, render, interval: 220, label: (k) => (k === 0 ? CG.t("Only node 1 has a path (itself).", "Csak az 1-es csúcsnak van útja (saját maga).") : CG.t(`Node ${order[k - 1]} passes its ${countsAfter(k - 1)[order[k - 1]].toLocaleString("en-US")} paths along ${out[order[k - 1]].length} edges.`, `${order[k - 1]}. csúcs továbbadja ${countsAfter(k - 1)[order[k - 1]].toLocaleString("hu-HU")} útját ${out[order[k - 1]].length} élen.`)) });
+  root.append(tiles, h("div", { class: "vis-frame" }, svg), p.el, h("p", { class: "vis-note", text: CG.t("Hover a node to see its count.", "Vidd az egeret egy csúcs fölé, és látod a darabszámát.") }));
   p.set(order.length);
 });

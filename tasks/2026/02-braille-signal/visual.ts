@@ -47,3 +47,10 @@ export function data(dir: string) {
   }))
   return { cols: COLS, rows: ROWS, count: positions.length, pos, noise: Buffer.from(bits).toString('base64'), text }
 }
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'Nézd, ahogy előtűnik a kép',
+  caption:
+    'A napló a fájl sorrendjében játszódik le. Minden rekord egy pontot tesz a cellájába; a csalik (NOISE) felvillannak, és kiesnek. A végén az alsó három sort Braille-szövegként olvassuk el.',
+}

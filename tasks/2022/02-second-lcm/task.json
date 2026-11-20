@@ -8,5 +8,14 @@
     "math",
     "least common multiple"
   ],
-  "input": null
+  "input": null,
+  "hu": {
+    "title": "Osztható 1-től 21-ig",
+    "summary": "A második legkisebb szám, ami 1-től 21-ig minden számmal osztható.",
+    "result": "465 585 120",
+    "topics": [
+      "matematika",
+      "legkisebb közös többszörös"
+    ]
+  }
 }

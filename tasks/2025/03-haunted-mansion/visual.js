@@ -29,13 +29,13 @@ CG.visual("2025-3", (root, d, { h, s, player, segmented, fmt }) => {
     const at = new Map();
     for (const [dd, rs] of layers) rs.forEach((r, i) => at.set(r, [60 + (dd * (W - 120)) / Math.max(1, nl - 1), 30 + ((i + 0.5) * (H - 60)) / rs.length]));
     const texts = [
-      `Room ${entrance} has no passage leading into it: the main entrance.`,
-      `Rooms ${[...first].join(", ")} vanish.`,
-      extra.size ? `The spell: room ${[...extra].join(", ")} has passages to two vanished rooms and vanishes too.` : "The spell: no room has passages to two vanished rooms.",
-      `From the entrance ${reach.size} room${reach.size === 1 ? "" : "s"} can still be reached.`,
+      CG.t(`Room ${entrance} has no passage leading into it: the main entrance.`, `Ebbe a szobába nem vezet folyosó: ${entrance}. Ez a főbejárat.`),
+      CG.t(`Rooms ${[...first].join(", ")} vanish.`, `Eltűnő szobák: ${[...first].join(", ")}.`),
+      extra.size ? CG.t(`The spell: room ${[...extra].join(", ")} has passages to two vanished rooms and vanishes too.`, `A varázslat: innen két eltűnt szobába is vezet folyosó, ezért ez is eltűnik: ${[...extra].join(", ")}.`) : CG.t("The spell: no room has passages to two vanished rooms.", "A varázslat: egyik szobából sem vezet folyosó két eltűnt szobába."),
+      CG.t(`From the entrance ${reach.size} room${reach.size === 1 ? "" : "s"} can still be reached.`, `A bejárattól még ${reach.size} szoba érhető el.`),
     ];
     const render = (step) => {
-      const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "The example mansion" });
+      const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": CG.t("The example mansion", "A példakastély") });
       svg.append(s("defs", {}, s("marker", { id: `hm${k}`, viewBox: "0 0 10 10", refX: 9, refY: 5, markerWidth: 6, markerHeight: 6, orient: "auto" }, s("path", { d: "M0,0 L10,5 L0,10 z", class: "f-muted" }))));
       for (const [r, to] of out)
         for (const t of to) {
@@ -62,18 +62,18 @@ CG.visual("2025-3", (root, d, { h, s, player, segmented, fmt }) => {
   }
   const real = d.real;
   const max = Math.max(...real.reachable);
-  const bars = s("svg", { class: "vis-svg", viewBox: "0 0 640 130", role: "img", "aria-label": "Reachable rooms for each possible entrance" });
+  const bars = s("svg", { class: "vis-svg", viewBox: "0 0 640 130", role: "img", "aria-label": CG.t("Reachable rooms for each possible entrance", "Elérhető szobák lehetséges bejáratonként") });
   real.entrances.forEach((e, i) => {
     const w = (real.reachable[i] / max) * 440;
-    bars.append(s("text", { x: 0, y: 22 + i * 30, class: "t-label", text: `entrance ${e}` }));
+    bars.append(s("text", { x: 0, y: 22 + i * 30, class: "t-label", text: CG.t(`entrance ${e}`, `bejárat: ${e}`) }));
     bars.append(s("rect", { x: 110, y: 10 + i * 30, width: w, height: 18, rx: 4, class: "f-good", opacity: 0.8 }));
     bars.append(s("text", { x: 116 + w, y: 24 + i * 30, class: "t-label t-strong", text: fmt(real.reachable[i]) }));
   });
   root.append(
-    h("div", { class: "vis-row" }, segmented(d.examples.map((_, i) => ({ value: i, label: `Example ${i + 1}` })), load, 0, "Example")),
+    h("div", { class: "vis-row" }, segmented(d.examples.map((_, i) => ({ value: i, label: CG.t(`Example ${i + 1}`, `${i + 1}. példa`) })), load, 0, CG.t("Example", "Példa"))),
     stage,
     note,
-    h("p", { class: "vis-note", text: `The real mansion: ${fmt(real.rooms)} rooms, ${real.extra} extra rooms vanish, and four rooms have no way in:` }),
+    h("p", { class: "vis-note", text: CG.t(`The real mansion: ${fmt(real.rooms)} rooms, ${real.extra} extra rooms vanish, and four rooms have no way in:`, `A valódi kastély: ${fmt(real.rooms)} szoba, ${real.extra} további szoba tűnik el, és négy szobába nem vezet be út:`) }),
     h("div", { class: "vis-frame" }, bars),
   );
   load(0);

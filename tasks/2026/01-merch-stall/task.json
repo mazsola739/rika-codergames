@@ -10,5 +10,16 @@
     "brute-force cross-check"
   ],
   "country": "Spain",
-  "check": "custom"
+  "check": "custom",
+  "hu": {
+    "title": "Foglalj helyet!",
+    "summary": "Hol nyíljon új stand a szurkolói zónában, és milyen áron?",
+    "result": "1 6",
+    "topics": [
+      "optimalizálás",
+      "küszöbök",
+      "ellenőrzés nyers erővel"
+    ],
+    "country": "Spanyolország"
+  }
 }

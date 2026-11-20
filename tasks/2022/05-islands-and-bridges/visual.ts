@@ -102,3 +102,10 @@ export function data(dir: string) {
     }
   })
 }
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'Helyes szigetek a hivatalos programmal szemben',
+  caption:
+    'Minden szín egy sziget, a rózsaszín vonalak a minimális feszítőfa hídjai. Kapcsolj át a „Hivatalos program” nézetre, hogy lásd, mely szigeteket olvasztja össze az elárasztásos kitöltése, mert lelép a felső vagy a bal szélen (rózsaszín jelölés).',
+}

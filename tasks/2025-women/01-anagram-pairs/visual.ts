@@ -8,3 +8,10 @@ export const data = (dir: string) =>
     .split('\n')
     .map((l) => l.trim().split(/\s+/))
     .filter((w) => w[0])
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'Számold meg a betűket',
+  caption:
+    'A kiválasztott párnál az első szó betűi felfelé, a másodikéi lefelé számolnak. Anagrammáknál mind a 26 számláló nullán marad.',
+}

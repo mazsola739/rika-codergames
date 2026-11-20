@@ -8,5 +8,14 @@
     "dynamic programming",
     "intervals"
   ],
-  "check": "custom"
+  "check": "custom",
+  "hu": {
+    "title": "Boreladás",
+    "summary": "Adj el egy polcnyi bort, évente egy üveget, mindig valamelyik szélről; a bevétel év × ár. Keress a lehető legtöbbet.",
+    "result": "30 összeg, az első 4163",
+    "topics": [
+      "dinamikus programozás",
+      "intervallumok"
+    ]
+  }
 }

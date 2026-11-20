@@ -3,5 +3,9 @@
   "dates": "2022",
   "theme": "Number puzzles and a graph finale",
   "source": "https://codergames.deutschetelekomitsolutions.sk/history-2022",
-  "summary": "Five tasks: counting, two Project Euler-style number puzzles, Roman numerals, and islands joined by bridges, which is a minimum spanning tree in disguise."
+  "summary": "Five tasks: counting, two Project Euler-style number puzzles, Roman numerals, and islands joined by bridges, which is a minimum spanning tree in disguise.",
+  "hu": {
+    "theme": "Számrejtvények és egy gráfos finálé",
+    "summary": "Öt feladat: számolás, két Project Euler-stílusú számrejtvény, római számok, végül hidakkal összekötött szigetek, ami valójában egy álruhás minimális feszítőfa."
+  }
 }

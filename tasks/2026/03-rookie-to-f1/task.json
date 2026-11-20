@@ -10,5 +10,16 @@
     "topological order",
     "path counting"
   ],
-  "country": "Hungary"
+  "country": "Hungary",
+  "hu": {
+    "title": "Kezdőből Forma–1-es pilóta",
+    "summary": "Hányféle út vezet a kezdőtől a Forma–1-es pilótáig egy irányított körmentes gráfban?",
+    "result": "4 768 729 922 192 út",
+    "topics": [
+      "gráfok",
+      "topologikus sorrend",
+      "útszámolás"
+    ],
+    "country": "Magyarország"
+  }
 }

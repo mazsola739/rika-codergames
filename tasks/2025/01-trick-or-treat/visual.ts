@@ -10,3 +10,10 @@ export function data(dir: string) {
   for (let i = 0; i + 1 < lines.length; i += 2) cases.push({ weights: JSON.parse(lines[i]!), target: Number(lines[i + 1]) })
   return cases
 }
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'Egy menet, memóriával',
+  caption:
+    'Menj végig egyszer a vödrön. Minden csokinál keresd meg a párját (cél − súly) a már látott súlyok között; az első találat az a pár, amelynek második csokija a legkorábban jön.',
+}

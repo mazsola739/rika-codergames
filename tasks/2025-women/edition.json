@@ -3,5 +3,10 @@
   "dates": "31 March – 4 April 2025",
   "theme": "Journeys across Europe",
   "source": "https://codergames.deutschetelekomitsolutions.sk/codergames-for-women-2025",
-  "summary": "A special edition for women: anagrams, a toroidal universe, a Greek poem under four Caesar shifts, a Valencian bike route around road closures and buggy German speed-camera tests."
+  "summary": "A special edition for women: anagrams, a toroidal universe, a Greek poem under four Caesar shifts, a Valencian bike route around road closures and buggy German speed-camera tests.",
+  "hu": {
+    "dates": "2025. március 31. – április 4.",
+    "theme": "Utazások Európában",
+    "summary": "Különkiadás nőknek: anagrammák, egy tórusz alakú univerzum, egy négy Caesar-eltolással titkosított görög költemény, egy valenciai bicikliút útlezárások között és hibás német traffipaxtesztek."
+  }
 }

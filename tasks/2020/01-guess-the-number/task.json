@@ -8,5 +8,14 @@
     "logic",
     "deduction"
   ],
-  "input": null
+  "input": null,
+  "hu": {
+    "title": "Találd ki a számot",
+    "summary": "Öt szám, két ember, akik egy-egy számjegyet ismernek, két kijelentés: találd ki, melyik a szám.",
+    "result": "23",
+    "topics": [
+      "logika",
+      "következtetés"
+    ]
+  }
 }

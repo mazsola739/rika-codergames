@@ -11,3 +11,10 @@ export function data(dir: string) {
   for (let i = 0; i < m; i++) edges.push([nums[2 + 2 * i]!, nums[3 + 2 * i]!])
   return { n, edges }
 }
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'Utak számolása rétegenként',
+  caption:
+    'A csúcsok mélység szerint állnak (az 1-es csúcsból hozzájuk vezető leghosszabb út szerint). Lépkedj végig a topologikus sorrenden: minden csúcs továbbadja az útjai számát mindenkinek, akire mutat. A szín a darabszámot mutatja, logaritmikus skálán.',
+}

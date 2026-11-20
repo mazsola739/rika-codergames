@@ -9,3 +9,10 @@ export const data = (dir: string) =>
     .split('\n')
     .map((l) => l.trimEnd())
     .filter((l) => l.trim() && !/^-+.*MESSAGE.*-+$/.test(l.trim()))
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'Melyik eltolás illik az egyes sorokhoz',
+  caption:
+    'Soronként a költemény egy-egy sora, oszloponként egy-egy Caesar-eltolás; a sötétebb angolosabbat jelent. A körök az egyes sorok saját kedvencei, a rózsaszín út az összes sorra együtt meghozott döntés, ami minden kulcsváltásért büntetést fizet.',
+}

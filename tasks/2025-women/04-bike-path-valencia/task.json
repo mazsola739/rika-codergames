@@ -9,5 +9,15 @@
     "Dijkstra",
     "time-dependent shortest path"
   ],
-  "country": "Spain"
+  "country": "Spain",
+  "hu": {
+    "title": "Bicikliút Valenciában a Las Fallas idején",
+    "summary": "A legkorábbi érkezés biciklivel, amikor bizonyos utak adott időpontokban lezárulnak.",
+    "result": "145, 90, 90, 305, 145, 105",
+    "topics": [
+      "Dijkstra",
+      "időfüggő legrövidebb út"
+    ],
+    "country": "Spanyolország"
+  }
 }

@@ -12,3 +12,10 @@ export function data(dir: string) {
   const pick = [0, 1, 7, 13, 16].filter((i) => i < cases.length)
   return [{ m: 4, initial: [2, 1, 1, 3, 3, 2], target: [1, 2, 1, 3, 1, 0], name: 'Example' }, ...pick.map((i) => ({ ...cases[i]!, name: `Case ${i + 1}` }))]
 }
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'Nyisd ki az ajtót',
+  caption:
+    'Minden oszlop mutatja a lapját (számmal és színnel); az alatta lévő kis szám az ajtórajzon látható lap. Lépkedj végig a kézi forgatásokon felülről lefelé: mindegyik végiggyűrűzik mindkét oldalon, és egy oszlop akkor kész (✓), ha fölötte már semmi sem mozdul.',
+}

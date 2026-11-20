@@ -11,5 +11,16 @@
     "backtracking",
     "Warnsdorff's rule"
   ],
-  "check": "custom"
+  "check": "custom",
+  "hu": {
+    "title": "Turistamentő háló",
+    "summary": "Látogass meg a 100 túrapontból a lehető legtöbbet, mindegyiket legfeljebb egyszer.",
+    "result": "Mind a 100 pont",
+    "topics": [
+      "gráfok",
+      "leghosszabb út",
+      "visszalépéses keresés",
+      "Warnsdorff-szabály"
+    ]
+  }
 }

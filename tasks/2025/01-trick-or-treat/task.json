@@ -7,5 +7,14 @@
   "topics": [
     "hash map",
     "two-sum"
-  ]
+  ],
+  "hu": {
+    "title": "Csokit vagy csalunk!",
+    "summary": "Az első két csoki, amelyek súlya együtt pont kiadja a célt.",
+    "result": "pl. [2, 3]; null, ha nincs ilyen",
+    "topics": [
+      "hasítótábla",
+      "kétösszeg"
+    ]
+  }
 }

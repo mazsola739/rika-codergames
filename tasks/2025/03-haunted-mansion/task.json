@@ -8,5 +8,15 @@
     "graphs",
     "in-degree",
     "breadth-first search"
-  ]
+  ],
+  "hu": {
+    "title": "Kísértetkastély",
+    "summary": "Szobák tűnnek el egy egyirányú folyosós kastélyból: keresd meg a bejáratot, és azt, hogy mi érhető még el.",
+    "result": "4 lehetséges bejárat, 9 további szoba tűnik el",
+    "topics": [
+      "gráfok",
+      "befok",
+      "szélességi keresés"
+    ]
+  }
 }

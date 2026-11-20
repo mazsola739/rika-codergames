@@ -9,7 +9,7 @@ CG.visual("2021-5", (root, lines, { h, s, segmented }) => {
     const per = Math.min(values.length, 17);
     const rows = Math.ceil(values.length / per);
     const size = 36;
-    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${per * size + 8} ${rows * size + 8}`, role: "img", "aria-label": `Array of ${n} numbers`, style: { maxWidth: `${per * 44}px` } });
+    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${per * size + 8} ${rows * size + 8}`, role: "img", "aria-label": CG.t(`Array of ${n} numbers`, `${n} számból álló tömb`), style: { maxWidth: `${per * 44}px` } });
     values.forEach((v, i) => {
       const x = 4 + (i % per) * size;
       const y = 4 + Math.floor(i / per) * size;
@@ -19,9 +19,9 @@ CG.visual("2021-5", (root, lines, { h, s, segmented }) => {
     });
     box.replaceChildren(
       h("div", { class: "vis-frame" }, svg),
-      h("p", { class: "vis-mono", text: `sum = ${sum}    0 + 1 + … + ${n - 2} = ${expected}    duplicate = ${sum} − ${expected} = ${dup}` }),
+      h("p", { class: "vis-mono", text: CG.t(`sum = ${sum}    0 + 1 + … + ${n - 2} = ${expected}    duplicate = ${sum} − ${expected} = ${dup}`, `összeg = ${sum}    0 + 1 + … + ${n - 2} = ${expected}    duplikált = ${sum} − ${expected} = ${dup}`) }),
     );
   }
-  root.append(h("div", { class: "vis-row" }, segmented(lines.map((l, i) => ({ value: i, label: `N = ${l.n}` })), draw, 0, "Line")), box);
+  root.append(h("div", { class: "vis-row" }, segmented(lines.map((l, i) => ({ value: i, label: `N = ${l.n}` })), draw, 0, CG.t("Line", "Sor"))), box);
   draw(0);
 });

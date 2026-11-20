@@ -8,5 +8,14 @@
     "dynamic programming",
     "longest common subsequence"
   ],
-  "check": "custom"
+  "check": "custom",
+  "hu": {
+    "title": "Stringeria",
+    "summary": "Két 1000 betűs szöveg leghosszabb közös részsorozata.",
+    "result": "319 hosszú",
+    "topics": [
+      "dinamikus programozás",
+      "leghosszabb közös részsorozat"
+    ]
+  }
 }

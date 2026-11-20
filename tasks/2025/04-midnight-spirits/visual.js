@@ -2,7 +2,7 @@ CG.visual("2025-4", (root, maps, { h, s, segmented, stats }) => {
   let k = maps.length - 1;
   let show = "danger";
   const stage = h("div", { class: "vis-frame" });
-  const tiles = stats([["Size", ""], ["Safest total", ""], ["Path length", ""]]);
+  const tiles = stats([[CG.t("Size", "Méret"), ""], [CG.t("Safest total", "Legbiztonságosabb összeg"), ""], [CG.t("Path length", "Úthossz"), ""]]);
   function draw() {
     const g = maps[k];
     const R = g.length;
@@ -24,7 +24,7 @@ CG.visual("2025-4", (root, maps, { h, s, segmented, stats }) => {
     const maxV = Math.max(...g.flat());
     const maxB = best[R - 1][C - 1];
     const size = Math.min(56, 620 / C);
-    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${C * size} ${R * size}`, role: "img", "aria-label": `Danger map of ${R} by ${C}`, style: { maxWidth: `${Math.min(620, C * 58)}px`, margin: "0 auto" } });
+    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${C * size} ${R * size}`, role: "img", "aria-label": CG.t(`Danger map of ${R} by ${C}`, `${R} × ${C}-es veszélytérkép`), style: { maxWidth: `${Math.min(620, C * 58)}px`, margin: "0 auto" } });
     for (let r = 0; r < R; r++)
       for (let c = 0; c < C; c++) {
         const on = path.has(r * C + c);
@@ -36,11 +36,11 @@ CG.visual("2025-4", (root, maps, { h, s, segmented, stats }) => {
     stage.replaceChildren(svg);
     tiles.set(0, `${R} × ${C}`);
     tiles.set(1, String(maxB));
-    tiles.set(2, `${path.size} cells`);
+    tiles.set(2, CG.t(`${path.size} cells`, `${path.size} cella`));
   }
   root.append(
-    h("div", { class: "vis-row" }, segmented(maps.map((m, i) => ({ value: i, label: `${m.length}×${m[0].length}` })), (v) => ((k = v), draw()), k, "Map")),
-    h("div", { class: "vis-row" }, segmented([{ value: "danger", label: "Danger" }, { value: "best", label: "Best so far" }], (v) => ((show = v), draw()), show, "Numbers")),
+    h("div", { class: "vis-row" }, segmented(maps.map((m, i) => ({ value: i, label: `${m.length}×${m[0].length}` })), (v) => ((k = v), draw()), k, CG.t("Map", "Térkép"))),
+    h("div", { class: "vis-row" }, segmented([{ value: "danger", label: CG.t("Danger", "Veszély") }, { value: "best", label: CG.t("Best so far", "Legjobb eddig") }], (v) => ((show = v), draw()), show, CG.t("Numbers", "Számok"))),
     tiles,
     stage,
   );

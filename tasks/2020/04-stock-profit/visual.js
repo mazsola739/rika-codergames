@@ -13,7 +13,7 @@ CG.visual("2020-4", (root, _, { h, s, player, stats, scale, rng, segmented, fmt 
   };
   let data = series.walk;
   const chart = h("div", { class: "vis-frame" });
-  const tiles = stats([["Cheapest so far", ""], ["Best trade so far", ""], ["Profit", ""]]);
+  const tiles = stats([[CG.t("Cheapest so far", "Eddigi legolcsóbb"), ""], [CG.t("Best trade so far", "Eddigi legjobb ügylet"), ""], [CG.t("Profit", "Nyereség"), ""]]);
 
   function steps() {
     let low = 0;
@@ -34,7 +34,7 @@ CG.visual("2020-4", (root, _, { h, s, player, stats, scale, rng, segmented, fmt 
     const x = scale(0, data.length - 1, m.l, W - m.r);
     const y = scale(0, max, H - m.b, m.t);
     const st = trace[i];
-    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Price chart with the scan position" });
+    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": CG.t("Price chart with the scan position", "Árgrafikon a vizsgált ponttal") });
     svg.append(s("line", { x1: m.l, x2: W - m.r, y1: H - m.b, y2: H - m.b, class: "s-line" }));
     const gmax = data.indexOf(max);
     const gmin = data.indexOf(Math.min(...data));
@@ -49,15 +49,15 @@ CG.visual("2020-4", (root, _, { h, s, player, stats, scale, rng, segmented, fmt 
     svg.append(s("line", { x1: x(i), x2: x(i), y1: m.t, y2: H - m.b, class: "s-fg", "stroke-width": 1.2 }));
     svg.append(s("text", { x: m.l - 6, y: y(max) + 4, "text-anchor": "end", class: "t-label", text: String(max) }));
     chart.replaceChildren(svg);
-    tiles.set(0, `${data[st.low]} (day ${st.low + 1})`);
-    tiles.set(1, st.best ? `buy ${data[st.best[0]]}, sell ${data[st.best[1]]}` : "none yet");
+    tiles.set(0, CG.t(`${data[st.low]} (day ${st.low + 1})`, `${data[st.low]} (${st.low + 1}. nap)`));
+    tiles.set(1, st.best ? CG.t(`buy ${data[st.best[0]]}, sell ${data[st.best[1]]}`, `vétel ${data[st.best[0]]}, eladás ${data[st.best[1]]}`) : CG.t("none yet", "még nincs"));
     tiles.set(2, st.best ? fmt(data[st.best[1]] - data[st.best[0]]) : "0");
   }
-  const p = player({ count: data.length, render, interval: 140, label: (i) => `Price ${i + 1} of ${data.length}: ${data[i]}` });
+  const p = player({ count: data.length, render, interval: 140, label: (i) => CG.t(`Price ${i + 1} of ${data.length}: ${data[i]}`, `${i + 1}/${data.length}. ár: ${data[i]}`) });
   const pick = segmented(
     [
-      { value: "walk", label: "Random walk" },
-      { value: "example", label: "Example from the task" },
+      { value: "walk", label: CG.t("Random walk", "Véletlen bolyongás") },
+      { value: "example", label: CG.t("Example from the task", "A feladat példája") },
     ],
     (v) => {
       data = series[v];
@@ -66,7 +66,7 @@ CG.visual("2020-4", (root, _, { h, s, player, stats, scale, rng, segmented, fmt 
       p.set(data.length - 1);
     },
     "walk",
-    "Prices",
+    CG.t("Prices", "Árak"),
   );
   root.append(h("div", { class: "vis-row" }, pick), tiles, chart, p.el);
   p.set(data.length - 1);

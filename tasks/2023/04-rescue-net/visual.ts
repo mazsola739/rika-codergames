@@ -80,3 +80,10 @@ export function data(dir: string) {
   const norm = pos.map(([x, y]) => [Math.round(((x! - x0) / (x1 - x0)) * 1000) / 1000, Math.round(((y! - y0) / (y1 - y0)) * 1000) / 1000])
   return { nodes, pos: norm, edges, path: best }
 }
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'Útvonal mind a 100 ponton át',
+  caption:
+    'A túraútvonal-hálózat erő alapú elrendezéssel. Játszd le a Warnsdorff-szabállyal vezérelt mélységi keresés útvonalát: minden pontot pontosan egyszer ér el.',
+}

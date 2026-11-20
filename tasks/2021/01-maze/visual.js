@@ -29,7 +29,7 @@ CG.visual("2021-1", (root, rows, { h, s, player, stats }) => {
   const STEPS = pathLen + 2;
 
   // Draw the maze once; each step only recolours the cells.
-  const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": `Maze of ${H} by ${W} cells` });
+  const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": CG.t(`Maze of ${H} by ${W} cells`, `${H} × ${W} cellás útvesztő`) });
   const cells = [];
   for (let r = 0; r < H; r++)
     for (let c = 0; c < W; c++) {
@@ -43,7 +43,7 @@ CG.visual("2021-1", (root, rows, { h, s, player, stats }) => {
     svg.append(s("rect", { x: c, y: r, width: 1, height: 1, class: label === "S" ? "f-info" : "f-good" }));
     svg.append(s("text", { x: c + 0.5, y: r + 0.75, "text-anchor": "middle", "font-size": 0.7, "font-weight": 700, class: "f-surface", text: label }));
   }
-  const tiles = stats([["Steps from S", "0"], ["Cells reached", "0"], ["Shortest path", "?"]]);
+  const tiles = stats([[CG.t("Steps from S", "Lépés S-től"), "0"], [CG.t("Cells reached", "Elért cellák"), "0"], [CG.t("Shortest path", "Legrövidebb út"), "?"]]);
 
   function render(step) {
     const front = Math.min(step, maxDist);
@@ -64,9 +64,9 @@ CG.visual("2021-1", (root, rows, { h, s, player, stats }) => {
     pathLine.setAttribute("points", done ? path.map((cell) => `${(cell % W) + 0.5},${Math.floor(cell / W) + 0.5}`).join(" ") : "");
     tiles.set(0, String(Math.min(step, pathLen)));
     tiles.set(1, String(reached));
-    tiles.set(2, done ? `${pathLen} steps` : "?");
+    tiles.set(2, done ? CG.t(`${pathLen} steps`, `${pathLen} lépés`) : "?");
   }
-  const p = player({ count: STEPS, render, interval: 70, label: (i) => (i > pathLen ? "E reached: the path is traced back through the cells' predecessors." : `The wave is ${i} steps from S.`) });
+  const p = player({ count: STEPS, render, interval: 70, label: (i) => (i > pathLen ? CG.t("E reached: the path is traced back through the cells' predecessors.", "Elértük E-t: az út visszafelé, a cellák elődein át rajzolódik ki.") : CG.t(`The wave is ${i} steps from S.`, `A hullám ${i} lépésre van S-től.`)) });
   root.append(tiles, h("div", { class: "vis-frame" }, svg), p.el);
   p.set(STEPS - 1);
 });

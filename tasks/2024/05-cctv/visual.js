@@ -34,7 +34,7 @@ CG.visual("2024-5", (root, cases, { h, s, segmented, stats, button, rng }) => {
     return { r0: Math.min(...rs), r1: Math.max(...rs), c0: Math.min(...cs), c1: Math.max(...cs) };
   };
 
-  const tiles = stats([["Presses", "0"], ["Compactness now", ""], ["Best possible", ""]]);
+  const tiles = stats([[CG.t("Presses", "Gombnyomások"), "0"], [CG.t("Compactness now", "Mostani tömörség"), ""], [CG.t("Best possible", "A lehető legjobb"), ""]]);
   const board = h("div", { class: "vis-frame" });
   const note = h("p", { class: "vis-note" });
 
@@ -46,7 +46,7 @@ CG.visual("2024-5", (root, cases, { h, s, segmented, stats, button, rng }) => {
     const cols = axis(cells.map((c) => c[1]), W);
     const S = 1; // cell size in SVG units
     const M = 1.4; // margin for the occupancy bars
-    const svg = s("svg", { class: "vis-svg", viewBox: `${-M} ${-M} ${W + M + 0.2} ${H + M + 0.2}`, tabindex: 0, role: "img", "aria-label": `Grid of ${H} by ${W} cells with ${cells.length} camera images. Use the arrow keys to shift them.`, style: { maxWidth: `${Math.min(680, 60 * W + 80)}px`, margin: "0 auto" } });
+    const svg = s("svg", { class: "vis-svg", viewBox: `${-M} ${-M} ${W + M + 0.2} ${H + M + 0.2}`, tabindex: 0, role: "img", "aria-label": CG.t(`Grid of ${H} by ${W} cells with ${cells.length} camera images. Use the arrow keys to shift them.`, `${H} × ${W} cellás rács ${cells.length} kameraképpel. A nyílbillentyűkkel tolhatod el őket.`), style: { maxWidth: `${Math.min(680, 60 * W + 80)}px`, margin: "0 auto" } });
     for (let r = 0; r < H; r++) for (let c = 0; c < W; c++) svg.append(s("rect", { x: c + 0.05, y: r + 0.05, width: 0.9, height: 0.9, rx: 0.12, class: "f-cell" }));
     // occupancy bars: top for columns, left for rows
     const occR = new Set(cells.map((c) => c[0]));
@@ -68,17 +68,17 @@ CG.visual("2024-5", (root, cases, { h, s, segmented, stats, button, rng }) => {
     board.replaceChildren(svg);
     tiles.set(0, String(presses));
     tiles.set(1, String(area));
-    tiles.set(2, `${rows.span * cols.span} in ${rows.moves + cols.moves} presses`);
+    tiles.set(2, CG.t(`${rows.span * cols.span} in ${rows.moves + cols.moves} presses`, `${rows.span * cols.span}, ${rows.moves + cols.moves} gombnyomással`));
     const bestArea = rows.span * cols.span;
     const bestMoves = rows.moves + cols.moves;
     note.textContent =
       area !== bestArea
-        ? `The shortest block covering the rows is ${rows.span} long, for the columns ${cols.span}. Shift the images to get compactness ${bestArea}.`
+        ? CG.t(`The shortest block covering the rows is ${rows.span} long, for the columns ${cols.span}. Shift the images to get compactness ${bestArea}.`, `A sorokat lefedő legrövidebb blokk ${rows.span} hosszú, az oszlopoké ${cols.span}. Told el a képeket, hogy a tömörség ${bestArea} legyen.`)
         : presses === 0
-          ? "Already as compact as it gets, no presses needed."
+          ? CG.t("Already as compact as it gets, no presses needed.", "Már most is a lehető legtömörebb, nem kell gombot nyomni.")
           : presses === bestMoves
-            ? `Compactness ${area} in ${presses} presses: optimal.`
-            : `Compactness ${area} reached in ${presses} presses. It can be done in ${bestMoves}.`;
+            ? CG.t(`Compactness ${area} in ${presses} presses: optimal.`, `Tömörség: ${area}, ${presses} gombnyomással: optimális.`)
+            : CG.t(`Compactness ${area} reached in ${presses} presses. It can be done in ${bestMoves}.`, `Tömörség: ${area}, ${presses} gombnyomással. ${bestMoves} gombnyomással is meg lehet csinálni.`);
   }
 
   function shift(dr, dc) {
@@ -123,21 +123,21 @@ CG.visual("2024-5", (root, cases, { h, s, segmented, stats, button, rng }) => {
     return { name: "Random", h: H, w: W, cells: [...set].map((x) => x.split(",").map(Number)) };
   }
 
-  const pickerOptions = [...cases.map((c, i) => ({ value: i, label: c.name })), { value: "random", label: "Random grid" }];
-  const picker = segmented(pickerOptions, (v) => reset(v === "random" ? randomCase() : cases[v]), 0, "Grid");
+  const pickerOptions = [...cases.map((c, i) => ({ value: i, label: CG.t(c.name, c.name.replace(/^Case (\d+)$/, "$1. eset")) })), { value: "random", label: CG.t("Random grid", "Véletlen rács") }];
+  const picker = segmented(pickerOptions, (v) => reset(v === "random" ? randomCase() : cases[v]), 0, CG.t("Grid", "Rács"));
   const arrows = h(
     "div",
-    { class: "seg", role: "group", "aria-label": "Shift every image" },
-    button("←", { "aria-label": "Left", onclick: () => shift(0, -1) }),
-    button("↑", { "aria-label": "Up", onclick: () => shift(-1, 0) }),
-    button("↓", { "aria-label": "Down", onclick: () => shift(1, 0) }),
-    button("→", { "aria-label": "Right", onclick: () => shift(0, 1) }),
+    { class: "seg", role: "group", "aria-label": CG.t("Shift every image", "Minden kép eltolása") },
+    button("←", { "aria-label": CG.t("Left", "Balra"), onclick: () => shift(0, -1) }),
+    button("↑", { "aria-label": CG.t("Up", "Fel"), onclick: () => shift(-1, 0) }),
+    button("↓", { "aria-label": CG.t("Down", "Le"), onclick: () => shift(1, 0) }),
+    button("→", { "aria-label": CG.t("Right", "Jobbra"), onclick: () => shift(0, 1) }),
   );
   root.append(
     h("div", { class: "vis-row" }, picker),
     tiles,
     board,
-    h("div", { class: "vis-row" }, arrows, button("Show the solution", { class: "vis-btn primary", onclick: solve }), button("Reset", { onclick: () => reset(base) })),
+    h("div", { class: "vis-row" }, arrows, button(CG.t("Show the solution", "Mutasd a megoldást"), { class: "vis-btn primary", onclick: solve }), button(CG.t("Reset", "Visszaállítás"), { onclick: () => reset(base) })),
     note,
   );
   reset(cases[0]);

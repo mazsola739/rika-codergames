@@ -28,7 +28,7 @@ CG.visual("2021-2", (root, shelves, { h, s, player, stats, segmented, fmt }) => 
   }
 
   const stage = h("div", { class: "vis-frame" });
-  const tiles = stats([["Year", ""], ["Earned so far", ""], ["Optimal total", ""], ["Greedy total", ""]]);
+  const tiles = stats([[CG.t("Year", "Év"), ""], [CG.t("Earned so far", "Eddigi bevétel"), ""], [CG.t("Optimal total", "Optimális összeg"), ""], [CG.t("Greedy total", "Mohó összeg"), ""]]);
   let picks = [];
   const total = (prices, ps) => ps.reduce((sum, idx, y) => sum + (y + 1) * prices[idx], 0);
 
@@ -38,7 +38,7 @@ CG.visual("2021-2", (root, shelves, { h, s, player, stats, segmented, fmt }) => 
     const bw = Math.min(56, 620 / n);
     const W = bw * n + 20;
     const max = Math.max(...shelf.prices);
-    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} 150`, role: "img", "aria-label": "The shelf of bottles" });
+    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} 150`, role: "img", "aria-label": CG.t("The shelf of bottles", "Az üvegek polca") });
     shelf.prices.forEach((p, i) => {
       const x = 10 + i * bw;
       const hgt = 20 + (p / max) * 80;
@@ -46,13 +46,13 @@ CG.visual("2021-2", (root, shelves, { h, s, player, stats, segmented, fmt }) => 
       const next = picks[step] === i;
       svg.append(s("rect", { x: x + bw * 0.18, y: 112 - hgt, width: bw * 0.64, height: hgt, rx: bw * 0.18, class: sold ? "f-cell" : next ? "f-accent" : "f-info", opacity: sold ? 1 : 0.85 }));
       if (bw > 18) svg.append(s("text", { x: x + bw / 2, y: 128, "text-anchor": "middle", class: "t-label", text: String(p) }));
-      if (sold && bw > 18) svg.append(s("text", { x: x + bw / 2, y: 145, "text-anchor": "middle", class: "t-label t-strong", text: `y${sold}` }));
+      if (sold && bw > 18) svg.append(s("text", { x: x + bw / 2, y: 145, "text-anchor": "middle", class: "t-label t-strong", text: CG.t(`y${sold}`, `${sold}.`) }));
     });
     stage.replaceChildren(svg);
     tiles.set(0, String(step));
     tiles.set(1, fmt(total(shelf.prices, picks.slice(0, step))));
   }
-  const p = player({ count: 2, render, interval: 500, label: (i) => (i === 0 ? "Nothing sold yet. The pink bottle is sold next." : i >= picks.length ? "Shelf empty." : `Year ${i}: sold the bottle priced ${shelf.prices[picks[i - 1]]}.`) });
+  const p = player({ count: 2, render, interval: 500, label: (i) => (i === 0 ? CG.t("Nothing sold yet. The pink bottle is sold next.", "Még semmit sem adtunk el. A rózsaszín üveg megy el következőnek.") : i >= picks.length ? CG.t("Shelf empty.", "A polc üres.") : CG.t(`Year ${i}: sold the bottle priced ${shelf.prices[picks[i - 1]]}.`, `${i}. év: elkelt egy ${shelf.prices[picks[i - 1]]} árú üveg.`)) });
   function load() {
     picks = order(shelf.prices, rule);
     tiles.set(2, fmt(total(shelf.prices, order(shelf.prices, "dp"))));
@@ -60,15 +60,15 @@ CG.visual("2021-2", (root, shelves, { h, s, player, stats, segmented, fmt }) => 
     p.reset(picks.length + 1);
     p.set(picks.length);
   }
-  const shelfPick = segmented(shelves.map((x, i) => ({ value: i, label: x.name })), (i) => ((shelf = shelves[i]), load()), 0, "Shelf");
+  const shelfPick = segmented(shelves.map((x, i) => ({ value: i, label: CG.t(x.name, x.name === "Example" ? "Példa" : x.name.replace(/^Shelf (\d+)$/, "$1. polc")) })), (i) => ((shelf = shelves[i]), load()), 0, CG.t("Shelf", "Polc"));
   const rulePick = segmented(
     [
-      { value: "dp", label: "Optimal order" },
-      { value: "greedy", label: "Greedy: cheaper end first" },
+      { value: "dp", label: CG.t("Optimal order", "Optimális sorrend") },
+      { value: "greedy", label: CG.t("Greedy: cheaper end first", "Mohó: előbb az olcsóbb szél") },
     ],
     (v) => ((rule = v), load()),
     "dp",
-    "Selling rule",
+    CG.t("Selling rule", "Eladási szabály"),
   );
   root.append(h("div", { class: "vis-row" }, shelfPick), h("div", { class: "vis-row" }, rulePick), tiles, stage, p.el);
   load();

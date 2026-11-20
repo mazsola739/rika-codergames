@@ -9,5 +9,16 @@
     "bit masks",
     "Braille"
   ],
-  "country": "Germany"
+  "country": "Germany",
+  "hu": {
+    "title": "A Braille-jel",
+    "summary": "Rakj össze egy Braille-képet egy összekevert telemetrianaplóból, és olvasd el a feliratait.",
+    "result": "AVUS, Max Esser",
+    "topics": [
+      "elemzés",
+      "bitmaszkok",
+      "Braille"
+    ],
+    "country": "Németország"
+  }
 }

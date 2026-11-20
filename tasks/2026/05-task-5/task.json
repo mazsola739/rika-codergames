@@ -5,5 +5,9 @@
   "topics": [],
   "input": null,
   "answer": null,
-  "status": "pending"
+  "status": "pending",
+  "hu": {
+    "title": "5. feladat",
+    "summary": "2026. november 20-án 18:00-kor (CET) jelenik meg."
+  }
 }

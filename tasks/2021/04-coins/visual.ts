@@ -10,3 +10,10 @@ export function data(dir: string) {
   for (let k = 0; k < Number(lines[0]); k++) sets.push(lines[2 + 2 * k]!.trim().split(/\s+/).map(Number))
   return [[1, 5, 10, 25], [5, 10, 25], [2, 12, 15, 24], ...sets.filter((s, i, a) => a.findIndex((x) => x.join() === s.join()) === i)]
 }
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'Mohó módszer vagy a legkevesebb érme',
+  caption:
+    'Válassz érmekészletet és összeget. A mohó módszer (mindig a legnagyobb érme) eredménye a dinamikus programozás optimális válasza mellett látszik. Az alsó grafikon 200-ig minden olyan összeget megjelöl, ahol a mohó módszernek több érme kell.',
+}

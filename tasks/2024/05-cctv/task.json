@@ -8,5 +8,15 @@
     "circular arrays",
     "independence of axes"
   ],
-  "country": "Spain"
+  "country": "Spain",
+  "hu": {
+    "title": "CCTV",
+    "summary": "Tologasd a kameraképeket egy körbeérő képernyőn, amíg a lehető legtömörebben nem állnak.",
+    "result": "4; 2 és 6; 0",
+    "topics": [
+      "körkörös tömbök",
+      "a tengelyek függetlensége"
+    ],
+    "country": "Spanyolország"
+  }
 }

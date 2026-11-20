@@ -3,5 +3,9 @@
   "dates": "2020",
   "theme": "Logic puzzles and first algorithms",
   "source": "https://codergames.deutschetelekomitsolutions.sk/history-2020",
-  "summary": "The first edition: five tasks, half logic riddles and half code. A deduction puzzle, a liar riddle, a substitution cipher, ten million stock prices and the two-egg drop."
+  "summary": "The first edition: five tasks, half logic riddles and half code. A deduction puzzle, a liar riddle, a substitution cipher, ten million stock prices and the two-egg drop.",
+  "hu": {
+    "theme": "Logikai fejtörők és az első algoritmusok",
+    "summary": "Az első verseny: öt feladat, fele logikai fejtörő, fele kód. Egy kikövetkeztetős rejtvény, egy hazugságos talány, egy betűhelyettesítéses titkosírás, tízmillió részvényárfolyam és a kéttojásos ejtés."
+  }
 }

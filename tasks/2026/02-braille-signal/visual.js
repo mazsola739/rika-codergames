@@ -17,12 +17,12 @@ CG.visual("2026-2", (root, d, { h, css, onTheme, player, segmented, stats, fmt, 
   const coords = Array.from(pos, xy);
   const validTotal = coords.length - [...Array(coords.length).keys()].filter(isNoise).length;
 
-  const canvas = h("canvas", { class: "vis-canvas", width: W, height: H, role: "img", "aria-label": "The Braille raster as pixels" });
+  const canvas = h("canvas", { class: "vis-canvas", width: W, height: H, role: "img", "aria-label": CG.t("The Braille raster as pixels", "A Braille-raszter pixelekként") });
   const ctx = canvas.getContext("2d");
   let showDecoys = true;
   const STEPS = 120;
   const upto = (step) => Math.round((coords.length * step) / (STEPS - 1));
-  const tiles = stats([["Dots placed", "0"], ["Decoys thrown away", "0"], ["Records read", "0"]]);
+  const tiles = stats([[CG.t("Dots placed", "Elhelyezett pontok"), "0"], [CG.t("Decoys thrown away", "Kidobott csalik"), "0"], [CG.t("Records read", "Beolvasott rekordok"), "0"]]);
   const reading = h("div", { class: "visual-body", hidden: true });
 
   function draw(step) {
@@ -51,22 +51,22 @@ CG.visual("2026-2", (root, d, { h, css, onTheme, player, segmented, stats, fmt, 
     reading.hidden = step < STEPS - 1;
   }
 
-  const p = player({ count: STEPS, render: draw, interval: 60, label: (i) => (i === STEPS - 1 ? "Done: the picture and the metadata rows are complete." : `Replaying the log: ${Math.round((i / (STEPS - 1)) * 100)}%`) });
+  const p = player({ count: STEPS, render: draw, interval: 60, label: (i) => (i === STEPS - 1 ? CG.t("Done: the picture and the metadata rows are complete.", "Kész: a kép és a metaadatsorok teljesek.") : CG.t(`Replaying the log: ${Math.round((i / (STEPS - 1)) * 100)}%`, `A napló visszajátszása: ${Math.round((i / (STEPS - 1)) * 100)}%`)) });
   const toggle = segmented(
     [
-      { value: true, label: "Flash decoys" },
-      { value: false, label: "Hide decoys" },
+      { value: true, label: CG.t("Flash decoys", "Csalik villogtatása") },
+      { value: false, label: CG.t("Hide decoys", "Csalik elrejtése") },
     ],
     (v) => {
       showDecoys = v;
       draw(p.index);
     },
     true,
-    "Decoy records",
+    CG.t("Decoy records", "Csalirekordok"),
   );
 
   for (const [i, row] of d.text.entries()) {
-    const label = ["Row 43 · location", "Row 44 · depicted", "Row 45 · artist"][i];
+    const label = CG.t(["Row 43 · location", "Row 44 · depicted", "Row 45 · artist"], ["43. sor · helyszín", "44. sor · ábrázolt alakok", "45. sor · művész"])[i];
     reading.append(
       h(
         "div",
@@ -74,8 +74,9 @@ CG.visual("2026-2", (root, d, { h, css, onTheme, player, segmented, stats, fmt, 
         h("span", { class: "dim", text: label + "\n" }),
         h("span", { text: row.braille + "\n", style: { fontSize: "20px", letterSpacing: "2px" } }),
         h("mark", { text: row.letters }),
-        h("span", { class: "dim", text: `
-In English: ${row.english}` }),
+        h("span", { class: "dim", text: CG.t(`
+In English: ${row.english}`, `
+Magyarul: ${["AVUS, északi kanyar", "Ewald Kluge egy DKW-n és Ernst Jakob Henne egy BMW-n", "Max Esser szobra"][i]}`) }),
       ),
     );
   }
@@ -84,7 +85,7 @@ In English: ${row.english}` }),
     tiles,
     h("div", { class: "vis-frame" }, canvas),
     p.el,
-    h("div", { class: "vis-row" }, toggle, h("span", { class: "vis-note", text: "Black dots come from VALID records; pink flashes are NOISE records being discarded." })),
+    h("div", { class: "vis-row" }, toggle, h("span", { class: "vis-note", text: CG.t("Black dots come from VALID records; pink flashes are NOISE records being discarded.", "A fekete pontok a VALID rekordokból jönnek; a rózsaszín villanások a kidobott NOISE rekordok.") })),
     reading,
   );
   onTheme(() => draw(p.index));

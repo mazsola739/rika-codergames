@@ -8,3 +8,10 @@ export const data = (dir: string) =>
     .split('\n')
     .filter((l) => l.trim())
     .map((l) => ({ n: Number(l.split(';')[0]), values: l.split(';')[1]!.split(',').map(Number) }))
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'Keresd a plusz számot',
+  caption:
+    'A tömbben a 0 … N−2 számok szerepelnek, és egy közülük kétszer. Az összege pont ennyivel nagyobb, mint 0 + 1 + … + (N−2).',
+}

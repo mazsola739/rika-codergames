@@ -6,12 +6,14 @@
   const main = document.getElementById("main");
   const views = [...document.querySelectorAll(".view")];
   const editions = views.map((v) => v.dataset.edition).filter(Boolean);
+  const T = window.CG.t;
+  const SITE = T("CoderGames Solutions", "CoderGames megoldások");
 
   // ----- theme: opens light, the toggle switches for this visit only -----
   const toggle = document.getElementById("themeToggle");
   const current = () => (root.getAttribute("data-theme") === "dark" ? "dark" : "light");
   const label = () => {
-    const text = current() === "dark" ? "Switch to light mode" : "Switch to dark mode";
+    const text = current() === "dark" ? T("Switch to light mode", "Világos mód") : T("Switch to dark mode", "Sötét mód");
     toggle.setAttribute("aria-label", text);
     toggle.title = text;
   };
@@ -74,20 +76,78 @@
     if (open && open.querySelector(".hero-snap img[data-raster]")) heroSnap(open);
   }
 
-  // ----- hero art, painted on a canvas: lines of code under a radial zoom blur (deep blue to
-  // violet), and on the right a dense rain of glowing turquoise digits. Seeded per page. -----
+  // ----- hero art: lines of modern JavaScript (ES2015 to ES2026) on the banner. The CSS paints
+  // the background and the shade behind the text; the canvas only holds the code. It is drawn
+  // once the fonts have loaded and then fades in, so the picture never swaps while the page
+  // loads. Every banner hides one pink line about Rika, where the text and snapshot leave room. -----
   const CODE = [
-    "solve(input)", "=>", "const", "return", "for (let i = 0;", "i < n;", "i++)", "dp[i][j]", "Math.min(", "queue.push(v)", "visited.add(u)",
-    "if (!seen.has(x))", "parent[x] = root", "BigInt(", "0x2800", ".split(\"\\n\")", "map((l) =>", "while (q.length)", "best = Math.max(", "{", "}", "};",
-    "graph[a].push(b)", "dist[v] + 1", "cells[r * W + c]", "let lo = 0, hi = n", "mid >> 1", "ways[b] += ways[a]", "npm test", "37 passed", "key[c]",
-    ".task-page", "> .hero", "li.current", "a:hover", "#e20074", "--accent", "import", "from", "'node:fs'", "readFileSync(", "console.log(", "?? 0", "!==",
+    // ES2015
+    "const", "let", "=>", "return", "class Task {", "constructor(input) {", "super()", "`${a} ${b}`",
+    "const [a, b] = line.split(' ')", "const { x, y } = p", "(...args)", "[...xs]", "new Map()", "new Set()",
+    "for (const x of xs)", "function* walk(node)", "yield* children", "Symbol.iterator", "Promise.resolve()",
+    "import { readFileSync } from 'node:fs'", "export default solve", "Array.from({ length: n })", "Number.isInteger(n)",
+    // ES2016 to ES2019
+    "2 ** k", "xs.includes(x)", "async function main()", "await fetch(url)", "Object.entries(o)", "s.padStart(2, '0')",
+    "{ ...rest }", "for await (const line of rl)", ".finally(done)", "/(?<row>[0-9]+),(?<col>[0-9]+)/", "grid.flat()",
+    ".flatMap((r) => r)", "Object.fromEntries(pairs)", "s.trimEnd()", "} catch {",
+    // ES2020 to ES2022
+    "a?.b?.c", "x ?? 0", "BigInt(total)", "10n ** 18n", "s.matchAll(re)", "Promise.allSettled(jobs)", "globalThis",
+    "best ??= Infinity", "seen ||= new Set()", "s.replaceAll(',', '')", "1_000_000", "Promise.any(tries)",
+    "new WeakRef(node)", "xs.at(-1)", "#memo = new Map()", "static {", "Object.hasOwn(o, k)", "await Promise.all(tasks)",
+    "new Error(msg, { cause })",
+    // ES2023 to ES2026
+    "xs.toSorted((a, b) => a - b)", "xs.findLast(isPrime)", "xs.toReversed()", "grid.with(i, row)", "#!/usr/bin/env node",
+    "Object.groupBy(rows, (r) => r.year)", "Map.groupBy(tasks, level)", "Promise.withResolvers()", "s.isWellFormed()",
+    "a.union(b)", "a.intersection(b)", "a.difference(b)", "Iterator.from(gen)", ".drop(1).take(5)", "RegExp.escape(word)",
+    "Promise.try(run)", "import data from './input.json' with { type: 'json' }", "Math.f16round(x)",
+    "Uint8Array.fromBase64(s)", "bytes.toHex()", "Math.sumPrecise(xs)", "Error.isError(e)", "await Array.fromAsync(lines)",
+    // and a few from the tasks
+    "dp[i][j]", "queue.push(v)", "dist[v] + 1", "cells[r * W + c]", "mid >> 1", "ways[b] += ways[a]", "npm test", "{", "}", "};",
   ];
-  const DIGITS = "0123456789";
+  const RIKA = [
+    "const rika = await solve(input)", "class Rika extends Coder {}", "rika ??= new Solver()", "export default rika",
+    "import { rika } from './rika.ts'", "for (const task of rika.tasks)", "rika.solved.at(-1)", "// solved by Rika",
+  ];
+  const COLOURS = [["rgba(225,236,255,0.9)", 0.45], ["rgba(140,180,255,0.9)", 0.22], ["rgba(120,140,255,0.85)", 0.13], ["rgba(185,130,255,0.9)", 0.12], ["rgba(90,225,235,0.9)", 0.08]];
+  const colour = (r) => {
+    for (const [c, share] of COLOURS) {
+      if (r < share) return c;
+      r -= share;
+    }
+    return COLOURS[0][0];
+  };
   function seeded(seed) {
     let x = (seed * 7919) % 2147483647 || 1;
     return () => ((x = (x * 16807) % 2147483647) / 2147483647);
   }
+  // A spot for the Rika line: on a code line, clear of the banner's text and snapshot, on the
+  // right half when possible (the shade darkens the left).
+  function eggSpot(el, box, dpr, lines, width, rnd) {
+    const gap = 4 * dpr; // space kept around the text and the snapshot
+    const half = 7 * dpr; // half the height of a line of code
+    const edge = 24 * dpr; // clear of the rounded corners
+    const W = box.width * dpr;
+    const H = box.height * dpr;
+    const blocked = [...el.parentElement.children]
+      .filter((c) => c !== el)
+      .map((c) => {
+        const r = c.getBoundingClientRect();
+        return [(r.left - box.left) * dpr - gap, (r.top - box.top) * dpr - gap, (r.right - box.left) * dpr + gap, (r.bottom - box.top) * dpr + gap];
+      });
+    const free = [];
+    lines.forEach((y, i) => {
+      if (y - half < 2 * dpr || y + half > H - 2 * dpr) return;
+      for (let x = edge; x + width < W - edge; x += 8 * dpr) {
+        if (!blocked.some(([l, t, r, b]) => x < r && x + width > l && y - half < b && y + half > t)) free.push({ i, x, y });
+      }
+    });
+    const right = free.filter((spot) => spot.x > W * 0.5);
+    const pool = right.length ? right : free;
+    return pool.length ? pool[Math.floor(rnd() * pool.length)] : null;
+  }
+  let fontsLoaded = false;
   function paint(el) {
+    if (!fontsLoaded || !el.dataset.ready) return;
     const box = el.getBoundingClientRect();
     if (!box.width || !box.height) return;
     const dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -96,97 +156,71 @@
     if (el.dataset.size === `${W}x${H}`) return;
     el.dataset.size = `${W}x${H}`;
     const rnd = seeded(Number(el.dataset.seed) || 1);
-    const canvas = el.querySelector("canvas") || el.appendChild(document.createElement("canvas"));
+    let canvas = el.querySelector("canvas");
+    if (!canvas) {
+      canvas = el.appendChild(document.createElement("canvas"));
+      void canvas.offsetWidth; // start from opacity 0 so it fades in
+      canvas.classList.add("shown");
+    }
     canvas.width = W;
     canvas.height = H;
     const ctx = canvas.getContext("2d");
-
-    // 1. deep blue to violet
-    const bg = ctx.createLinearGradient(0, 0, W, H);
-    bg.addColorStop(0, "#050a1c");
-    bg.addColorStop(0.45, "#101a63");
-    bg.addColorStop(0.8, "#3a1d8f");
-    bg.addColorStop(1, "#5a1a86");
-    ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, W, H);
-
-    // 2. lines of code on a separate layer
-    const layer = document.createElement("canvas");
-    layer.width = W;
-    layer.height = H;
-    const o = layer.getContext("2d");
     const size = 13 * dpr;
-    o.font = `500 ${size}px "JetBrains Mono", ui-monospace, Consolas, monospace`;
-    o.textBaseline = "middle";
-    const colours = ["rgba(225,236,255,0.9)", "rgba(140,180,255,0.9)", "rgba(120,140,255,0.85)", "rgba(185,130,255,0.9)", "rgba(255,90,175,0.9)", "rgba(90,225,235,0.9)"];
-    for (let y = size; y < H + size; y += size * 1.45) {
-      let x = -rnd() * 120 * dpr;
-      // indentation, like real code
-      x += Math.floor(rnd() * 4) * size * 1.2;
+    ctx.font = `500 ${size}px "JetBrains Mono", ui-monospace, Consolas, monospace`;
+    ctx.textBaseline = "middle";
+    const lines = [];
+    for (let y = size; y < H + size; y += size * 1.45) lines.push(y);
+    const egg = RIKA[Math.floor(rnd() * RIKA.length)];
+    const eggWidth = ctx.measureText(egg).width;
+    const spot = eggSpot(el, box, dpr, lines, eggWidth, rnd);
+    ctx.globalAlpha = 0.62;
+    lines.forEach((y, i) => {
+      let x = -rnd() * 120 * dpr + Math.floor(rnd() * 4) * size * 1.2; // ragged starts, like indentation
       while (x < W) {
         const token = CODE[Math.floor(rnd() * CODE.length)];
-        const r = rnd();
-        o.fillStyle = colours[r < 0.42 ? 0 : r < 0.62 ? 1 : r < 0.74 ? 2 : r < 0.86 ? 3 : r < 0.93 ? 4 : 5];
-        o.fillText(token, x, y);
-        x += o.measureText(token).width + size * (0.6 + rnd() * 1.2);
+        const w = ctx.measureText(token).width;
+        const fill = colour(rnd());
+        const onEgg = spot && spot.i === i && x < spot.x + eggWidth + size && x + w > spot.x - size;
+        if (!onEgg) {
+          ctx.fillStyle = fill;
+          ctx.fillText(token, x, y);
+        }
+        x += w + size * (0.6 + rnd() * 1.2);
         if (rnd() < 0.08) break; // short lines now and then
       }
+    });
+    if (spot) {
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = "#ff5aae";
+      ctx.fillText(egg, spot.x, spot.y);
     }
-
-    // 3. radial zoom blur: the code layer drawn again and again, a little bigger each time,
-    //    around a focus point on the left, so everything streaks away from it.
-    const fx = W * (0.22 + rnd() * 0.12);
-    const fy = H * (0.3 + rnd() * 0.3);
-    ctx.globalCompositeOperation = "lighter";
-    const steps = 18;
-    for (let i = steps; i >= 0; i--) {
-      const k = 1 + i * 0.035;
-      ctx.globalAlpha = i === 0 ? 0.55 : 0.1 * (1 - i / (steps + 2));
-      ctx.setTransform(k, 0, 0, k, fx * (1 - k), fy * (1 - k));
-      ctx.drawImage(layer, 0, 0);
-    }
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.globalAlpha = 1;
-
-    // 4. digital rain on the right: columns of glowing digits, bright heads, fading tails
-    const cell = 15 * dpr;
-    ctx.font = `600 ${cell}px "JetBrains Mono", ui-monospace, Consolas, monospace`;
-    ctx.textAlign = "center";
-    for (let x = W * 0.48; x < W + cell; x += cell * (0.95 + rnd() * 0.5)) {
-      const depth = rnd(); // far columns are smaller and dimmer
-      const scale = 0.6 + depth * 0.6;
-      ctx.font = `600 ${Math.round(cell * scale)}px "JetBrains Mono", ui-monospace, Consolas, monospace`;
-      const len = 6 + Math.floor(rnd() * 22);
-      const end = rnd() * (H + cell * 6);
-      for (let k = 0; k < len; k++) {
-        const y = end - (len - k) * cell * scale * 1.05;
-        if (y < -cell || y > H + cell) continue;
-        const head = k === len - 1;
-        const t = k / len;
-        ctx.shadowColor = head ? "rgba(200,255,255,0.9)" : "rgba(72,224,234,0.7)";
-        ctx.shadowBlur = (head ? 14 : 6) * dpr * scale;
-        ctx.globalAlpha = head ? 1 : (0.06 + 0.7 * t * t) * (0.45 + depth * 0.55);
-        ctx.fillStyle = head ? "#eaffff" : rnd() < 0.06 ? "#ff5aae" : "#48e0ea";
-        ctx.fillText(DIGITS[Math.floor(rnd() * DIGITS.length)], x, y);
-      }
-    }
-    ctx.shadowBlur = 0;
-    ctx.globalAlpha = 1;
-    ctx.globalCompositeOperation = "source-over";
   }
   function drawArt(scope) {
-    for (const el of scope.querySelectorAll(".hero-art")) paint(el);
+    if (scope) for (const el of scope.querySelectorAll(".hero-art")) paint(el);
   }
-  // Repaint the visible banner when the window size changes, and once the code font has loaded.
+  // Repaint the visible banner when the window size changes.
   let resizeTimer;
   window.addEventListener("resize", () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => drawArt(document.querySelector(".view:not([hidden])")), 150);
   });
-  document.fonts?.ready.then(() => {
-    for (const el of document.querySelectorAll(".hero-art[data-size]")) delete el.dataset.size;
-    drawArt(document.querySelector(".view:not([hidden])"));
-  });
+  // ...and when a banner changes size for another reason (a late image, a different snapshot).
+  if ("ResizeObserver" in window) {
+    const watch = new ResizeObserver((entries) => entries.forEach((e) => paint(e.target)));
+    for (const el of document.querySelectorAll(".hero-art")) watch.observe(el);
+  }
+  // Paint only with the real fonts (at most 2.5 s wait): a first picture in a fallback font would
+  // be replaced by a different one, since the token widths, and so the layout, change.
+  const fonts = document.fonts
+    ? Promise.all(['500 13px "JetBrains Mono"', '700 20px "Space Grotesk"', "500 16px Inter"].map((f) => document.fonts.load(f)))
+    : null;
+  Promise.race([fonts, new Promise((ok) => setTimeout(ok, 2500))])
+    .catch(() => {})
+    .then(() => {
+      fontsLoaded = true;
+      drawArt(document.querySelector(".view:not([hidden])"));
+    });
 
   // ----- Best-of column: it stops only once it is fully in view. If it is taller than the scroll
   // area, it scrolls with the page until its last item shows, then stays there. On desktop the
@@ -205,7 +239,12 @@
     for (const v of views) v.hidden = v.id !== id;
     main.scrollTop = 0;
     window.scrollTo(0, 0);
-    drawArt(document.getElementById(id));
+    // Task banners are painted by openTask, once their snapshot is in place.
+    const view = document.getElementById(id);
+    if (!view.dataset.edition) {
+      for (const el of view.querySelectorAll(".hero-art")) el.dataset.ready = "1";
+      drawArt(view);
+    }
   }
   function openTask(edition, slug) {
     show("v-" + edition);
@@ -218,11 +257,22 @@
       if (on) tab.scrollIntoView({ block: "nearest", inline: "nearest" });
     }
     const article = document.getElementById("task-" + slug);
-    drawArt(article);
     const body = article.querySelector("[data-visual]");
     if (body && window.CG) window.CG.start(body.dataset.visual, body);
     if (!article.querySelector(".hero-snap").childElementCount) heroSnap(article);
-    document.title = `${article.querySelector(".hero-title").textContent} · CoderGames Solutions`;
+    // Paint the banner once the snapshot has its final size, so the Rika line finds a free spot.
+    const pictures = [...article.querySelectorAll(".hero-snap img")]
+      .filter((img) => !img.complete)
+      .map((img) => new Promise((ok) => {
+        img.addEventListener("load", ok, { once: true });
+        img.addEventListener("error", ok, { once: true });
+        setTimeout(ok, 1000);
+      }));
+    Promise.all(pictures).then(() => {
+      article.querySelector(".hero-art").dataset.ready = "1";
+      drawArt(article);
+    });
+    document.title = `${article.querySelector(".hero-title").textContent} · ${SITE}`;
   }
   function route() {
     let hash = decodeURIComponent(location.hash.slice(1));
@@ -231,17 +281,20 @@
     if (m && editions.includes(m[1]) && document.getElementById("task-" + hash)) return openTask(m[1], hash);
     if (hash === "about") {
       show("v-about");
-      document.title = "About · CoderGames Solutions";
+      document.title = `${T("About", "Az oldalról")} · ${SITE}`;
       return;
     }
     show("v-home");
-    document.title = "CoderGames Solutions";
+    document.title = SITE;
     placeBest();
     fillSnaps(document.getElementById("v-home"));
   }
 
   // ----- clicks -----
   document.addEventListener("click", (e) => {
+    // The language switch opens the same view in the other language.
+    const other = e.target.closest("[data-lang-switch]");
+    if (other) other.href = other.getAttribute("href").split("#")[0] + location.hash;
     // Detail buttons: each opens its own panel and closes the others; click again to fold.
     const btn = e.target.closest(".detail-btn");
     if (btn) {
@@ -265,7 +318,7 @@
         row.hidden = !ok;
         shown += ok;
       }
-      document.getElementById("filterCount").textContent = `${shown} task${shown === 1 ? "" : "s"}`;
+      document.getElementById("filterCount").textContent = T(`${shown} task${shown === 1 ? "" : "s"}`, `${shown} feladat`);
     }
   });
 

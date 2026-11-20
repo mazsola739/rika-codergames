@@ -10,5 +10,16 @@
     "rules",
     "testing"
   ],
-  "country": "Germany"
+  "country": "Germany",
+  "hu": {
+    "title": "A hibás Autobahn-sebességtesztek",
+    "summary": "Keresd meg azokat a traffipax-egységteszteket, amelyekben rossz a várt eredmény.",
+    "result": "20 hibás teszt",
+    "topics": [
+      "elemzés",
+      "szabályok",
+      "tesztelés"
+    ],
+    "country": "Németország"
+  }
 }

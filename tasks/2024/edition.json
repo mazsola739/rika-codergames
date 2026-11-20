@@ -3,5 +3,9 @@
   "dates": "2024",
   "theme": "Guess the country",
   "source": "https://codergames.deutschetelekomitsolutions.sk/history-2024",
-  "summary": "Every story hides a country and every task has a mathematical shortcut: Euclid–Euler perfect numbers, a closed formula, a one-pass pyramid and a problem that splits into rows and columns."
+  "summary": "Every story hides a country and every task has a mathematical shortcut: Euclid–Euler perfect numbers, a closed formula, a one-pass pyramid and a problem that splits into rows and columns.",
+  "hu": {
+    "theme": "Találd ki az országot",
+    "summary": "Minden történet egy országot rejt, és minden feladatnak van matematikai rövidítése: Eukleidész–Euler-féle tökéletes számok, egy zárt képlet, egy egymenetes piramis és egy feladat, ami sorokra és oszlopokra bomlik."
+  }
 }

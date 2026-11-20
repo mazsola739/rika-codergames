@@ -10,5 +10,16 @@
     "closed formula",
     "big integers"
   ],
-  "country": "Hungary"
+  "country": "Hungary",
+  "hu": {
+    "title": "Gyémántösszeg",
+    "summary": "Egy N × N-es rács gyémántja mentén vett összeg, ahol N akár 10¹⁸ is lehet.",
+    "result": "(N − 1)(N² + 1)",
+    "topics": [
+      "matematika",
+      "zárt képlet",
+      "nagy egészek"
+    ],
+    "country": "Magyarország"
+  }
 }

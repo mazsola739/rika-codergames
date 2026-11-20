@@ -9,5 +9,15 @@
     "Vigenère cipher",
     "index of coincidence"
   ],
-  "check": "custom"
+  "check": "custom",
+  "hu": {
+    "title": "Egy tündérmese",
+    "summary": "Egy tündérmese Vigenère-titkosítás alatt: találd meg a kulcsot, és nevezd meg a mesét.",
+    "result": "Kulcs: SUPERHESLO, A császár új ruhája",
+    "topics": [
+      "kriptográfia",
+      "Vigenère-titkosítás",
+      "koincidenciaindex"
+    ]
+  }
 }

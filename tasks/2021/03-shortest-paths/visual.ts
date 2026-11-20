@@ -11,3 +11,10 @@ export function data(dir: string) {
     cases.push({ target: lines[i]!, edges: lines[i + 1]!.split(';').filter(Boolean).map((e) => e.split(',').map((v) => v.trim()) as [string, string]) })
   return cases
 }
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'Távolságok a célig',
+  caption:
+    'Minden csúcs abban az oszlopban áll, ahány lépésre van a céltól (jobbra). Egyetlen BFS a megfordított éleken egyszerre tölti ki az összes oszlopot; az elérhetetlen csúcsok bal oldalon vannak, INF jelzéssel.',
+}

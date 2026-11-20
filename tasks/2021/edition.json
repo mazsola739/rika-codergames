@@ -3,5 +3,9 @@
   "dates": "2021",
   "theme": "Classic algorithms",
   "source": "https://codergames.deutschetelekomitsolutions.sk/history-2021",
-  "summary": "Five textbook algorithm tasks in Slovak, each with an input file: a maze, an interval DP, breadth-first search on a graph, coin change and a duplicate in an array."
+  "summary": "Five textbook algorithm tasks in Slovak, each with an input file: a maze, an interval DP, breadth-first search on a graph, coin change and a duplicate in an array.",
+  "hu": {
+    "theme": "Klasszikus algoritmusok",
+    "summary": "Öt tankönyvi algoritmusfeladat, mindegyikhez bemeneti fájllal: útvesztő, intervallumos dinamikus programozás, szélességi keresés gráfon, pénzváltás és egy kétszer szereplő elem egy tömbben."
+  }
 }

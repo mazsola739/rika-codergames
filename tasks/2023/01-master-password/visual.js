@@ -11,7 +11,7 @@ CG.visual("2023-1", (root, input, { h, s, stats }) => {
   const use = new Map();
   for (const [r, c] of pairs) use.set(r * 8 + c, (use.get(r * 8 + c) ?? 0) + 1);
   const most = Math.max(...use.values());
-  const svg = s("svg", { class: "vis-svg", viewBox: "0 0 330 330", role: "img", "aria-label": "The 8 by 8 character matrix, shaded by how often each character is used", style: { maxWidth: "330px" } });
+  const svg = s("svg", { class: "vis-svg", viewBox: "0 0 330 330", role: "img", "aria-label": CG.t("The 8 by 8 character matrix, shaded by how often each character is used", "A 8 × 8-as karaktermátrix, aszerint árnyalva, hogy melyik karakter milyen gyakran fordul elő"), style: { maxWidth: "330px" } });
   for (let i = 0; i < 64; i++) {
     const x = 6 + (i % 8) * 40;
     const y = 6 + Math.floor(i / 8) * 40;
@@ -32,7 +32,7 @@ CG.visual("2023-1", (root, input, { h, s, stats }) => {
     if (i < words.length - 1) chain.append(h("span", { class: "dim", text: " · " }));
   });
   root.append(
-    stats([["Words", String(words.length)], ["Characters removed", String(removed)], ["Longest removed", longest]]),
+    stats([[CG.t("Words", "Szavak"), String(words.length)], [CG.t("Characters removed", "Kihagyott karakterek"), String(removed)], [CG.t("Longest removed", "Leghosszabb kihagyott"), longest]]),
     h("div", { class: "vis-row", style: { alignItems: "flex-start" } }, h("div", { class: "vis-frame", style: { flex: "0 1 350px" } }, svg), h("div", { style: { flex: "1 1 280px", minWidth: 0 } }, chain)),
   );
 });

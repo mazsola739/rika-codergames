@@ -8,5 +8,14 @@
     "math",
     "patterns"
   ],
-  "input": null
+  "input": null,
+  "hu": {
+    "title": "A spirál átlói",
+    "summary": "Egy 501 × 501-es számspirál két átlójának összege.",
+    "result": "83 960 501",
+    "topics": [
+      "matematika",
+      "minták"
+    ]
+  }
 }

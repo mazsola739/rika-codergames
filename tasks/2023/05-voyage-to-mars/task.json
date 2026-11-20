@@ -10,5 +10,15 @@
     "greedy"
   ],
   "input": "input.json",
-  "check": "custom"
+  "check": "custom",
+  "hu": {
+    "title": "Utazás a Marsra",
+    "summary": "Pakolj 10 000 gépet egy rakétába: 0/1 hátizsák-probléma valós méretekkel.",
+    "result": "743 529,61, bizonyítottan optimális",
+    "topics": [
+      "hátizsák-probléma",
+      "korlátozás és szétválasztás",
+      "mohó algoritmus"
+    ]
+  }
 }

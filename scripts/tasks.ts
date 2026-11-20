@@ -14,6 +14,8 @@ export interface Edition {
   theme: string
   source: string
   summary: string
+  /** Hungarian texts for the website; missing fields fall back to English. */
+  hu?: Partial<Pick<Edition, 'title' | 'dates' | 'theme' | 'summary'>>
 }
 
 export interface TaskMeta {
@@ -39,6 +41,8 @@ export interface TaskMeta {
   /** Seconds before the run is aborted. */
   timeout?: number
   status?: 'solved' | 'pending'
+  /** Hungarian texts for the website; missing fields fall back to English. */
+  hu?: Partial<Pick<TaskMeta, 'title' | 'summary' | 'result' | 'topics' | 'country'>>
 }
 
 export interface Task extends TaskMeta {

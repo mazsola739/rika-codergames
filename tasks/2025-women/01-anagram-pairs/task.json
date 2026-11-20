@@ -8,5 +8,15 @@
     "strings",
     "counting"
   ],
-  "country": "Slovakia"
+  "country": "Slovakia",
+  "hu": {
+    "title": "Anagrammapárok",
+    "summary": "Egymás anagrammái-e az egyes sorokban álló szópárok?",
+    "result": "35 YES/NO válasz",
+    "topics": [
+      "szövegkezelés",
+      "számolás"
+    ],
+    "country": "Szlovákia"
+  }
 }

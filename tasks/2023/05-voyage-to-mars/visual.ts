@@ -38,3 +38,10 @@ export function data(dir: string) {
     bound: 743533.7826484649,
   }
 }
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'Mind a 10 000 gép',
+  caption:
+    'Minden pont egy gép: jobbra a méret, felfelé a hasznosság. A bepakoltak (rózsaszín) az origón átmenő szaggatott vonal fölötti gépek, vagyis amelyeknek a legjobb a méretegységre jutó hasznossága, plusz néhány kicsi alatta, ami kitölti az utolsó réseket. A vonal közelében vannak a nehéz döntések.',
+}

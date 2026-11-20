@@ -20,3 +20,10 @@ export function data(dir: string) {
   }
   return cases
 }
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'Játssz a kamerarácson',
+  caption:
+    'A nyílgombokkal (vagy a rácson a nyílbillentyűkkel) minden képet eltolhatsz, a széleken körbeérve. A szaggatott keret a tömörség. Az oldalsó sávok mutatják, mely sorok és oszlopok foglaltak; a legnagyobb résnél kell felvágni a kört.',
+}

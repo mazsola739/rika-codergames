@@ -51,7 +51,7 @@ CG.visual("2020-3", (root, d, { h, s, player, stats, button, fmt }) => {
     const start = Array(26).fill(0);
     order.forEach((c, r) => (start[c] = code(FREQ[r])));
     let best = score(start);
-    snaps.push({ key: [...start], score: best, note: "Start: the most frequent cipher letter becomes e, the next t, …" });
+    snaps.push({ key: [...start], score: best, note: CG.t("Start: the most frequent cipher letter becomes e, the next t, …", "Kezdés: a leggyakoribb titkos betűből e lesz, a következőből t, …") });
     const climb = (k, label) => {
       let cur = score(k);
       for (let improved = true; improved; ) {
@@ -65,14 +65,14 @@ CG.visual("2020-3", (root, d, { h, s, player, stats, button, fmt }) => {
               improved = true;
               if (cur > best + 1e-9) {
                 best = cur;
-                snaps.push({ key: [...k], score: cur, note: `${label}: swapped ${A[k[j]]} ↔ ${A[k[i]]}` });
+                snaps.push({ key: [...k], score: cur, note: CG.t(`${label}: swapped ${A[k[j]]} ↔ ${A[k[i]]}`, `${label}: csere ${A[k[j]]} ↔ ${A[k[i]]}`) });
               }
             } else [k[i], k[j]] = [k[j], k[i]];
           }
       }
       return [k, cur];
     };
-    let [bestKey] = climb([...start], "Climbing");
+    let [bestKey] = climb([...start], CG.t("Climbing", "Mászás"));
     let seed = 2020;
     const rnd = () => ((seed = (seed * 1103515245 + 12345) % 2 ** 31) / 2 ** 31);
     for (let r = 0; r < 40; r++) {
@@ -82,7 +82,7 @@ CG.visual("2020-3", (root, d, { h, s, player, stats, button, fmt }) => {
         const j = Math.floor(rnd() * 26);
         [k[i], k[j]] = [k[j], k[i]];
       }
-      const [k2, s2] = climb(k, `Restart ${r + 1}`);
+      const [k2, s2] = climb(k, CG.t(`Restart ${r + 1}`, `${r + 1}. újraindítás`));
       if (s2 >= best - 1e-9) bestKey = k2;
     }
     return snaps;
@@ -91,20 +91,20 @@ CG.visual("2020-3", (root, d, { h, s, player, stats, button, fmt }) => {
   // Letter counts of the cipher text, most frequent first: where frequency analysis starts.
   const counts = [...A].map((c) => [c, [...lower].filter((x) => x === c).length]).sort((a, b) => b[1] - a[1]);
   const top = counts[0][1];
-  const freq = s("svg", { class: "vis-svg", viewBox: "0 0 640 130", role: "img", "aria-label": "Letter counts of the cipher text" });
+  const freq = s("svg", { class: "vis-svg", viewBox: "0 0 640 130", role: "img", "aria-label": CG.t("Letter counts of the cipher text", "A titkos szöveg betűszámai") });
   counts.forEach(([c, n], i) => {
     const hgt = (n / top) * 92;
     freq.append(s("rect", { x: 6 + i * 24.4, y: 104 - hgt, width: 19, height: hgt, rx: 3, class: i < 6 ? "f-accent" : "f-info", opacity: i < 6 ? 0.9 : 0.55 }));
     freq.append(s("text", { x: 15.5 + i * 24.4, y: 122, "text-anchor": "middle", class: "t-label t-mono", text: c }));
   });
   const text = h("div", { class: "vis-text" }, d.cipher);
-  const tiles = stats([["Improvements", "–"], ["Score", "–"], ["Title", "?"]]);
+  const tiles = stats([[CG.t("Improvements", "Javulások"), "–"], [CG.t("Score", "Pontszám"), "–"], [CG.t("Title", "Cím"), "?"]]);
   const holder = h("div", { class: "visual-body" });
-  const go = button("Crack it", {
+  const go = button(CG.t("Crack it", "Feltörés"), {
     class: "vis-btn primary",
     onclick: () => {
       go.disabled = true;
-      go.textContent = "Cracking…";
+      go.textContent = CG.t("Cracking…", "Feltörés…");
       setTimeout(() => {
         const snaps = crack();
         go.remove();
@@ -130,7 +130,7 @@ CG.visual("2020-3", (root, d, { h, s, player, stats, button, fmt }) => {
   holder.append(h("div", { class: "vis-row" }, go));
   root.append(
     tiles,
-    h("div", { class: "vis-frame" }, freq, h("p", { class: "vis-note", text: "Cipher letters by frequency. The pink six probably stand for e, t, a, o, i, n: the starting guess." })),
+    h("div", { class: "vis-frame" }, freq, h("p", { class: "vis-note", text: CG.t("Cipher letters by frequency. The pink six probably stand for e, t, a, o, i, n: the starting guess.", "A titkos betűk gyakoriság szerint. A rózsaszín hat valószínűleg az e, t, a, o, i, n: ez a kiinduló tipp.") })),
     holder,
     text,
   );

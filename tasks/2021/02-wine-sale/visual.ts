@@ -11,3 +11,10 @@ export function data(dir: string) {
     ...lines.slice(1, 4).map((l, i) => ({ name: `Shelf ${i + 1}`, prices: l.trim().split(/\s+/).map(Number) })),
   ]
 }
+
+// Hungarian title and caption (docs/hu.html).
+export const hu = {
+  title: 'Add el a polcot évről évre',
+  caption:
+    'Minden évben egy üveg megy el a polc valamelyik széléről, és év × ár bevételt hoz. Hasonlítsd össze az optimális sorrendet (dinamikus programozás) a csábító mohó szabállyal: „mindig az olcsóbb szélét add el”.',
+}

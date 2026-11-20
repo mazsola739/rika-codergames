@@ -23,9 +23,9 @@ CG.visual("2021-3", (root, cases, { h, s, segmented }) => {
     const colX = (c) => 50 + (c * (W - 100)) / Math.max(1, ncol - 1);
     const pos = new Map();
     for (const [c, vs] of cols) vs.forEach((v, i) => pos.set(v, [colX(c), 30 + ((i + 0.5) * (H - 40)) / vs.length]));
-    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": `Graph with target ${target}` });
+    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": CG.t(`Graph with target ${target}`, `Gráf, a cél: ${target}`) });
     svg.append(s("defs", {}, s("marker", { id: `arr${k}`, viewBox: "0 0 10 10", refX: 9, refY: 5, markerWidth: 6, markerHeight: 6, orient: "auto-start-reverse" }, s("path", { d: "M0,0 L10,5 L0,10 z", class: "f-muted" }))));
-    for (const [c] of cols) svg.append(s("text", { x: colX(c), y: 16, "text-anchor": "middle", class: "t-label", text: c === 0 ? "INF" : c === ncol - 1 ? "target" : `${maxD - c + 1}` }));
+    for (const [c] of cols) svg.append(s("text", { x: colX(c), y: 16, "text-anchor": "middle", class: "t-label", text: c === 0 ? "INF" : c === ncol - 1 ? CG.t("target", "cél") : `${maxD - c + 1}` }));
     for (const [a, b] of edges) {
       const [x1, y1] = pos.get(a);
       const [x2, y2] = pos.get(b);
@@ -41,8 +41,8 @@ CG.visual("2021-3", (root, cases, { h, s, segmented }) => {
       svg.append(s("text", { x, y: y + 4, "text-anchor": "middle", "font-size": v.length > 4 ? 7 : 10, class: isT ? "f-surface" : "f-fg", "font-weight": 600, text: v.length > 9 ? v.slice(0, 8) + "…" : v }));
     }
     stage.replaceChildren(svg);
-    note.textContent = `Target ${target}: ${dist.size - 1} vertices can reach it, ${vertices.length - dist.size} cannot. Pink edges lie on shortest paths.`;
+    note.textContent = CG.t(`Target ${target}: ${dist.size - 1} vertices can reach it, ${vertices.length - dist.size} cannot. Pink edges lie on shortest paths.`, `Cél: ${target}. ${dist.size - 1} csúcs eléri, ${vertices.length - dist.size} nem. A rózsaszín élek legrövidebb utakon vannak.`);
   }
-  root.append(h("div", { class: "vis-row" }, segmented(cases.map((c, i) => ({ value: i, label: `Target ${c.target}` })), draw, 0, "Graph")), stage, note);
+  root.append(h("div", { class: "vis-row" }, segmented(cases.map((c, i) => ({ value: i, label: CG.t(`Target ${c.target}`, `Cél: ${c.target}`) })), draw, 0, CG.t("Graph", "Gráf"))), stage, note);
   draw(0);
 });

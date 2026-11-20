@@ -8,5 +8,15 @@
     "arrays",
     "counting"
   ],
-  "country": "Slovakia"
+  "country": "Slovakia",
+  "hu": {
+    "title": "Hiányzó számok",
+    "summary": "A tömb legkisebb és legnagyobb értéke között hiányzó számok.",
+    "result": "202 hiányzó szám",
+    "topics": [
+      "tömbök",
+      "számolás"
+    ],
+    "country": "Szlovákia"
+  }
 }

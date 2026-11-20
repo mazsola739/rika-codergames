@@ -9,5 +9,15 @@
     "Mersenne primes"
   ],
   "country": "Czechia",
-  "input": null
+  "input": null,
+  "hu": {
+    "title": "Tökéletes számok",
+    "summary": "Az első öt tökéletes szám 100 millió alatt.",
+    "result": "6, 28, 496, 8128, 33 550 336",
+    "topics": [
+      "számelmélet",
+      "Mersenne-prímek"
+    ],
+    "country": "Csehország"
+  }
 }

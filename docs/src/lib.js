@@ -6,6 +6,10 @@ window.CG = (() => {
   const registry = {};
   const SVG_NS = "http://www.w3.org/2000/svg";
 
+  // ----- language: the page's <html lang>; t(english, hungarian) picks the text -----
+  const lang = document.documentElement.lang === "hu" ? "hu" : "en";
+  const t = (en, hu) => (lang === "hu" && hu != null ? hu : en);
+
   function build(el, attrs, kids) {
     for (const [k, v] of Object.entries(attrs || {})) {
       if (v === undefined || v === null || v === false) continue;
@@ -29,7 +33,7 @@ window.CG = (() => {
   matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", themeChanged);
 
   // ----- number formatting -----
-  const fmt = (n, digits = 0) => Number(n).toLocaleString("en-US", { maximumFractionDigits: digits, minimumFractionDigits: digits });
+  const fmt = (n, digits = 0) => Number(n).toLocaleString(lang === "hu" ? "hu-HU" : "en-US", { maximumFractionDigits: digits, minimumFractionDigits: digits });
 
   // ----- controls -----
   const button = (label, attrs = {}) => h("button", { type: "button", class: "vis-btn", ...attrs, text: label });
@@ -83,23 +87,24 @@ window.CG = (() => {
     let i = 0;
     let timer = null;
     const status = h("span", { class: "vis-status", "aria-live": "polite" });
-    const range = h("input", { type: "range", min: 0, max: Math.max(0, count - 1), value: 0, "aria-label": "Step" });
-    const playBtn = button("▶ Play", { class: "vis-btn primary" });
+    const range = h("input", { type: "range", min: 0, max: Math.max(0, count - 1), value: 0, "aria-label": t("Step", "Lépés") });
+    const PLAY = t("▶ Play", "▶ Lejátszás");
+    const playBtn = button(PLAY, { class: "vis-btn primary" });
     const stop = () => {
       clearInterval(timer);
       timer = null;
-      playBtn.textContent = "▶ Play";
+      playBtn.textContent = PLAY;
     };
     const set = (n) => {
       i = Math.max(0, Math.min(count - 1, n));
       range.value = i;
-      status.textContent = label ? label(i) : `Step ${i + 1} of ${count}`;
+      status.textContent = label ? label(i) : t(`Step ${i + 1} of ${count}`, `${i + 1}/${count}. lépés`);
       render(i);
     };
     playBtn.addEventListener("click", () => {
       if (timer) return stop();
       if (i >= count - 1) set(0);
-      playBtn.textContent = "⏸ Pause";
+      playBtn.textContent = t("⏸ Pause", "⏸ Szünet");
       timer = setInterval(() => (i < count - 1 ? set(i + 1) : stop()), interval);
     });
     range.addEventListener("input", () => {
@@ -109,11 +114,11 @@ window.CG = (() => {
     const el = h(
       "div",
       { class: "vis-player" },
-      button("⏮", { "aria-label": "Back to the start", onclick: () => (stop(), set(0)) }),
-      button("◀", { "aria-label": "Previous step", onclick: () => (stop(), set(i - 1)) }),
+      button("⏮", { "aria-label": t("Back to the start", "Vissza az elejére"), onclick: () => (stop(), set(0)) }),
+      button("◀", { "aria-label": t("Previous step", "Előző lépés"), onclick: () => (stop(), set(i - 1)) }),
       playBtn,
-      button("▶", { "aria-label": "Next step", onclick: () => (stop(), set(i + 1)) }),
-      button("⏭", { "aria-label": "Skip to the end", onclick: () => (stop(), set(count - 1)) }),
+      button("▶", { "aria-label": t("Next step", "Következő lépés"), onclick: () => (stop(), set(i + 1)) }),
+      button("⏭", { "aria-label": t("Skip to the end", "Ugrás a végére"), onclick: () => (stop(), set(count - 1)) }),
       range,
       status,
     );
@@ -216,10 +221,10 @@ window.CG = (() => {
     try {
       init(root, data, CG);
     } catch (e) {
-      root.append(h("p", { class: "vis-note", text: "This visualisation could not start: " + e.message }));
+      root.append(h("p", { class: "vis-note", text: t("This visualisation could not start: ", "A vizualizáció nem tudott elindulni: ") + e.message }));
       console.error(e);
     }
   }
 
-  return { visual, start, h, s, css, onTheme, themeChanged, fmt, button, segmented, slider, stats, player, scale, hue, bytes, rng, mainGraphic, copyGraphic, snapshot, forgetRasterSnapshots };
+  return { lang, t, visual, start, h, s, css, onTheme, themeChanged, fmt, button, segmented, slider, stats, player, scale, hue, bytes, rng, mainGraphic, copyGraphic, snapshot, forgetRasterSnapshots };
 })();

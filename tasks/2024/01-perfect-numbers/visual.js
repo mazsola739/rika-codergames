@@ -19,7 +19,7 @@ CG.visual("2024-1", (root, _, { h, s, segmented, fmt }) => {
   function draw(n) {
     const ds = divisors(n);
     const W = 640;
-    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} 96`, role: "img", "aria-label": `Divisors of ${n} laid end to end` });
+    const svg = s("svg", { class: "vis-svg", viewBox: `0 0 ${W} 96`, role: "img", "aria-label": CG.t(`Divisors of ${n} laid end to end`, `${n} osztói egymás után fektetve`) });
     svg.append(s("rect", { x: 10, y: 14, width: W - 20, height: 26, rx: 5, class: "f-cell" }));
     svg.append(s("text", { x: W - 10, y: 10, "text-anchor": "end", class: "t-label", text: fmt(n) }));
     let x = 10;
@@ -29,7 +29,7 @@ CG.visual("2024-1", (root, _, { h, s, segmented, fmt }) => {
       if (w > 34) svg.append(s("text", { x: x + w / 2, y: 67, "text-anchor": "middle", "font-size": 11, class: "f-fg", "font-weight": 600, text: fmt(d) }));
       x += w;
     });
-    svg.append(s("text", { x: 10, y: 92, class: "t-label", text: `${ds.length} divisors: ${ds.length > 14 ? ds.slice(0, 12).map(fmt).join(" + ") + " + …" : ds.map(fmt).join(" + ")} = ${fmt(ds.reduce((a, b) => a + b, 0))}` }));
+    svg.append(s("text", { x: 10, y: 92, class: "t-label", text: CG.t(`${ds.length} divisors: ${ds.length > 14 ? ds.slice(0, 12).map(fmt).join(" + ") + " + …" : ds.map(fmt).join(" + ")} = ${fmt(ds.reduce((a, b) => a + b, 0))}`, `${ds.length} osztó: ${ds.length > 14 ? ds.slice(0, 12).map(fmt).join(" + ") + " + …" : ds.map(fmt).join(" + ")} = ${fmt(ds.reduce((a, b) => a + b, 0))}`) }));
     bar.replaceChildren(svg);
   }
   const table = h(
@@ -38,10 +38,10 @@ CG.visual("2024-1", (root, _, { h, s, segmented, fmt }) => {
     h(
       "table",
       { class: "vis-table" },
-      h("thead", {}, h("tr", {}, ...["p", "2^p − 1", "prime?", "2^(p−1) · (2^p − 1)"].map((t) => h("th", { text: t })))),
-      h("tbody", {}, rows.map((r) => h("tr", { style: { color: r.prime ? "var(--fg)" : "var(--muted)" } }, h("td", { text: String(r.p) }), h("td", { text: fmt(r.m) }), h("td", { text: r.prime ? "yes" : "no" }), h("td", { text: r.prime ? `${fmt(r.n)} ✓ perfect` : fmt(r.n) })))),
+      h("thead", {}, h("tr", {}, ...["p", "2^p − 1", CG.t("prime?", "prím?"), "2^(p−1) · (2^p − 1)"].map((t) => h("th", { text: t })))),
+      h("tbody", {}, rows.map((r) => h("tr", { style: { color: r.prime ? "var(--fg)" : "var(--muted)" } }, h("td", { text: String(r.p) }), h("td", { text: fmt(r.m) }), h("td", { text: r.prime ? CG.t("yes", "igen") : CG.t("no", "nem") }), h("td", { text: r.prime ? CG.t(`${fmt(r.n)} ✓ perfect`, `${fmt(r.n)} ✓ tökéletes`) : fmt(r.n) })))),
     ),
   );
-  root.append(h("div", { class: "vis-row" }, segmented(perfect.map((n) => ({ value: n, label: fmt(n) })), draw, 28, "Perfect number")), bar, table);
+  root.append(h("div", { class: "vis-row" }, segmented(perfect.map((n) => ({ value: n, label: fmt(n) })), draw, 28, CG.t("Perfect number", "Tökéletes szám"))), bar, table);
   draw(28);
 });

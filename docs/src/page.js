@@ -188,6 +188,18 @@
     drawArt(document.querySelector(".view:not([hidden])"));
   });
 
+  // ----- Best-of column: it stops only once it is fully in view. If it is taller than the scroll
+  // area, it scrolls with the page until its last item shows, then stays there. On desktop the
+  // page scrolls inside #main (under the top bar), on small screens the window scrolls. -----
+  const best = document.querySelector(".bestof");
+  function placeBest() {
+    if (!best || !best.offsetHeight) return;
+    const area = getComputedStyle(main).overflowY === "auto" ? main.clientHeight : window.innerHeight;
+    best.style.setProperty("--bestof-top", `${Math.min(14, area - best.offsetHeight - 14)}px`);
+  }
+  window.addEventListener("resize", placeBest);
+  if (best && "ResizeObserver" in window) new ResizeObserver(placeBest).observe(best);
+
   // ----- views -----
   function show(id) {
     for (const v of views) v.hidden = v.id !== id;
@@ -217,8 +229,14 @@
     if (editions.includes(hash)) hash = document.getElementById("v-" + hash).dataset.first;
     const m = hash.match(/^(.+)-(\d+)$/);
     if (m && editions.includes(m[1]) && document.getElementById("task-" + hash)) return openTask(m[1], hash);
+    if (hash === "about") {
+      show("v-about");
+      document.title = "About · CoderGames Solutions";
+      return;
+    }
     show("v-home");
     document.title = "CoderGames Solutions";
+    placeBest();
     fillSnaps(document.getElementById("v-home"));
   }
 

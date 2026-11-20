@@ -222,7 +222,6 @@ function playground(t: Task, statement: string): string {
             <h3 id="pg-${s}">Your turn</h3>
             <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is ${p.lines === 1 ? 'a single line' : `${p.lines.toLocaleString('en-US')} lines`}${t.country ? ', without the country' : ''}.</p>
           </div>
-          <div class="pg-task prose">${statement}</div>
           ${inputInfo}
           <label class="pg-label" for="pg-code-${s}">Your code <span>saved in this browser</span></label>
           <textarea class="pg-code" id="pg-code-${s}" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">${esc(STARTER)}</textarea>
@@ -269,7 +268,8 @@ function taskPage(t: Task, prev: Task | undefined, next: Task | undefined): stri
   const s = slug(t)
   const pending = t.status === 'pending'
   const sections = readmeSections(t)
-  const panels: { label: string; html: string }[] = [...sections]
+  const statement = sections.find((x) => x.label === 'The task')
+  const panels: { label: string; html: string }[] = sections.filter((x) => x !== statement)
   const solutionPath = join(t.dir, 'solution.ts')
   if (!pending && existsSync(solutionPath)) {
     const src = readFileSync(solutionPath, 'utf8').replace(/\r\n/g, '\n').trimEnd()
@@ -293,7 +293,6 @@ function taskPage(t: Task, prev: Task | undefined, next: Task | undefined): stri
     .join(' ')
   const links = [
     `<a href="${TREE}/${folder(t)}" target="_blank" rel="noopener">Task folder on GitHub</a>`,
-    `<a href="${t.edition.source}" target="_blank" rel="noopener">Original task</a>`,
     extras ? `Also: ${extras}` : '',
   ]
     .filter(Boolean)
@@ -321,7 +320,8 @@ function taskPage(t: Task, prev: Task | undefined, next: Task | undefined): stri
           </div>
           <figure class="hero-snap${pending ? ' empty' : ''}" aria-hidden="true"></figure>
         </header>
-        ${playground(t, sections.find((x) => x.label === 'The task')?.html ?? '')}
+        ${statement && !pending ? `<section class="task-statement prose" aria-label="The task"><h3>The task</h3>${statement.html}</section>` : ''}
+        ${playground(t, '')}
         ${visualSection(t)}
         ${details}
         ${pager}
@@ -345,7 +345,6 @@ function editionView(e: Edition, tasks: Task[]): string {
     <div class="edition-bar">
       <a class="back" href="#home">← All editions</a>
       <span class="edition-name">${esc(e.title)} <span>${esc(e.theme)} · ${esc(e.dates)} · ${done === tasks.length ? plural(done, 'task') : `${done} of ${tasks.length} tasks`}</span></span>
-      <a class="orig" href="${e.source}" target="_blank" rel="noopener">Original tasks ↗</a>
     </div>
     <nav class="task-tabs" aria-label="Tasks of ${esc(e.title)}">
       ${tabs}
@@ -428,19 +427,7 @@ function homeView(editions: Edition[], byEdition: Map<string, Task[]>): string {
           <ul class="task-list">
         ${rows}
           </ul>
-          <details class="more">
-            <summary>Mistakes found in the official material <span>${FINDINGS.length}</span></summary>
-            <ul class="findings">
-          ${findings}
-            </ul>
-          </details>
-          <details class="more">
-            <summary>How it’s built and checked</summary>
-            <div class="more-body">
-              <p>Every task has its own folder with the write-up, a standalone <code>solution.ts</code> that reads the input file and prints the answer (ready to paste into the submission form), the input and the official answer. <code>npm test</code> runs all of them and compares the output with the official answer. When several answers are equally correct, like a different but equally short path, the task gets its own <code>check.ts</code> (${custom} tasks) that validates the answer instead of comparing text.</p>
-              <p>The visualisations are plain JavaScript with SVG or canvas, no framework. Each task folder has a <code>visual.js</code> that runs in the browser and a <code>visual.ts</code> that prepares its data from the real input at build time. Difficulty is my own 1–5 rating.${pending ? ` ${plural(pending, 'task')} of this year’s edition will be added once published.` : ''}</p>
-            </div>
-          </details>
+          <p class="about-link"><a href="#about">About this site: sources, how it’s checked, mistakes found →</a></p>
         </div>
         <aside class="bestof" aria-labelledby="bestof-title">
           <h2 id="bestof-title">Best of</h2>
@@ -449,6 +436,50 @@ function homeView(editions: Edition[], byEdition: Map<string, Task[]>): string {
         ${best}
           </ol>
         </aside>
+      </div>
+    </div>
+  </section>`
+}
+
+function aboutView(editions: Edition[], byEdition: Map<string, Task[]>): string {
+  const all = editions.flatMap((e) => byEdition.get(e.id)!)
+  const solved = solvedOf(all)
+  const custom = solved.filter((t) => t.check === 'custom').length
+  const byId = new Map(all.map((t) => [slug(t), t]))
+  const sources = editions
+    .map((e) => `<li><a href="${e.source}" target="_blank" rel="noopener">${esc(e.title)}</a> <span>${esc(e.dates)} · ${esc(e.theme)}</span></li>`)
+    .join('\n          ')
+  const findings = FINDINGS.map(([id, text]) => {
+    const t = byId.get(id)!
+    return `<li><a href="#${id}"><b>${esc(editionLabel(t.edition))} · ${esc(t.title)}</b></a> ${esc(text)}</li>`
+  }).join('\n          ')
+  return `<section class="view" id="v-about" data-page="about" aria-label="About" hidden>
+    <div class="wrap">
+      <header class="hero hero-home">
+        ${heroArt(4242)}
+        <div class="hero-heading">
+          <p class="hero-kicker">About</p>
+          <h2 class="hero-title">About this site</h2>
+        </div>
+        <p class="hero-lead">An unofficial collection: every published CoderGames task, solved in TypeScript, explained in my own words and visualised.</p>
+      </header>
+      <div class="about prose">
+        <h3>What CoderGames is</h3>
+        <p><a href="https://codergames.deutschetelekomitsolutions.sk/" target="_blank" rel="noopener">CoderGames</a> is a week-long online coding competition: one task a day, points for correct answers and for speed. Students and Deutsche Telekom employees from several countries take part in separate categories.</p>
+        <h3>Sources</h3>
+        <p>The original task statements, inputs and official answers are published on the competition’s pages, one per edition. The task descriptions here are short summaries in my own words.</p>
+        <ul class="sources">
+          ${sources}
+        </ul>
+        <h3>How it’s built and checked</h3>
+        <p>Every task has its own folder with the write-up, a standalone <code>solution.ts</code> that reads the input file and prints the answer (ready to paste into the submission form), the input and the official answer. <code>npm test</code> runs all ${solved.length} of them and compares the output with the official answer. When several answers are equally correct, like a different but equally short path, the task gets its own <code>check.ts</code> (${custom} tasks) that validates the answer instead of comparing text.</p>
+        <p>The visualisations are plain JavaScript with SVG or canvas, no framework: each task folder has a <code>visual.js</code> that runs in the browser and a <code>visual.ts</code> that prepares its data from the real input at build time. The playground runs your <code>solve(input)</code> in a Web Worker and compares its output with the solution’s. Difficulty is my own 1–5 rating. The code is on <a href="${REPO}" target="_blank" rel="noopener">GitHub</a>.</p>
+        <h3>Mistakes found in the official material</h3>
+        <ul class="findings">
+          ${findings}
+        </ul>
+        <h3>Disclaimer</h3>
+        <p>This is not an official Telekom page. The tasks, their inputs and the official answers belong to the organisers.</p>
       </div>
     </div>
   </section>`
@@ -478,6 +509,7 @@ const body = `<header class="topbar">
   <div class="wrap">
     <a class="brandmark" href="#home"><i aria-hidden="true"></i>CoderGames Solutions</a>
     <p class="actions">
+      <a class="pill" href="#about">About</a>
       <a class="pill" href="https://mazsola739.github.io/mazsola739/" target="_blank" rel="noopener">Portfolio</a>
       <a class="pill" href="${REPO}" target="_blank" rel="noopener">${GITHUB_ICON}Source code</a>
       <button class="pill icon theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
@@ -489,9 +521,10 @@ const body = `<header class="topbar">
 <main id="main">
   ${homeView(editions, byEdition)}
   ${editions.map((e) => editionView(e, byEdition.get(e.id)!)).join('')}
+  ${aboutView(editions, byEdition)}
   <footer class="site-foot">
     <div class="wrap">
-      <p><b>© 2026 <a href="https://github.com/mazsola739" target="_blank" rel="noopener">mazsola739</a></b> · Task statements summarised in my own words; follow “Original task” for the full text</p>
+      <p><b>© 2026 <a href="https://github.com/mazsola739" target="_blank" rel="noopener">mazsola739</a></b> · Task statements summarised in my own words; <a href="#about">sources</a></p>
       <p><a href="https://mazsola739.github.io/mazsola739/" target="_blank" rel="noopener">My portfolio</a> · Not an official Telekom page.</p>
     </div>
   </footer>

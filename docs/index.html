@@ -291,6 +291,30 @@ svg text { font-family: var(--font-body); }
 .f-island { fill: hsl(var(--h) var(--isl-s) var(--isl-l)); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
+/* Playground: "Solve it yourself" hides the spoilers and shows an editor */
+.challenge-btn { font: 600 13.5px var(--font-body); color: var(--accent-text); background: var(--surface); border: 2px solid var(--brand); border-radius: 999px; padding: 5px 14px; cursor: pointer; box-shadow: 0 4px 14px rgba(0, 40, 60, 0.12); }
+.challenge-btn:hover { background: var(--accent-soft); }
+.challenge-btn[aria-pressed="true"] { background: var(--brand); color: var(--on-brand); }
+.task-page.challenge .visual, .task-page.challenge .details, .task-page.challenge .task-result, .task-page.challenge .hero-snap > * { display: none !important; }
+.task-page.challenge .hero-snap::before { content: "?"; font: 700 72px var(--font-display); color: var(--accent); opacity: 0.55; }
+.playground { display: grid; gap: 12px; border: 2px solid var(--brand); border-radius: 16px; background: var(--surface); padding: 16px 18px 18px; min-width: 0; }
+.pg-head { display: grid; gap: 4px; }
+.pg-head h3 { font: 600 19px var(--font-display); margin: 0; }
+.pg-head p { color: var(--muted); font-size: 14.5px; max-width: 80ch; }
+.pg-task { border-left: 4px solid var(--accent); padding-left: 14px; }
+.pg-label { font: 500 11px var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+.pg-label span { text-transform: none; letter-spacing: 0; margin-left: 6px; }
+.pg-label a { text-transform: none; letter-spacing: 0; margin-left: 6px; }
+.pg-input { display: grid; gap: 6px; min-width: 0; }
+.pg-input-text, .pg-out { max-height: 240px; overflow: auto; background: var(--bg); }
+.pg-code { width: 100%; min-height: 260px; font: 13.5px/1.55 var(--font-mono); background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 10px;
+  padding: 12px 14px; tab-size: 2; resize: vertical; font-variant-ligatures: none; }
+.pg-code:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.pg-status { font: 500 13px var(--font-mono); color: var(--muted); }
+.pg-result { display: grid; gap: 8px; min-width: 0; }
+.pg-ok { color: var(--good); font-weight: 600; }
+.pg-bad { color: var(--bad); font-weight: 600; }
+
 </style>
 </head>
 <body>
@@ -298,6 +322,7 @@ svg text { font-family: var(--font-body); }
   <div class="wrap">
     <a class="brandmark" href="#home"><i aria-hidden="true"></i>CoderGames Solutions</a>
     <p class="actions">
+      <a class="pill" href="https://mazsola739.github.io/mazsola739/" target="_blank" rel="noopener">Portfolio</a>
       <a class="pill" href="https://github.com/mazsola739/rika-codergames" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>Source code</a>
       <button class="pill icon theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
         <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a.6.6 0 0 0-.8-.7A9.5 9.5 0 1 0 21.2 15.4a.6.6 0 0 0-.7-.8z"/></svg>
@@ -687,10 +712,40 @@ svg text { font-family: var(--font-body); }
               <span class="task-result"><span>Answer</span>1 6</span>
               <span class="fact"><span>Country</span>Spain</span>
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 5 of 5" aria-label="Difficulty 5 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2026-1" data-slug="2026-1" data-input="play/2026-1.in.txt" data-expected="play/2026-1.out.txt" data-multi="1" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2026-1">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is a single line, without the country.</p>
+          </div>
+          <div class="pg-task prose"><p>At the Grand Prix in a city famous for one architect&#39;s style, an unfinished basilica and street blocks with their corners cut off (Barcelona: Gaudí, the Sagrada Família, the Eixample), a row of <em>N</em> stalls sells identical team merchandise. You want to open one more stall: choose <strong>where</strong> (after existing stall <em>L</em>, never first or last) and at <strong>what price</strong> <em>P</em>, to maximise the expected revenue.</p>
+<p>Fans behave in a fixed way. A fan with patience <em>K</em> walks past exactly <em>K</em> stalls, then goes back to the cheapest one seen. On a tie, they go to the one <strong>nearest to where they stopped</strong>. Half the fans walk from left to right, half from right to left, and <em>B_K</em> percent of fans have patience <em>K</em>. On equal revenue, the smallest <em>L</em> wins, then the smallest <em>P</em>. The task adds: &quot;brute force is not an option&quot;.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>3 lines · showing the start</span> <a href="play/2026-1.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2026-1.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2026-1">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2026-1" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2026-1">
           <div class="visual-head"><h3 id="v-2026-1">Place the stall, set the price</h3><p>Move the new stall along the row and change its price. Every kind of fan either never buys from us or has a price ceiling, so revenue rises in a sawtooth and the best price always sits on a ceiling.</p></div>
           <div class="visual-body" data-visual="2026-1"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -806,10 +861,39 @@ console.log(<span class="tk-str">`${best.L} ${best.P}`</span>)</code></pre></div
               <span class="task-result"><span>Answer</span>AVUS, Max Esser</span>
               <span class="fact"><span>Country</span>Germany</span>
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 3 of 5" aria-label="Difficulty 3 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2026-2" data-slug="2026-2" data-input="play/2026-2.in.txt" data-expected="play/2026-2.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2026-2">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is a single line, without the country.</p>
+          </div>
+          <div class="pg-task prose"><p>An old telemetry archive from a historic racing venue contains 42,320 shuffled records <code>timestamp;row;column;dot;value;status</code>. Together they describe a 110 × 46 raster of <strong>8-dot Braille</strong> cells. Rows 0–42 form a picture of a sculpture from the venue&#39;s northern curve. Rows 43–45 hold metadata in plain Braille: the location, the people and vehicles shown, and the artist. Only <code>VALID</code> records count; <code>NOISE</code> records are decoys. Print <code>{&quot;country&quot;:…, &quot;location&quot;:…, &quot;artist&quot;:…}</code>. The country isn&#39;t written anywhere: work it out from the venue.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>42,321 lines · showing the start</span> <a href="play/2026-2.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2026-2.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2026-2">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2026-2" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2026-2">
           <div class="visual-head"><h3 id="v-2026-2">Watch the picture appear</h3><p>The log is replayed in file order. Each record drops one dot into its cell; decoys (NOISE) flash and are thrown away. At the end, the three bottom rows are read as Braille text.</p></div>
           <div class="visual-body" data-visual="2026-2"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -977,10 +1061,39 @@ console.log(JSON.stringify({ country, location: venue, artist: capitalise(name) 
               <span class="task-result"><span>Answer</span>4,768,729,922,192 paths</span>
               <span class="fact"><span>Country</span>Hungary</span>
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 2 of 5" aria-label="Difficulty 2 of 5"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2026-3" data-slug="2026-3" data-input="play/2026-3.in.txt" data-expected="play/2026-3.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2026-3">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is a single line, without the country.</p>
+          </div>
+          <div class="pg-task prose"><p>A driver&#39;s career is a directed acyclic graph of trainings and races. Node 1 is the complete beginner and node N the Formula 1 professional. Count the different paths from 1 to N. The count may not fit in 32 bits. The input has 50 nodes and 962 edges. Country hint: the first three winners at &quot;our track&quot; were Nelson Piquet, Nelson Piquet and Ayrton Senna.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>963 lines · showing the start</span> <a href="play/2026-3.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2026-3.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2026-3">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2026-3" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2026-3">
           <div class="visual-head"><h3 id="v-2026-3">Counting paths, layer by layer</h3><p>Nodes are arranged by depth (the longest way to reach them from node 1). Step through the topological order: each node passes its count of paths to every node it points to. Colour shows the count on a log scale.</p></div>
           <div class="visual-body" data-visual="2026-3"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -1064,10 +1177,12 @@ console.log(ways[n]!.toString())</code></pre></div>
               
               
               
+              
             </p>
           </div>
           <figure class="hero-snap empty" aria-hidden="true"></figure>
         </header>
+        
         
         <div class="prose"><p>The task text is only shown to signed-in participants, so it isn&#39;t here yet. It will be added with a solution once it can be read, at the latest when the organisers publish the correct answers after the round closes.</p>
 </div>
@@ -1093,10 +1208,12 @@ console.log(ways[n]!.toString())</code></pre></div>
               
               
               
+              
             </p>
           </div>
           <figure class="hero-snap empty" aria-hidden="true"></figure>
         </header>
+        
         
         <div class="prose"><p>The last task of the week hadn&#39;t been published yet when this repository was set up. It will be added with a solution once it&#39;s out.</p>
 </div>
@@ -1134,10 +1251,39 @@ console.log(ways[n]!.toString())</code></pre></div>
               <span class="task-result"><span>Answer</span>e.g. [2, 3]; null when there is none</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 1 of 5" aria-label="Difficulty 1 of 5"><i class="on"></i><i></i><i></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2025-1" data-slug="2025-1" data-input="play/2025-1.in.txt" data-expected="play/2025-1.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2025-1">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 9 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>Domi may eat only two chocolates, and his dad decides how heavy they must be together. Given a list of chocolate weights and a target, find the indexes of the <strong>first</strong> two chocolates that add up to the target, or <code>null</code> if no pair does. &quot;First&quot; means the pair whose <strong>second</strong> chocolate appears earliest: in <code>[1, 2, 3, 4]</code> with target 5, the answer is <code>[1, 2]</code>, not <code>[0, 3]</code>.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>18 lines · showing the start</span> <a href="play/2025-1.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2025-1.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2025-1">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2025-1" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2025-1">
           <div class="visual-head"><h3 id="v-2025-1">One pass with a memory</h3><p>Walk through the bucket once. For each chocolate, look up its partner (target − weight) among the weights already seen; the first hit is the pair whose second chocolate comes earliest.</p></div>
           <div class="visual-body" data-visual="2025-1"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -1211,10 +1357,39 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
               <span class="task-result"><span>Answer</span>28 answers, ending at 6</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 3 of 5" aria-label="Difficulty 3 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2025-2" data-slug="2025-2" data-input="play/2025-2.in.txt" data-expected="play/2025-2.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2025-2">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 28 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>On Halloween night, ghostly corridors appear one by one between <em>N</em> haunted houses (up to 2·10⁵ houses and 2·10⁵ events). Corridors never disappear. After each <code>?</code>, report how many <strong>connected components contain a cycle</strong>. These are the cursed ones, the components that aren&#39;t trees.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>101 lines · showing the start</span> <a href="play/2025-2.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2025-2.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2025-2">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2025-2" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2025-2">
           <div class="visual-head"><h3 id="v-2025-2">Corridors appear one by one</h3><p>Replay the events. Houses that are connected share a colour; a component turns cursed (pink ring) the moment an edge closes a cycle. The counter is the answer to each “?”.</p></div>
           <div class="visual-body" data-visual="2025-2"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -1316,10 +1491,44 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
               <span class="task-result"><span>Answer</span>4 possible entrances, 9 extra rooms vanish</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 2 of 5" aria-label="Difficulty 2 of 5"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2025-3" data-slug="2025-3" data-input="play/2025-3.in.txt" data-expected="play/2025-3.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2025-3">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 19 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>Tom has a map of a haunted mansion: 20,000 numbered rooms joined by one-way secret passages, with no way to walk in a circle. Some rooms (35 here) have vanished. A botched spell made a few more vanish: every room &quot;connected to&quot; at least two vanished rooms disappeared too, but only once, with no chain reaction. Answer three questions:</p>
+<ol>
+<li>Which room is the <strong>main entrance</strong>? No passage leads into it.</li>
+<li>How many rooms vanished <strong>additionally</strong> because of the spell?</li>
+<li>How many rooms can still be reached from the entrance, including the entrance?</li>
+</ol>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>20,037 lines · showing the start</span> <a href="play/2025-3.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2025-3.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2025-3">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2025-3" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2025-3">
           <div class="visual-head"><h3 id="v-2025-3">Vanish, spell, explore</h3><p>The two example mansions step by step: find the entrance (no passage leads in), remove the vanished rooms, apply the spell once, then explore from the entrance. Below: the four possible entrances of the real 20,000-room mansion.</p></div>
           <div class="visual-body" data-visual="2025-3"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -1461,10 +1670,39 @@ console.log(entrances.length === <span class="tk-num">1</span> ? results[<span c
               <span class="task-result"><span>Answer</span>7, 11, 5, 10, 20, 21, 38, 148</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 2 of 5" aria-label="Difficulty 2 of 5"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2025-4" data-slug="2025-4" data-input="play/2025-4.in.txt" data-expected="play/2025-4.out.txt" data-multi="1" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2025-4">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 101 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>At midnight spirits fill the streets, and Domi needs the safest way home. The map is a grid of danger values. Go from the top-left corner to the bottom-right one, moving only <strong>right or down</strong>, so that the total danger is as small as possible. Print the total and the cells of the path. The input has eight maps, up to 20 × 20.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>8 lines · showing the start</span> <a href="play/2025-4.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2025-4.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2025-4">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2025-4" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2025-4">
           <div class="visual-head"><h3 id="v-2025-4">The safest way home</h3><p>Each cell shows its danger. Switch to “Best so far” to see the DP table: the cheapest total from the top-left corner to that cell. The pink path is read back from the bottom-right corner.</p></div>
           <div class="visual-body" data-visual="2025-4"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -1565,10 +1803,39 @@ console.log(out.join(<span class="tk-str">'\n\n'</span>))</code></pre></div>
               <span class="task-result"><span>Answer</span>35 YES/NO answers</span>
               <span class="fact"><span>Country</span>Slovakia</span>
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 1 of 5" aria-label="Difficulty 1 of 5"><i class="on"></i><i></i><i></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2025-women-1" data-slug="2025-women-1" data-input="play/2025-women-1.in.txt" data-expected="play/2025-women-1.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2025-women-1">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 35 lines, without the country.</p>
+          </div>
+          <div class="pg-task prose"><p>In a story set between the Tatras, Bratislava Castle and Spiš Castle, Janko has to check pairs of words. For each line of two lowercase words, print <code>YES</code> if they are <strong>anagrams</strong> of each other (the same letters, rearranged) and <code>NO</code> otherwise. <code>listen silent</code> → <code>YES</code>. The input has 35 pairs, some of them long.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>35 lines · showing the start</span> <a href="play/2025-women-1.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2025-women-1.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2025-women-1">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2025-women-1" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2025-women-1">
           <div class="visual-head"><h3 id="v-2025-women-1">Count the letters</h3><p>For the chosen pair: letters of the first word count up, letters of the second count down. Anagrams leave every one of the 26 counters at zero.</p></div>
           <div class="visual-body" data-visual="2025-women-1"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -1641,10 +1908,46 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
               <span class="task-result"><span>Answer</span>31 stable, 21 unstable</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 2 of 5" aria-label="Difficulty 2 of 5"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2025-women-2" data-slug="2025-women-2" data-input="play/2025-women-2.in.txt" data-expected="play/2025-women-2.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2025-women-2">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is a single line.</p>
+          </div>
+          <div class="pg-task prose"><p>The universe is a 200 × 200 grid of numbers on the surface of a sphere, really a <strong>torus</strong>: the last column is next to the first, and the last row next to the first. A <strong>gravitational centre</strong> is a cell <em>P</em> whose value is strictly larger than the 16 values on its four axes at distance 1 and 2:</p>
+<pre class="code"><code>x2&#39;  .   a2  .   y2
+ .  x1&#39;  a1  y1  .
+b2&#39; b1&#39;  P   b1  b2
+ .  y1&#39;  a1&#39; x1  .
+y2&#39;  .   a2&#39; .   x2
+</code></pre>
+<p>A centre is <strong>stable</strong> if every axis is balanced: a1 = a1′, a2 = a2′, and the same for b, x and y. Count the stable and the unstable centres.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>201 lines · showing the start</span> <a href="play/2025-women-2.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2025-women-2.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2025-women-2">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2025-women-2" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2025-women-2">
           <div class="visual-head"><h3 id="v-2025-women-2">The universe and its centres</h3><p>The 200 × 200 torus; darker cells hold larger values. Green rings are stable gravitational centres, pink ones unstable. Click a ring (or pick one from the list) to see its 16 axis values and which pairs break the symmetry.</p></div>
           <div class="visual-body" data-visual="2025-women-2"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -1736,10 +2039,39 @@ console.log(<span class="tk-str">`${stable} ${unstable}`</span>)</code></pre></d
               <span class="task-result"><span>Answer</span>Keys 4, 7, 16, 2</span>
               <span class="fact"><span>Country</span>Greece</span>
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 3 of 5" aria-label="Difficulty 3 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2025-women-3" data-slug="2025-women-3" data-input="play/2025-women-3.in.txt" data-expected="play/2025-women-3.out.txt" data-multi="1" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2025-women-3">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 25 lines, without the country.</p>
+          </div>
+          <div class="pg-task prose"><p>An encrypted message from the archives of the Minoan civilisation hides the way to an artifact. The hints say the order &quot;used multiple shifts within the same message&quot;, that the first value relates to a lunar cycle, that each decrypted part contains a clue to the next, and that frequency analysis helps. Find all the keys, decrypt the message and name the country.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>22 lines · showing the start</span> <a href="play/2025-women-3.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2025-women-3.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2025-women-3">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2025-women-3" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2025-women-3">
           <div class="visual-head"><h3 id="v-2025-women-3">Which shift fits each line</h3><p>One row per line of the poem, one column per Caesar shift; darker means more English-looking. The circles are each line’s own favourite, the pink path is the choice made for all lines together, paying a penalty for every change of key.</p></div>
           <div class="visual-body" data-visual="2025-women-3"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -1852,10 +2184,39 @@ console.log(plain.join(<span class="tk-str">'\n'</span>))</code></pre></div>
               <span class="task-result"><span>Answer</span>145, 90, 90, 305, 145, 105</span>
               <span class="fact"><span>Country</span>Spain</span>
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 4 of 5" aria-label="Difficulty 4 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2025-women-4" data-slug="2025-women-4" data-input="play/2025-women-4.in.txt" data-expected="play/2025-women-4.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2025-women-4">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 12 lines, without the country.</p>
+          </div>
+          <div class="pg-task prose"><p>During Las Fallas in Valencia some streets close at certain times. You ride a shared bike from station 1 to station N, starting at time T (minutes after midnight). Each road takes a fixed number of minutes and has a list of closed intervals [s, e). If a road is closed when you want to use it, you wait until it reopens. What is the earliest possible arrival? There are six sets, from &quot;simple&quot; to &quot;extreme&quot;.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>52 lines · showing the start</span> <a href="play/2025-women-4.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2025-women-4.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2025-women-4">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2025-women-4" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2025-women-4">
           <div class="visual-head"><h3 id="v-2025-women-4">The ride on a timeline</h3><p>Pick a set. The map shows the stations and the fastest route; the timeline shows each road on the route with its closures (hatched), your riding time (pink) and any waiting (grey).</p></div>
           <div class="visual-body" data-visual="2025-women-4"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -1983,10 +2344,68 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
               <span class="task-result"><span>Answer</span>20 faulty tests</span>
               <span class="fact"><span>Country</span>Germany</span>
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 1 of 5" aria-label="Difficulty 1 of 5"><i class="on"></i><i></i><i></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2025-women-5" data-slug="2025-women-5" data-input="play/2025-women-5.in.txt" data-expected="play/2025-women-5.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2025-women-5">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 20 lines, without the country.</p>
+          </div>
+          <div class="pg-task prose"><p>A country famous for its motorways (with no general speed limit) is testing automatic speed cameras, and some unit tests are wrong. Each test is <code>ID;SPEED;ROAD;WEATHER;VIOLATION</code>. The rules:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>road</th>
+<th>clear</th>
+<th>rain</th>
+<th>fog</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CITY</td>
+<td>50</td>
+<td>40</td>
+<td>30</td>
+</tr>
+<tr>
+<td>RURAL</td>
+<td>100</td>
+<td>80</td>
+<td>60</td>
+</tr>
+<tr>
+<td>HIGHWAY</td>
+<td>no limit</td>
+<td>130</td>
+<td>100</td>
+</tr>
+</tbody></table></div>
+<p>Print the IDs of the tests whose <code>VIOLATION</code> flag doesn&#39;t match the rules.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>250 lines · showing the start</span> <a href="play/2025-women-5.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2025-women-5.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2025-women-5">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2025-women-5" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2025-women-5">
           <div class="visual-head"><h3 id="v-2025-women-5">Every test against its speed limit</h3><p>One lane per road type and weather. Each dot is a test at its speed: filled if the test expects a violation, hollow if not. The bar is the limit; pink dots are the faulty tests whose expectation contradicts it.</p></div>
           <div class="visual-body" data-visual="2025-women-5"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -2095,10 +2514,35 @@ console.log(faulty.join(<span class="tk-str">'\n'</span>))</code></pre></div>
               <span class="task-result"><span>Answer</span>6, 28, 496, 8128, 33,550,336</span>
               <span class="fact"><span>Country</span>Czechia</span>
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 2 of 5" aria-label="Difficulty 2 of 5"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2024-1" data-slug="2024-1" data-input="" data-expected="play/2024-1.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2024-1">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 5 lines, without the country.</p>
+          </div>
+          <div class="pg-task prose"><p>The story follows Jára Cimrman, the great Czech &quot;inventor&quot; who never existed, as he discovers perfect numbers and designs an astronomical clock for the capital (Prague&#39;s has stood there since 1410). Find the first five perfect numbers between 2 and 100,000,000. A <strong>perfect number</strong> equals the sum of its divisors other than itself: 6 = 1 + 2 + 3, 28 = 1 + 2 + 4 + 7 + 14.</p>
+</div>
+          <p class="vis-note">This task has no input file: <code>solve("")</code> should return the answer.</p>
+          <label class="pg-label" for="pg-code-2024-1">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2024-1" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2024-1">
           <div class="visual-head"><h3 id="v-2024-1">Divisors that add up</h3><p>Pick a perfect number: its proper divisors, laid end to end, are exactly as long as the number itself. The table shows the Euclid–Euler recipe 2^(p−1)·(2^p − 1): it works only when 2^p − 1 is prime.</p></div>
           <div class="visual-body" data-visual="2024-1"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -2208,10 +2652,46 @@ console.log(perfect.join(<span class="tk-str">'\n'</span>))</code></pre></div>
               <span class="task-result"><span>Answer</span>(N − 1)(N² + 1)</span>
               <span class="fact"><span>Country</span>Hungary</span>
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 3 of 5" aria-label="Difficulty 3 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2024-2" data-slug="2024-2" data-input="play/2024-2.in.txt" data-expected="play/2024-2.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2024-2">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 3 lines, without the country.</p>
+          </div>
+          <div class="pg-task prose"><p>An N × N grid (N odd) is filled with 1, 2, …, N² row by row. The <strong>diamond sum</strong> is the sum of the numbers on the diamond whose corners are the midpoints of the four sides. For N = 5:</p>
+<pre class="code"><code> 1  2 [3] 4  5
+ 6 [7] 8 [9]10
+[11]12 13 14[15]
+16[17]18[19]20
+21 22[23]24 25      3+7+9+11+15+17+19+23 = 104
+</code></pre>
+<p>Compute it modulo 987,654,321 for N up to <strong>10¹⁸</strong>. The country hint is the first underground railway in continental Europe, opened in 1896: Budapest&#39;s Millennium Underground.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>3 lines · showing the start</span> <a href="play/2024-2.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2024-2.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2024-2">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2024-2" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2024-2">
           <div class="visual-head"><h3 id="v-2024-2">The diamond in the grid</h3><p>Slide the size: the diamond touches the middle of every side. Its sum always equals (N − 1)(N² + 1), so N = 10¹⁸ needs no loop.</p></div>
           <div class="visual-body" data-visual="2024-2"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -2300,10 +2780,40 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
               <span class="task-result"><span>Answer</span>One pass from the top, one turn per pillar</span>
               <span class="fact"><span>Country</span>Greece</span>
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 3 of 5" aria-label="Difficulty 3 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2024-3" data-slug="2024-3" data-input="play/2024-3.in.txt" data-expected="play/2024-3.out.txt" data-multi="1" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2024-3">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 101 lines, without the country.</p>
+          </div>
+          <div class="pg-task prose"><p>In the Temple of Delphi, a stone door opens only when a pyramid of pillars shows the same faces as the sketch on the door. Each pillar has <em>m</em> faces (2 &lt; m &lt; 10). Turning a pillar also turns <strong>the two pillars below it</strong> the same way, and those turn the ones below them, all the way down. For each of about 100 pyramids (up to 210 pillars), give the manual turn for every pillar.</p>
+<p>Example (m = 4): from <code>2 / 1 1 / 3 3 2</code> to <code>1 / 2 1 / 3 1 0</code>, one answer is <code>[-1, 2, 1, 3, 1, -2]</code>.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>303 lines · showing the start</span> <a href="play/2024-3.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2024-3.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2024-3">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2024-3" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2024-3">
           <div class="visual-head"><h3 id="v-2024-3">Open the door</h3><p>Each pillar shows its face (number and colour); the small number below is the face on the door sketch. Step through the manual turns from the top: each one cascades down both sides, and a pillar is done (✓) once nothing above it will move again.</p></div>
           <div class="visual-body" data-visual="2024-3"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -2401,10 +2911,39 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
               <span class="task-result"><span>Answer</span>202 missing numbers</span>
               <span class="fact"><span>Country</span>Slovakia</span>
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 1 of 5" aria-label="Difficulty 1 of 5"><i class="on"></i><i></i><i></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2024-4" data-slug="2024-4" data-input="play/2024-4.in.txt" data-expected="play/2024-4.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2024-4">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is a single line, without the country.</p>
+          </div>
+          <div class="pg-task prose"><p>In a village below the Tatras, where the outlaw Jánošík took from the rich and gave to the poor, numbers must form an unbroken sequence. Given an array of integers, find how many numbers are missing between the smallest and the largest, and list them in ascending order. <code>4 3 6 8</code> → <code>2: 5, 7</code>. The input has 4,182 numbers.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>1 lines · showing the start</span> <a href="play/2024-4.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2024-4.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2024-4">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2024-4" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2024-4">
           <div class="visual-head"><h3 id="v-2024-4">The gaps, as a barcode</h3><p>One thin stripe per number from the smallest to the largest value: grey if it is in the array, pink if it is missing.</p></div>
           <div class="visual-body" data-visual="2024-4"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -2463,10 +3002,39 @@ console.log(<span class="tk-str">`${missing.length}: ${missing.join(', ')}`</spa
               <span class="task-result"><span>Answer</span>4; 2 and 6; 0</span>
               <span class="fact"><span>Country</span>Spain</span>
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 4 of 5" aria-label="Difficulty 4 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2024-5" data-slug="2024-5" data-input="play/2024-5.in.txt" data-expected="play/2024-5.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2024-5">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 2 lines, without the country.</p>
+          </div>
+          <div class="pg-task prose"><p>A security guard at a Mercadona supermarket watches camera feeds in an h × w grid of screen cells. The arrow buttons shift <strong>every</strong> image one cell left, right, up or down, wrapping around at the edges. <em>Compactness</em> is the area of the smallest rectangle that contains all images. Find the minimum compactness and the fewest button presses that achieve it. Searching all shift combinations is possible, but the task asks for something better.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>8 lines · showing the start</span> <a href="play/2024-5.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2024-5.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2024-5">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2024-5" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2024-5">
           <div class="visual-head"><h3 id="v-2024-5">Play with the camera grid</h3><p>Use the arrow buttons (or the arrow keys on the grid) to shift every image, wrapping around the edges. The dashed box is the compactness. The bars on the sides show which rows and columns are occupied; the largest gap is where the circle should be cut.</p></div>
           <div class="visual-body" data-visual="2024-5"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -2583,10 +3151,45 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
               <span class="task-result"><span>Answer</span>92 characters removed, longest pAssWorD</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 2 of 5" aria-label="Difficulty 2 of 5"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2023-1" data-slug="2023-1" data-input="play/2023-1.in.txt" data-expected="play/2023-1.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2023-1">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 4 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>Buggy locked himself out and needs his master password. He only kept a list of coordinates like <code>{3,1},{3,3},{3,0},…</code> into an 8 × 8 character matrix. The matrix holds <code>0–9</code>, then <code>a–z</code>, then <code>A–Z</code>, then <code>,</code> and <code>.</code>.</p>
+<ol>
+<li>Look up each coordinate (row, column, counting from 0). This spells words separated by commas.</li>
+<li>Join the words: if the end of a word matches the beginning of the next one (<strong>ignoring case</strong>), drop the matching part from the <strong>next</strong> word. <code>lemON</code> + <code>onion</code> → <code>lemONion</code>.</li>
+<li>Report the password, how many characters were removed (separators don&#39;t count), and the longest removed piece (keeping its case).</li>
+</ol>
+<p>Example: <code>apple, lemon, onion</code> → <code>applemonion</code>. Removed <code>le</code> and <code>on</code>, so 4 characters, and the longest is <code>le</code>.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>3 lines · showing the start</span> <a href="play/2023-1.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2023-1.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2023-1">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2023-1" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2023-1">
           <div class="visual-head"><h3 id="v-2023-1">From coordinates to the password</h3><p>Each {row,col} pair picks a character from the 8 × 8 matrix. The words are then chained: the overlap with the previous word (ignoring case) is dropped, shown struck through.</p></div>
           <div class="visual-body" data-visual="2023-1"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -2682,10 +3285,39 @@ console.log(<span class="tk-str">`The longest removed string: &quot;${longest}&q
               <span class="task-result"><span>Answer</span>Key SUPERHESLO, The Emperor's New Clothes</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 3 of 5" aria-label="Difficulty 3 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2023-2" data-slug="2023-2" data-input="play/2023-2.in.txt" data-expected="play/2023-2.out.txt" data-multi="1" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2023-2">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 2 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>A fairy tells little Ann a bedtime story, but &quot;the fairies&#39; language is encrypted with a password&quot;. The input is 763 capital letters with no spaces. Decrypt it and name the fairy tale.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>1 lines · showing the start</span> <a href="play/2023-2.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2023-2.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2023-2">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2023-2" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2023-2">
           <div class="visual-head"><h3 id="v-2023-2">Breaking the Vigenère cipher</h3><p>Left: the index of coincidence for every guessed key length; English text gives about 0.066, random letters 0.038, and length 10 is the first to look English. Then each of the 10 columns is a Caesar cipher: pick a column to see its letter counts against English.</p></div>
           <div class="visual-body" data-visual="2023-2"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -2796,10 +3428,40 @@ console.log(<span class="tk-str">`Key: ${key.map((s) =&gt; String.fromCharCode(6
               <span class="task-result"><span>Answer</span>Length 319</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 3 of 5" aria-label="Difficulty 3 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2023-3" data-slug="2023-3" data-input="play/2023-3.in.txt" data-expected="play/2023-3.out.txt" data-multi="1" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2023-3">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 2 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>To break the curse on the land of Stringeria, find the <strong>longest common subsequence</strong> of two magic strings <code>s1</code> and <code>s2</code> (1000 capital letters each). A subsequence keeps the order of the letters but doesn&#39;t need them to be next to each other. Print one such subsequence and its length.</p>
+<p>Example: <code>ABECF</code> and <code>AEEDC</code> → <code>AEC</code>, length 3.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>2 lines · showing the start</span> <a href="play/2023-3.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2023-3.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2023-3">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2023-3" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2023-3">
           <div class="visual-head"><h3 id="v-2023-3">The whole DP table</h3><p>All 1000 × 1000 cells of L[i][j], the LCS length of the first i letters of s1 and the first j of s2: darker means longer. The pink line is the walk back from the corner that reads off one longest common subsequence.</p></div>
           <div class="visual-body" data-visual="2023-3"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -2885,10 +3547,39 @@ console.log(<span class="tk-str">`Length: ${lcs.length}`</span>)</code></pre></d
               <span class="task-result"><span>Answer</span>All 100 points</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 3 of 5" aria-label="Difficulty 3 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2023-4" data-slug="2023-4" data-input="play/2023-4.in.txt" data-expected="play/2023-4.out.txt" data-multi="1" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2023-4">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 2 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>A family is lost at one of the tourist spots around Charmington. The rescue team wants a route that visits <strong>as many spots as possible, each at most once</strong>, starting anywhere. The trails (pairs of spots) can be walked both ways. Print the number of spots visited and the route. The network has 100 spots and 361 trails.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>3 lines · showing the start</span> <a href="play/2023-4.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2023-4.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2023-4">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2023-4" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2023-4">
           <div class="visual-head"><h3 id="v-2023-4">A route through all 100 points</h3><p>The trail network drawn with a force-directed layout. Play the route the depth-first search finds with Warnsdorff’s rule: it reaches every point exactly once.</p></div>
           <div class="visual-body" data-visual="2023-4"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -2997,10 +3688,39 @@ console.log(<span class="tk-str">`Path: ${best.slice(1).map((v, i) =&gt; `</span
               <span class="task-result"><span>Answer</span>743,529.61, proven optimal</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 4 of 5" aria-label="Difficulty 4 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2023-5" data-slug="2023-5" data-input="play/2023-5.in.txt" data-expected="play/2023-5.out.txt" data-multi="1" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2023-5">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 1,114 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>The rocket to Mars leaves tomorrow. There are 10,000 machines, each with a <em>usefulness</em> (value) and a <em>size</em> (weight, a real number). The payload limit is 10,000. Choose machines to maximise the total usefulness without going over the limit. The story stresses that there is no time for the perfect solution: be quick.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>10,005 lines · showing the start</span> <a href="play/2023-5.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2023-5.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2023-5">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2023-5" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2023-5">
           <div class="visual-head"><h3 id="v-2023-5">All 10,000 machines</h3><p>Each dot is a machine: size to the right, usefulness up. The packed ones (pink) are the machines above the dashed line through the origin, the best usefulness per unit of size, plus a few small ones below it that fill the last gaps. Machines near the line are where the hard decisions are.</p></div>
           <div class="visual-body" data-visual="2023-5"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -3170,10 +3890,39 @@ console.error(<span class="tk-str">`${nodes} search nodes, ${proven ? 'optimal' 
               <span class="task-result"><span>Answer</span>n − the highest count, 100 times</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 1 of 5" aria-label="Difficulty 1 of 5"><i class="on"></i><i></i><i></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2022-1" data-slug="2022-1" data-input="play/2022-1.in.txt" data-expected="play/2022-1.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2022-1">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 100 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>Given an array of integers, what is the smallest number of deletions that leaves only one distinct value? For <code>[1, 2, 2, 3]</code>, keeping the two 2s costs 2 deletions, which is the best. The input has 100 arrays.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>200 lines · showing the start</span> <a href="play/2022-1.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2022-1.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2022-1">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2022-1" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2022-1">
           <div class="visual-head"><h3 id="v-2022-1">Keep the tallest bar</h3><p>How often each value occurs in the chosen array. Keep the most frequent value and delete everything else.</p></div>
           <div class="visual-body" data-visual="2022-1"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -3241,10 +3990,35 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
               <span class="task-result"><span>Answer</span>465,585,120</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 1 of 5" aria-label="Difficulty 1 of 5"><i class="on"></i><i></i><i></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2022-2" data-slug="2022-2" data-input="" data-expected="play/2022-2.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2022-2">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is a single line.</p>
+          </div>
+          <div class="pg-task prose"><p>2520 is the smallest number divisible by every number from 1 to 10. What is the <strong>second</strong> smallest positive number divisible by every number from 1 to 21?</p>
+</div>
+          <p class="vis-note">This task has no input file: <code>solve("")</code> should return the answer.</p>
+          <label class="pg-label" for="pg-code-2022-2">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2022-2" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2022-2">
           <div class="visual-head"><h3 id="v-2022-2">Build the LCM from prime powers</h3><p>The least common multiple of 1 … N takes every prime to its highest power that is still ≤ N. Slide N and see which numbers add something new (prime powers) and which add nothing.</p></div>
           <div class="visual-body" data-visual="2022-2"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -3299,10 +4073,42 @@ console.log((<span class="tk-num">2n</span> * l).toString())</code></pre></div>
               <span class="task-result"><span>Answer</span>83,960,501</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 2 of 5" aria-label="Difficulty 2 of 5"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2022-3" data-slug="2022-3" data-input="" data-expected="play/2022-3.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2022-3">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is a single line.</p>
+          </div>
+          <div class="pg-task prose"><p>Write the numbers 1, 2, 3, … in a clockwise spiral starting from the centre:</p>
+<pre class="code"><code>21 22 23 24 25
+20  7  8  9 10
+19  6  1  2 11
+18  5  4  3 12
+17 16 15 14 13
+</code></pre>
+<p>The numbers on the two diagonals of this 5 × 5 spiral add up to 101. What is the sum for a 501 × 501 spiral?</p>
+</div>
+          <p class="vis-note">This task has no input file: <code>solve("")</code> should return the answer.</p>
+          <label class="pg-label" for="pg-code-2022-3">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2022-3" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2022-3">
           <div class="visual-head"><h3 id="v-2022-3">Grow the spiral</h3><p>Each new ring of side n ends with n² in its top-right corner; the other corners are n − 1 apart. The diagonal numbers are highlighted and the sum matches 1 + Σ (4n² − 6(n − 1)).</p></div>
           <div class="visual-body" data-visual="2022-3"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -3367,10 +4173,39 @@ console.log(sum)</code></pre></div>
               <span class="task-result"><span>Answer</span>1000 rewritten numerals</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 2 of 5" aria-label="Difficulty 2 of 5"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2022-4" data-slug="2022-4" data-input="play/2022-4.in.txt" data-expected="play/2022-4.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2022-4">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 1,000 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>Most numbers can be written with Roman numerals in several ways: 16 could be <code>IIIIIIIIIIIIIIII</code>, <code>VVIIIIII</code> or <code>XVI</code>, but only <code>XVI</code> uses the fewest symbols. Given 1000 numerals, some written badly, rewrite each in its shortest correct form.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>1,000 lines · showing the start</span> <a href="play/2022-4.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2022-4.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2022-4">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2022-4" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2022-4">
           <div class="visual-head"><h3 id="v-2022-4">Shorten a numeral</h3><p>Type any Roman numeral, or pick one from the input. It is read as a value (smaller before larger means subtract) and written back in the shortest form. The chart shows how many characters each of the 1000 lines saves.</p></div>
           <div class="visual-body" data-visual="2022-4"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -3455,10 +4290,45 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
               <span class="task-result"><span>Answer</span>Minimum spanning tree; the official answers are wrong for 93 of 103 maps</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 4 of 5" aria-label="Difficulty 4 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2022-5" data-slug="2022-5" data-input="play/2022-5.in.txt" data-expected="play/2022-5.out.txt" data-multi="1" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2022-5">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 103 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>A map is a grid of <code>1</code> (land) and <code>0</code> (water). An island is a group of land cells connected horizontally or vertically. Connect <strong>all</strong> islands with bridges, using as little material as possible:</p>
+<ul>
+<li>a bridge is a straight horizontal or vertical line of 1, 2 or 3 water cells between two islands,</li>
+<li>every bridge cell costs one unit of material,</li>
+<li>bridges may cross (the crossing cell costs 2, one for each bridge).</li>
+</ul>
+<p>Print the material needed, or <code>-1</code> if the islands can&#39;t all be connected. The input has 103 maps, up to 100 × 100.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>6,124 lines · showing the start</span> <a href="play/2022-5.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2022-5.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2022-5">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2022-5" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2022-5">
           <div class="visual-head"><h3 id="v-2022-5">Correct islands vs. the official program</h3><p>Each colour is one island, pink lines are the bridges of the minimum spanning tree. Switch to &quot;Official program&quot; to see which islands its flood fill merges by walking off the top or left edge (marked with pink ticks).</p></div>
           <div class="visual-body" data-visual="2022-5"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -3630,10 +4500,39 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
               <span class="task-result"><span>Answer</span>A path of 270 steps</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 2 of 5" aria-label="Difficulty 2 of 5"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2021-1" data-slug="2021-1" data-input="play/2021-1.in.txt" data-expected="play/2021-1.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2021-1">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 39 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>You&#39;re lost in a maze of <code>.</code> (free) and <code>#</code> (rock) cells, starting at <code>S</code>. Find the shortest way to the exit <code>E</code>, moving only up, down, left or right. Print the maze with every <code>.</code> on that path replaced by <code>*</code>, or <code>Trapped</code> if there&#39;s no way out. The real maze is 49 × 39.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>39 lines · showing the start</span> <a href="play/2021-1.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2021-1.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2021-1">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2021-1" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2021-1">
           <div class="visual-head"><h3 id="v-2021-1">Breadth-first search, ring by ring</h3><p>BFS spreads from S one step at a time; the colour shows how many steps away a cell is. When the wave reaches E, the path is traced back.</p></div>
           <div class="visual-body" data-visual="2021-1"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -3731,10 +4630,40 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
               <span class="task-result"><span>Answer</span>30 totals, starting 4163</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 3 of 5" aria-label="Difficulty 3 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2021-2" data-slug="2021-2" data-input="play/2021-2.in.txt" data-expected="play/2021-2.out.txt" data-multi="1" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2021-2">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 30 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>A shelf holds <em>n</em> bottles of wine, and you can only take one from either end. You sell exactly one bottle a year, starting in year 1. A bottle with price <em>cᵢ</em> sold in year <em>t</em> earns <em>t · cᵢ</em>. Find the order that earns the most. The input has 30 shelves with up to a few hundred bottles each.</p>
+<p>Example: <code>10 25 27 28 1 1 8</code> → <code>536, 1*8 + 2*1 + 3*1 + 4*10 + 5*25 + 6*27 + 7*28</code></p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>31 lines · showing the start</span> <a href="play/2021-2.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2021-2.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2021-2">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2021-2" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2021-2">
           <div class="visual-head"><h3 id="v-2021-2">Sell the shelf year by year</h3><p>Each year one bottle leaves from an end of the shelf and earns year × price. Compare the optimal order (dynamic programming) with the tempting greedy rule &quot;always sell the cheaper end&quot;.</p></div>
           <div class="visual-body" data-visual="2021-2"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -3827,10 +4756,39 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
               <span class="task-result"><span>Answer</span>Four distance tables</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 2 of 5" aria-label="Difficulty 2 of 5"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2021-3" data-slug="2021-3" data-input="play/2021-3.in.txt" data-expected="play/2021-3.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2021-3">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 54 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>For a directed graph with unweighted edges, find the length of the shortest path <strong>to</strong> one target vertex from every other vertex. Vertex names are strings (<code>A</code>, <code>hawk</code>, <code>206</code>). Print the vertices in alphabetical order, with <code>INF</code> if the target can&#39;t be reached. There are four graphs: letters, a food chain (<em>grass → grasshopper → hawk</em>…), numbers and vegetables.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>8 lines · showing the start</span> <a href="play/2021-3.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2021-3.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2021-3">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2021-3" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2021-3">
           <div class="visual-head"><h3 id="v-2021-3">Distances to the target</h3><p>Every vertex is placed in the column of its distance to the target (right). One BFS over the reversed edges fills all columns at once; unreachable vertices are on the left, marked INF.</p></div>
           <div class="visual-body" data-visual="2021-3"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -3926,10 +4884,39 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
               <span class="task-result"><span>Answer</span>e.g. 134,123 with 1,605 coins</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 2 of 5" aria-label="Difficulty 2 of 5"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2021-4" data-slug="2021-4" data-input="play/2021-4.in.txt" data-expected="play/2021-4.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2021-4">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 22 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>On an exotic holiday, the coins have strange values, like a 25. Given an amount <em>X</em> and the coin values, pay <em>X</em> with the fewest coins. Print how many of each coin are needed, or <code>INF</code> if <em>X</em> can&#39;t be paid at all. The amounts go up to 7,432,134.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>11 lines · showing the start</span> <a href="play/2021-4.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2021-4.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2021-4">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2021-4" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2021-4">
           <div class="visual-head"><h3 id="v-2021-4">Greedy vs. the fewest coins</h3><p>Pick a coin set and an amount. Greedy (largest coin first) is shown next to the optimal answer from dynamic programming. The chart below marks every amount up to 200 where greedy needs more coins.</p></div>
           <div class="visual-body" data-visual="2021-4"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -4057,10 +5044,39 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
               <span class="task-result"><span>Answer</span>0, 4, 12, 9, 1</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 1 of 5" aria-label="Difficulty 1 of 5"><i class="on"></i><i></i><i></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2021-5" data-slug="2021-5" data-input="play/2021-5.in.txt" data-expected="play/2021-5.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2021-5">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 5 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>An array of size <em>N</em> contains the numbers 0 … N−2, so one of them must appear twice, and exactly one does. Find it. Each input line is <code>N;a,b,c,…</code>.</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>5 lines · showing the start</span> <a href="play/2021-5.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2021-5.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2021-5">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2021-5" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2021-5">
           <div class="visual-head"><h3 id="v-2021-5">Find the extra number</h3><p>The array holds 0 … N−2 plus one number twice. Its sum is exactly that number larger than 0 + 1 + … + (N−2).</p></div>
           <div class="visual-body" data-visual="2021-5"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -4139,10 +5155,40 @@ console.log(out.join(<span class="tk-str">'\n'</span>))</code></pre></div>
               <span class="task-result"><span>Answer</span>23</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 1 of 5" aria-label="Difficulty 1 of 5"><i class="on"></i><i></i><i></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2020-1" data-slug="2020-1" data-input="" data-expected="play/2020-1.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2020-1">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is a single line.</p>
+          </div>
+          <div class="pg-task prose"><p>Michal reads out five numbers: 13, 14, 22, 23 and 32, then secretly picks one. He whispers its first digit to Peter and its second digit to Janka.</p>
+<ul>
+<li>Peter: &quot;I know that Janka can&#39;t work out the number.&quot;</li>
+<li>Janka: &quot;True, I didn&#39;t know it. But now I do.&quot;</li>
+</ul>
+<p>Which number did Michal pick?</p>
+</div>
+          <p class="vis-note">This task has no input file: <code>solve("")</code> should return the answer.</p>
+          <label class="pg-label" for="pg-code-2020-1">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2020-1" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2020-1">
           <div class="visual-head"><h3 id="v-2020-1">Follow the conversation</h3><p>Step through the two statements and watch the candidates disappear.</p></div>
           <div class="visual-body" data-visual="2020-1"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -4218,10 +5264,40 @@ console.log(afterJanka.join(<span class="tk-str">'\n'</span>))</code></pre></div
               <span class="task-result"><span>Answer</span>Point at one note, ask about another</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 2 of 5" aria-label="Difficulty 2 of 5"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2020-2" data-slug="2020-2" data-input="" data-expected="play/2020-2.out.txt" data-multi="1" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2020-2">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 7 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>Isabella writes her password on three face-down notes: two show the right password and one shows a wrong one. Paul may point at one note and ask a single yes/no question. If he points at a right note, she answers truthfully. If he points at the wrong note, she answers at random.</p>
+<ol>
+<li>Which note should Paul point at, and what should he ask, so that he is certain to find the password?</li>
+<li>Are the two behaving safely?</li>
+<li>(Not scored) Share your best trick for remembering passwords.</li>
+</ol>
+</div>
+          <p class="vis-note">This task has no input file: <code>solve("")</code> should return the answer.</p>
+          <label class="pg-label" for="pg-code-2020-2">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2020-2" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2020-2">
           <div class="visual-head"><h3 id="v-2020-2">Test a strategy</h3><p>Choose where to point, which note to ask about, and which note to take for each answer. The table checks every place the wrong note can be and every random answer.</p></div>
           <div class="visual-body" data-visual="2020-2"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -4316,10 +5392,39 @@ console.log(<span class="tk-str">`${working.length} of ${tried} strategies alway
               <span class="task-result"><span>Answer</span>Cinderella</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 4 of 5" aria-label="Difficulty 4 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2020-3" data-slug="2020-3" data-input="play/2020-3.in.txt" data-expected="play/2020-3.out.txt" data-multi="1" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2020-3">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 3 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>A fairy tells little Anna a bedtime story in the fairies&#39; own alphabet: an English text, about 230 words long, in which every letter was replaced by another letter. What is the name of the fairy tale?</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>1 lines · showing the start</span> <a href="play/2020-3.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2020-3.in.txt">Loading…</pre>
+            
+          </div>
+          <label class="pg-label" for="pg-code-2020-3">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2020-3" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2020-3">
           <div class="visual-head"><h3 id="v-2020-3">Crack it live</h3><p>Press “Crack it”: your browser runs the same frequency + hill-climbing search as solution.ts and replays every improvement. Letters that changed in a step are highlighted.</p></div>
           <div class="visual-body" data-visual="2020-3"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -4516,10 +5621,39 @@ console.log(plain)</code></pre></div>
               <span class="task-result"><span>Answer</span>Buy at 1,282,018,114,205, sell at 18,446,743,764,542,202,088</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 3 of 5" aria-label="Difficulty 3 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2020-4" data-slug="2020-4" data-input="play/2020-4.in.txt" data-expected="play/2020-4.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2020-4">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 2 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>In a dream, Miloš downloads tomorrow&#39;s Apple share price for every tenth of a second. He may place one buy order and one later sell order. Comparing every pair of prices (around 400 billion pairs) didn&#39;t finish before the bank closed. Find the best buy/sell pair <strong>in a single pass</strong>. You can&#39;t sell before you buy. The prices are unsigned 64-bit integers, and the file has 10 million of them (204 MB).</p>
+</div>
+          <div class="pg-input">
+            <p class="pg-label">Input <span>100,000 lines · showing the start</span> <a href="play/2020-4.in.txt" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="play/2020-4.in.txt">Loading…</pre>
+            <p class="vis-note">The real input is 204 MB; the playground uses its first 100,000 lines.</p>
+          </div>
+          <label class="pg-label" for="pg-code-2020-4">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2020-4" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2020-4">
           <div class="visual-head"><h3 id="v-2020-4">One pass over the prices</h3><p>A walk through a made-up price series (the real file has 10 million prices). The pink dot is the cheapest price so far, the green bar the best trade so far. The global minimum and maximum (grey) are a trap: here the maximum comes first.</p></div>
           <div class="visual-body" data-visual="2020-4"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -4645,10 +5779,35 @@ closeSync(fd)
               <span class="task-result"><span>Answer</span>45 drops</span>
               
               <span class="fact"><span>Difficulty</span><span class="dots" title="Difficulty 3 of 5" aria-label="Difficulty 3 of 5"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></span>
+              <button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>
             </p>
           </div>
           <figure class="hero-snap" aria-hidden="true"></figure>
         </header>
+        <section class="playground" aria-labelledby="pg-2020-5" data-slug="2020-5" data-input="" data-expected="play/2020-5.out.txt" data-multi="0" hidden>
+          <div class="pg-head">
+            <h3 id="pg-2020-5">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is 2 lines.</p>
+          </div>
+          <div class="pg-task prose"><p>A new 1000-storey dormitory opens in Košice. Two students want to find the lowest floor from which their (very sturdy) bottle breaks, and they only have two bottles. What strategy needs the fewest drops in the worst case, and how many drops is that?</p>
+</div>
+          <p class="vis-note">This task has no input file: <code>solve("")</code> should return the answer.</p>
+          <label class="pg-label" for="pg-code-2020-5">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-2020-5" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split(&quot;\n&quot;);
+
+  return lines.length;
+}
+</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>
         <section class="visual" aria-labelledby="v-2020-5">
           <div class="visual-head"><h3 id="v-2020-5">Drop the bottles</h3><p>Pick the floor where the bottle starts to break. The first bottle climbs in shrinking steps (45, 44, 43, …); once it breaks, the second walks up one floor at a time. The chart shows the drops needed for every possible floor: never more than 45.</p></div>
           <div class="visual-body" data-visual="2020-5"><p class="vis-loading">Loading the visualisation…</p></div>
@@ -4719,7 +5878,7 @@ console.log(floors.join(<span class="tk-str">', '</span>))</code></pre></div>
   <footer class="site-foot">
     <div class="wrap">
       <p><b>© 2026 <a href="https://github.com/mazsola739" target="_blank" rel="noopener">mazsola739</a></b> · Task statements summarised in my own words; follow “Original task” for the full text</p>
-      <p>Not an official Telekom page.</p>
+      <p><a href="https://mazsola739.github.io/mazsola739/" target="_blank" rel="noopener">My portfolio</a> · Not an official Telekom page.</p>
     </div>
   </footer>
 </main>
@@ -7438,6 +8597,207 @@ CG.visual("2020-5", (root, _, { h, s, slider, stats, scale, segmented }) => {
 
   window.addEventListener("hashchange", route);
   route();
+})();
+
+// The playground: "Solve it yourself" hides the spoilers on a task page (answer, visualisation,
+// write-up, code) and shows the task, its real input and an editor. The visitor's solve(input)
+// runs in a Web Worker with a time limit, and its output is compared with the reference output.
+// Code and the chosen mode are remembered per task in this browser.
+(() => {
+  const TIME_LIMIT_MS = 10_000;
+  const store = {
+    get: (k) => {
+      try {
+        return localStorage.getItem(k);
+      } catch {
+        return null;
+      }
+    },
+    set: (k, v) => {
+      try {
+        if (v === null) localStorage.removeItem(k);
+        else localStorage.setItem(k, v);
+      } catch {}
+    },
+  };
+  const files = new Map();
+  const load = (url) => {
+    if (!files.has(url))
+      files.set(
+        url,
+        fetch(url).then((r) => {
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          return r.text();
+        }),
+      );
+    return files.get(url);
+  };
+  const normalize = (t) =>
+    t
+      .replace(/^﻿/, "")
+      .replace(/\r\n?/g, "\n")
+      .split("\n")
+      .map((l) => l.trimEnd())
+      .join("\n")
+      .trim();
+  const head = (text, n) => {
+    const lines = text.split("\n");
+    return lines.slice(0, n).join("\n") + (lines.length > n ? `\n… ${(lines.length - n).toLocaleString("en-US")} more lines` : "");
+  };
+
+  function setChallenge(article, on) {
+    const pg = article.querySelector(".playground");
+    const btn = article.querySelector("[data-challenge]");
+    if (!pg || !btn) return;
+    article.classList.toggle("challenge", on);
+    btn.setAttribute("aria-pressed", String(on));
+    btn.textContent = on ? "Show the solution" : "Solve it yourself";
+    pg.hidden = !on;
+    store.set(`cg-challenge-${pg.dataset.slug}`, on ? "1" : null);
+    if (on) prepare(pg);
+  }
+
+  function prepare(pg) {
+    if (pg.dataset.ready) return;
+    pg.dataset.ready = "1";
+    const key = `cg-code-${pg.dataset.slug}`;
+    const code = pg.querySelector(".pg-code");
+    const saved = store.get(key);
+    if (saved !== null) code.value = saved;
+    code.addEventListener("input", () => store.set(key, code.value));
+    // Tab indents; Escape first lets Tab move the focus on.
+    let escaped = false;
+    code.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") escaped = true;
+      else if (e.key === "Tab" && !e.shiftKey && !escaped) {
+        e.preventDefault();
+        code.setRangeText("  ", code.selectionStart, code.selectionEnd, "end");
+        store.set(key, code.value);
+      } else if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        run(pg);
+      }
+      if (e.key !== "Escape") escaped = e.key === "Tab" ? false : escaped;
+    });
+    const pre = pg.querySelector(".pg-input-text");
+    if (pre)
+      load(pre.dataset.src)
+        .then((t) => (pre.textContent = head(t.replace(/\r\n?/g, "\n"), 18)))
+        .catch((e) => (pre.textContent = `The input could not be loaded (${e.message}). Open the site from GitHub Pages or npm run preview.`));
+    pg.querySelector("[data-run]").addEventListener("click", () => run(pg));
+    pg.querySelector("[data-reset]").addEventListener("click", () => {
+      code.value = code.defaultValue;
+      store.set(key, null);
+      code.focus();
+    });
+  }
+
+  // Runs the code in a fresh worker; resolves with { ok, out | error, ms }.
+  function execute(code, input) {
+    const source = `
+      const __logs = [];
+      const __solve = (function () {
+        const __say = (...a) => __logs.push(a.map((x) => (typeof x === "string" ? x : JSON.stringify(x))).join(" "));
+        const console = { log: __say, info: __say, warn: __say, error: __say };
+        ${code}
+        ;return typeof solve === "function" ? solve : null;
+      })();
+      self.onmessage = (e) => {
+        const t0 = performance.now();
+        try {
+          if (!__solve) throw new Error("Define a function called solve(input).");
+          let out = __solve(e.data);
+          if (out === undefined) out = __logs.join("\\n");
+          else if (Array.isArray(out)) out = out.join("\\n");
+          postMessage({ ok: true, out: String(out), ms: performance.now() - t0 });
+        } catch (err) {
+          postMessage({ ok: false, error: String((err && err.message) || err), ms: performance.now() - t0 });
+        }
+      };`;
+    const url = URL.createObjectURL(new Blob([source], { type: "text/javascript" }));
+    const worker = new Worker(url);
+    return new Promise((resolve) => {
+      const done = (result) => {
+        clearTimeout(timer);
+        worker.terminate();
+        URL.revokeObjectURL(url);
+        resolve(result);
+      };
+      const timer = setTimeout(() => done({ ok: false, error: `Stopped after ${TIME_LIMIT_MS / 1000} seconds. Is there an endless loop, or a slower algorithm than needed?` }), TIME_LIMIT_MS);
+      worker.onmessage = (e) => done(e.data);
+      worker.onerror = (e) => {
+        e.preventDefault();
+        done({ ok: false, error: `${e.message}${e.lineno ? ` (line ${Math.max(1, e.lineno - 5)})` : ""}` });
+      };
+      worker.postMessage(input);
+    });
+  }
+
+  async function run(pg) {
+    const status = pg.querySelector(".pg-status");
+    const result = pg.querySelector(".pg-result");
+    const runBtn = pg.querySelector("[data-run]");
+    runBtn.disabled = true;
+    status.textContent = "Running…";
+    let input = "";
+    try {
+      input = pg.dataset.input ? await load(pg.dataset.input) : "";
+    } catch (e) {
+      status.textContent = `The input could not be loaded (${e.message}).`;
+      runBtn.disabled = false;
+      return;
+    }
+    const res = await execute(pg.querySelector(".pg-code").value, input);
+    runBtn.disabled = false;
+    result.hidden = false;
+    const { h } = window.CG;
+    if (!res.ok) {
+      status.textContent = "";
+      result.replaceChildren(h("p", { class: "pg-bad", text: "Your code stopped with an error" }), h("pre", { class: "code", text: res.error }));
+      return;
+    }
+    const got = normalize(res.out);
+    let want = "";
+    try {
+      want = normalize(await load(pg.dataset.expected));
+    } catch {}
+    status.textContent = `Finished in ${Math.round(res.ms).toLocaleString("en-US")} ms.`;
+    const yours = h("pre", { class: "code pg-out", text: got ? head(got, 40) : "(empty output)" });
+    if (got === want) {
+      result.replaceChildren(h("p", { class: "pg-ok", text: "✓ Correct! It matches the expected answer." }), h("p", { class: "pg-label", text: "Your output" }), yours);
+      return;
+    }
+    const a = got.split("\n");
+    const b = want.split("\n");
+    let line = 0;
+    while (line < Math.max(a.length, b.length) && a[line] === b[line]) line++;
+    const reveal = h("pre", { class: "code pg-out", hidden: true, text: head(want, 40) });
+    const multi = pg.dataset.multi === "1";
+    result.replaceChildren(
+      h("p", { class: "pg-bad", text: `✗ Not yet: line ${line + 1} differs from the expected answer${a.length !== b.length ? ` (you have ${a.length} line${a.length === 1 ? "" : "s"}, expected ${b.length})` : ""}.` }),
+      multi ? h("p", { class: "vis-note", text: "This task accepts more than one correct answer (or its official answer has a known mistake), so a difference from our reference isn't always wrong. Check your answer against the rules." }) : "",
+      h("p", { class: "pg-label", text: "Your output" }),
+      yours,
+      window.CG.button("Show the expected answer (spoiler)", { onclick: (e) => ((reveal.hidden = false), e.target.remove()) }),
+      reveal,
+    );
+  }
+
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-challenge]");
+    if (!btn) return;
+    const article = btn.closest(".task-page");
+    setChallenge(article, !article.classList.contains("challenge"));
+  });
+
+  // When a task opens, bring back the mode the visitor left it in.
+  function restore() {
+    const article = document.querySelector(".task-page:not([hidden])");
+    const pg = article?.querySelector(".playground");
+    if (pg && store.get(`cg-challenge-${pg.dataset.slug}`) === "1" && !article.classList.contains("challenge")) setChallenge(article, true);
+  }
+  window.addEventListener("hashchange", restore);
+  restore();
 })();
 
 </script>

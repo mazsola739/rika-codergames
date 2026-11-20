@@ -1,0 +1,7 @@
+point at left, ask "is middle right?": yes -> take middle, no -> take right
+point at left, ask "is right right?": yes -> take right, no -> take middle
+point at middle, ask "is left right?": yes -> take left, no -> take right
+point at middle, ask "is right right?": yes -> take right, no -> take left
+point at right, ask "is left right?": yes -> take left, no -> take middle
+point at right, ask "is middle right?": yes -> take middle, no -> take left
+6 of 81 strategies always find a right password

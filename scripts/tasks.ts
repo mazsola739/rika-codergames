@@ -90,8 +90,7 @@ export interface RunResult {
   error?: string
 }
 
-export function runSolution(t: Task): RunResult {
-  const input = inputPath(t)
+export function runSolution(t: Task, input: string | null = inputPath(t)): RunResult {
   const args = ['--experimental-strip-types', '--no-warnings', '--stack-size=65500', 'solution.ts']
   if (input) args.push(input)
   const start = performance.now()

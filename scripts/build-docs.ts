@@ -2,11 +2,11 @@
 // (README.md) and solution, rendered at build time so the page needs no JavaScript to read.
 // Usage: npm run docs                  writes docs/index.html
 //        npm run docs -- --fragment F  also writes the page body alone to F (for previews)
-import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs'
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, statSync, openSync, readSync, closeSync } from 'node:fs'
 import { join, basename } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { marked } from 'marked'
-import { ROOT, loadEditions, loadTasks, type Edition, type Task } from './tasks.ts'
+import { ROOT, loadEditions, loadTasks, runSolution, inputPath, normalize, type Edition, type Task } from './tasks.ts'
 
 const REPO = 'https://github.com/mazsola739/rika-codergames'
 const BLOB = `${REPO}/blob/main`
@@ -133,6 +133,108 @@ function visualSection(t: Task): string {
         </section>`
 }
 
+// ---------- playground files ----------
+// For every solved task the site gets docs/play/<task>.in.txt (the input, cut down when it is
+// huge) and docs/play/<task>.out.txt (what solution.ts prints for it). The playground runs the
+// visitor's code on the first and compares the result with the second.
+const PLAY_DIR = join(ROOT, 'docs', 'play')
+const MAX_INPUT_BYTES = 3_000_000
+const HEAD_LINES = 100_000
+interface Play {
+  input: string | null
+  expected: string
+  lines: number
+  inputLines: number
+  note: string
+  multi: boolean
+}
+const plays = new Map<string, Play>()
+
+// The first `lines` lines of a file, without reading all of it.
+function readHead(path: string, lines: number): string {
+  const fd = openSync(path, 'r')
+  const buf = Buffer.alloc(16 * 1024 * 1024)
+  const n = readSync(fd, buf, 0, buf.length, 0)
+  closeSync(fd)
+  const text = buf.subarray(0, n).toString('utf8')
+  let at = -1
+  for (let i = 0; i < lines; i++) {
+    at = text.indexOf('\n', at + 1)
+    if (at < 0) return text
+  }
+  return text.slice(0, at + 1)
+}
+
+function preparePlay(t: Task) {
+  if (t.status === 'pending' || !existsSync(join(t.dir, 'solution.ts'))) return
+  const s = slug(t)
+  const source = inputPath(t)
+  if (source && !existsSync(source)) return // a big input that was not downloaded
+  mkdirSync(PLAY_DIR, { recursive: true })
+  let note = ''
+  let input: string | null = null
+  if (source) {
+    input = join(PLAY_DIR, `${s}.in.txt`)
+    if (statSync(source).size > MAX_INPUT_BYTES) {
+      writeFileSync(input, readHead(source, HEAD_LINES))
+      note = `The real input is ${(statSync(source).size / 1e6).toFixed(0)} MB; the playground uses its first ${HEAD_LINES.toLocaleString('en-US')} lines.`
+    } else writeFileSync(input, readFileSync(source))
+  }
+  const run = runSolution(t, input)
+  if (run.error) {
+    console.warn(`playground: ${t.id} failed: ${run.error}`)
+    return
+  }
+  const expected = normalize(run.output)
+  writeFileSync(join(PLAY_DIR, `${s}.out.txt`), expected + '\n')
+  plays.set(s, {
+    input: input ? `play/${s}.in.txt` : null,
+    expected: `play/${s}.out.txt`,
+    lines: expected.split('\n').length,
+    inputLines: input ? readFileSync(input, 'utf8').split('\n').filter((l) => l.trim()).length : 0,
+    note,
+    multi: t.check === 'custom',
+  })
+}
+
+const STARTER = `// solve(input) gets the whole input file as one string.
+// Return the answer as a string (or print it with console.log).
+function solve(input) {
+  const lines = input.trim().split("\\n");
+
+  return lines.length;
+}
+`
+
+function playground(t: Task, statement: string): string {
+  const s = slug(t)
+  const p = plays.get(s)
+  if (!p) return ''
+  const inputInfo = p.input
+    ? `<div class="pg-input">
+            <p class="pg-label">Input <span>${p.inputLines.toLocaleString('en-US')} lines · showing the start</span> <a href="${p.input}" target="_blank" rel="noopener">open the whole file ↗</a></p>
+            <pre class="code pg-input-text" data-src="${p.input}">Loading…</pre>
+            ${p.note ? `<p class="vis-note">${esc(p.note)}</p>` : ''}
+          </div>`
+    : `<p class="vis-note">This task has no input file: <code>solve("")</code> should return the answer.</p>`
+  return `<section class="playground" aria-labelledby="pg-${s}" data-slug="${s}" data-input="${p.input ?? ''}" data-expected="${p.expected}" data-multi="${p.multi ? 1 : 0}" hidden>
+          <div class="pg-head">
+            <h3 id="pg-${s}">Your turn</h3>
+            <p>Write <code>solve(input)</code> in JavaScript and run it on the real input, right here in your browser. The answer is ${p.lines === 1 ? 'a single line' : `${p.lines.toLocaleString('en-US')} lines`}${t.country ? ', without the country' : ''}.</p>
+          </div>
+          <div class="pg-task prose">${statement}</div>
+          ${inputInfo}
+          <label class="pg-label" for="pg-code-${s}">Your code <span>saved in this browser</span></label>
+          <textarea class="pg-code" id="pg-code-${s}" spellcheck="false" autocomplete="off" autocapitalize="off" rows="14">${esc(STARTER)}</textarea>
+          <div class="vis-row">
+            <button class="vis-btn primary" type="button" data-run>Run</button>
+            <button class="vis-btn" type="button" data-reset>Start over</button>
+            <span class="pg-status" aria-live="polite"></span>
+          </div>
+          <div class="pg-result" hidden></div>
+        </section>`
+}
+
 // ---------- page parts ----------
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
 const editionLabel = (e: Edition) => TAB_LABEL[e.id] ?? e.id
@@ -217,10 +319,12 @@ function taskPage(t: Task, prev: Task | undefined, next: Task | undefined): stri
               ${t.result ? `<span class="task-result"><span>Answer</span>${esc(t.result)}</span>` : ''}
               ${t.country ? `<span class="fact"><span>Country</span>${esc(t.country)}</span>` : ''}
               ${t.difficulty ? `<span class="fact"><span>Difficulty</span>${dots(t.difficulty)}</span>` : ''}
+              ${plays.has(s) ? `<button class="challenge-btn" type="button" data-challenge aria-pressed="false">Solve it yourself</button>` : ''}
             </p>
           </div>
           <figure class="hero-snap${pending ? ' empty' : ''}" aria-hidden="true"></figure>
         </header>
+        ${playground(t, sections.find((x) => x.label === 'The task')?.html ?? '')}
         ${visualSection(t)}
         ${details}
         ${pager}
@@ -357,6 +461,7 @@ function homeView(editions: Edition[], byEdition: Map<string, Task[]>): string {
 const editions = ORDER.map((id) => loadEditions().find((e) => e.id === id)).filter((e): e is Edition => !!e)
 const byEdition = new Map(editions.map((e) => [e.id, loadTasks(e)]))
 for (const t of [...byEdition.values()].flat()) await loadVisual(t)
+for (const t of [...byEdition.values()].flat()) preparePlay(t)
 const total = solvedOf([...byEdition.values()].flat()).length
 const DESCRIPTION = `All ${total} published CoderGames tasks (2020–2026) by Deutsche Telekom IT Solutions, solved in TypeScript, visualised and explained.`
 
@@ -365,6 +470,7 @@ const SCRIPT = [
   readFileSync(join(ROOT, 'docs', 'src', 'lib.js'), 'utf8'),
   ...[...visuals.entries()].map(([id, v]) => `// ----- visualisation ${id} -----\n${v.script}`),
   readFileSync(join(ROOT, 'docs', 'src', 'page.js'), 'utf8'),
+  readFileSync(join(ROOT, 'docs', 'src', 'playground.js'), 'utf8'),
 ].join('\n')
 
 const GITHUB_ICON = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>`
@@ -375,6 +481,7 @@ const body = `<header class="topbar">
   <div class="wrap">
     <a class="brandmark" href="#home"><i aria-hidden="true"></i>CoderGames Solutions</a>
     <p class="actions">
+      <a class="pill" href="https://mazsola739.github.io/mazsola739/" target="_blank" rel="noopener">Portfolio</a>
       <a class="pill" href="${REPO}" target="_blank" rel="noopener">${GITHUB_ICON}Source code</a>
       <button class="pill icon theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
         ${THEME_ICONS}
@@ -388,7 +495,7 @@ const body = `<header class="topbar">
   <footer class="site-foot">
     <div class="wrap">
       <p><b>© 2026 <a href="https://github.com/mazsola739" target="_blank" rel="noopener">mazsola739</a></b> · Task statements summarised in my own words; follow “Original task” for the full text</p>
-      <p>Not an official Telekom page.</p>
+      <p><a href="https://mazsola739.github.io/mazsola739/" target="_blank" rel="noopener">My portfolio</a> · Not an official Telekom page.</p>
     </div>
   </footer>
 </main>

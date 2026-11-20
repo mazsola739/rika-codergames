@@ -1,0 +1,12 @@
+F
+A,B;B,C;C,A;D,B;C,D;D,E;E,F;F,B;F,H;G,C;G,E;G,F;G,H
+
+hawk
+grasshopper,hawk;lizard,hawk;grass,grasshopper;grasshopper,lizard;mouse,hawk;snake,hawk;rabbit,hawk;mouse,snake;grass,rabbit;grass,mouse
+
+1
+206,205;208,104;100,10;201,200;207,206;213,212;205,102;202,101;211,210;200,100;205,204;d,a;104,12;214,107;206,103;211,105;b,a;214,213;215,214;a,b;11,1;201,100;13,1;101,10;b,c;200,215;212,211;c,d;107,13;203,202;c,b;105,12;207,103;210,209;202,201;204,102;10,1;210,105;204,203;215,107;d,c;103,11;209,104;203,101;102,11;106,13;a,d;212,106;12,1;208,207;209,208;213,106
+
+broccoli
+carrot,potato;onion,potato;carrot,cucumber;potato,carrot;potato,tomato;carrot,tomato;tomato,carrot;cucumber,carrot;cucumber,onion;tomato,potato;potato,onion;onion,cucumber
+

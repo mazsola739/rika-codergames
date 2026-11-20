@@ -1,0 +1,12 @@
+# Set 1 Output
+145
+# Set 2 Output
+90
+# Set 3 Output
+90
+# Set 4 Output
+305
+# Set 5 Output
+145
+# Set 6 Output
+105
